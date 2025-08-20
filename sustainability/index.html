@@ -1,1 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Charger Environmental Impact Calculator - Voqa</title>
+    <meta name="description" content="Calculate CO2 emissions avoided, environmental benefits, and sustainability metrics for EV charging infrastructure. Professional tool for ESG reporting and environmental impact assessment.">
+    <meta name="keywords" content="EV charging, environmental impact, CO2 emissions, sustainability, ESG reporting, carbon footprint, electric vehicle">
+    <meta name="author" content="Voqa">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+        }
+        
+        :root {
+            --primary: #005C80;
+            --primary-dark: #004A6B;
+            --accent: #F7D7BC;
+            --accent-light: #F8D4B4;
+            --success: #098C47;
+            --danger: #FF4747;
+            --text-dark: #0E215A;
+            --text-light: #ffffff;
+            --bg-light: #f8f9fa;
+            --border: #E8F0F0;
+        }
+        
+        body {
+            font-family: 'Red Hat Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(247, 215, 188, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 92, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(0, 92, 128, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 800;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out;
+            line-height: 1.2;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .header-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-size: clamp(14px, 2.5vw, 16px);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-height: 48px;
+            justify-content: center;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .header-cta:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-2px) scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            padding: 32px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: clamp(22px, 4vw, 28px);
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            position: relative;
+            animation: slideRight 0.6s ease-out;
+            line-height: 1.2;
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            animation: expand 0.8s ease-out;
+        }
+
+        @keyframes expand {
+            from {
+                width: 0;
+            }
+            to {
+                width: 80px;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+        .form-group:nth-child(7) { animation-delay: 0.7s; }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: color 0.3s ease;
+        }
+
+        .form-group:hover label {
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            color: var(--text-dark);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 500;
+            min-height: 48px;
+            box-sizing: border-box;
+        }
+
+        input:hover, select:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 92, 128, 0.1);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 92, 128, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .charging-rate {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .rate-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-dark);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            height: 80px;
+            width: 100%;
+        }
+
+        .rate-option::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(0, 92, 128, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+
+        .rate-option:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .rate-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 92, 128, 0.15);
+        }
+
+        .rate-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+            accent-color: var(--primary);
+            transform: scale(1.2);
+            flex-shrink: 0;
+        }
+
+        .rate-option .rate-text {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .calculation-display {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 24px;
+            border-radius: 16px;
+            margin-top: 12px;
+            position: relative;
+            animation: slideUp 0.5s ease-out;
+            color: var(--text-light);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calc-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calc-explainer {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .impact-card {
+            background: white;
+            padding: 28px 24px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--success);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .impact-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .impact-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .impact-value {
+            font-size: clamp(24px, 6vw, 32px);
+            font-weight: 800;
+            color: var(--success);
+            margin-bottom: 8px;
+            animation: countUp 1s ease-out;
+            line-height: 1.1;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .impact-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .impact-description {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .guidance-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            animation: slideLeft 0.6s ease-out;
+        }
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .guidance-title {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guidance-title::before {
+            content: '💡';
+            font-size: 24px;
+        }
+
+        .guidance-text {
+            font-size: 14px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .benefits-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            animation: slideLeft 0.6s ease-out;
+        }
+
+        .benefits-title {
+            color: var(--success);
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefits-title::before {
+            content: '🌱';
+            font-size: 24px;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .benefits-list li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.6;
+            transition: transform 0.3s ease;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 18px;
+            animation: checkIn 0.5s ease-out backwards;
+        }
+
+        .benefits-list li:nth-child(1) { animation-delay: 0.1s; }
+        .benefits-list li:nth-child(2) { animation-delay: 0.2s; }
+        .benefits-list li:nth-child(3) { animation-delay: 0.3s; }
+        .benefits-list li:nth-child(4) { animation-delay: 0.4s; }
+        .benefits-list li:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes checkIn {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .benefits-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .methodology-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .methodology-section:first-of-type {
+            background: rgba(0, 92, 128, 0.08);
+        }
+
+        .methodology-title {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .methodology-title::before {
+            content: '📊';
+            font-size: 20px;
+        }
+
+        .methodology-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .custom-note {
+            margin-top: 8px;
+            font-size: 12px;
+            font-style: italic;
+            color: #666;
+        }
+
+        .cta-container {
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 18px 32px;
+            border-radius: 50px;
+            font-size: clamp(14px, 3vw, 16px);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+            min-height: 48px;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                padding: 30px 20px;
+                gap: 30px;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+                gap: 15px;
+            }
+            
+            .charging-rate {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .impact-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">🌱 EV Charger Environmental Impact Calculator</div>
+            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
+                📅 Book some time with Voqa to talk about EV Charging
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="section-title">⚙️ Configure Your Setup</h2>
+            
+            <div class="guidance-section">
+                <h4 class="guidance-title">How to Use This Calculator</h4>
+                <div class="guidance-text">
+                    This environmental impact calculator helps you understand the carbon footprint reduction and sustainability benefits of your EV charging infrastructure. 
+                    For example: "If I install 10 charging bays that each serve 2 cars per day, how much CO₂ will be prevented annually?"
+                </div>
+                <div class="guidance-text">
+                    The tool calculates the difference between petrol car emissions and EV electricity emissions, giving you concrete metrics for <strong>ESG reporting</strong>, sustainability communications, and environmental impact assessment.
+                </div>
+                <div class="guidance-text">
+                    This will help you quantify your contribution to corporate net-zero targets and communicate environmental benefits to stakeholders.
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 40px;">
+                <label for="numChargers">Number of EV Charging Bays</label>
+                <input type="number" id="numChargers" value="10" min="1" max="100">
+                <div class="custom-note">
+                    Enter the total number of charging points at your location
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Charger Power Rating</label>
+                <div class="charging-rate">
+                    <div class="rate-option">
+                        <input type="radio" name="chargingRate" value="7.4" id="rate74" checked>
+                        <span class="rate-text">7.4kW</span>
+                    </div>
+                    <div class="rate-option">
+                        <input type="radio" name="chargingRate" value="22" id="rate22">
+                        <span class="rate-text">22kW</span>
+                    </div>
+                </div>
+                <div class="custom-note">
+                    Select the power rating that matches your charging infrastructure
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sessionsPerDay">Average Charging Sessions per Charger per Day</label>
+                <input type="number" id="sessionsPerDay" value="2" min="0.1" max="10" step="0.1">
+                <div class="custom-note">
+                    Estimate how many different vehicles use each charger daily
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sessionDuration">Active Charging Duration per Session (hours)</label>
+                <input type="number" id="sessionDuration" value="3" min="0.5" max="8" step="0.5">
+                <div class="custom-note">
+                    Time spent actively charging (excludes idle/connection time)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="operatingDays">Operating Days per Year</label>
+                <select id="operatingDays">
+                    <option value="250">Weekdays only (250 days)</option>
+                    <option value="300">6 days/week (300 days)</option>
+                    <option value="365" selected>7 days/week (365 days)</option>
+                </select>
+                <div class="custom-note">
+                    Select how many days per year your charging station operates
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="renewablePercentage">Renewable Energy Mix (%)</label>
+                <select id="renewablePercentage">
+                    <option value="37">UK Grid Average (37%)</option>
+                    <option value="50">Above Average (50%)</option>
+                    <option value="75">High Renewable (75%)</option>
+                    <option value="100" selected>100% Renewable</option>
+                </select>
+                <div id="gridAverageNote" style="margin-top: 8px; font-size: 12px; color: #666; line-height: 1.4; display: none;">
+                    *UK Grid Average based on live National Grid data for the past year (36.5% renewables). Source: <a href="https://grid.iamkate.com/" target="_blank" style="color: var(--primary); text-decoration: none;">Grid.iamkate.com - National Grid Live</a>
+                </div>
+                <div class="custom-note">
+                    Choose your electricity supply's renewable energy percentage
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="calculation-display">
+                    <div class="calc-header">
+                        ⚡ Annual Energy Delivered: <span id="annualEnergy">-</span> kWh
+                    </div>
+                    <div class="calc-explainer">
+                        <span id="energyBreakdown">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">🌱 Environmental Impact</h2>
+            
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <span class="impact-icon">CO₂</span>
+                    <div class="impact-value" id="co2Avoided">-</div>
+                    <div class="impact-label">CO₂ Avoided</div>
+                    <div class="impact-description">Tonnes of CO₂ emissions prevented annually</div>
+                </div>
+
+                <div class="impact-card">
+                    <span class="impact-icon">🌳</span>
+                    <div class="impact-value" id="treesEquivalent">-</div>
+                    <div class="impact-label">Trees Planted Equivalent</div>
+                    <div class="impact-description">To absorb this much CO₂, you'd need to plant this many trees</div>
+                </div>
+
+                <div class="impact-card">
+                    <span class="impact-icon">🏠</span>
+                    <div class="impact-value" id="homesEquivalent">-</div>
+                    <div class="impact-label">Homes Powered Equivalent</div>
+                    <div class="impact-description">This much clean energy could power this many UK homes for a year</div>
+                </div>
+
+                <div class="impact-card">
+                    <span class="impact-icon">📺</span>
+                    <div class="impact-value" id="netflixHours">-</div>
+                    <div class="impact-label">Netflix Hours Equivalent</div>
+                    <div class="impact-description">This CO₂ saving equals the emissions from this many hours of Netflix streaming</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="guidance-section">
+                <div class="methodology-title">How EV Charging Reduces Carbon Emissions</div>
+                <div class="methodology-text">
+                    <strong>The Carbon Reduction Process:</strong> When someone charges their EV at your location instead of filling up with petrol, you're directly replacing high-carbon fuel with lower-carbon electricity.
+                </div>
+                <div class="methodology-text">
+                    <strong>Petrol Vehicle Emissions:</strong> A typical petrol car emits ~284g CO₂ per mile driven (based on 2.31kg CO₂/litre fuel and 35mpg average efficiency).
+                </div>
+                <div class="methodology-text">
+                    <strong>EV Electricity Emissions:</strong> An EV using UK grid electricity emits ~49g CO₂ per mile (3.5 miles/kWh efficiency × current grid intensity). With 100% renewable electricity, this drops to 0g CO₂/mile.
+                </div>
+                <div class="methodology-text">
+                    <strong>Net Carbon Saving:</strong> Each mile driven electric instead of petrol saves ~235g CO₂ - an 83% reduction in transport emissions per mile.
+                </div>
+            </div>
+
+            <div class="benefits-section">
+                <h4 class="benefits-title">Corporate Sustainability Benefits</h4>
+                <ul class="benefits-list">
+                    <li><strong>Carbon Footprint Reduction:</strong> Directly reduce Scope 3 emissions from employee commuting</li>
+                    <li><strong>ESG Reporting:</strong> Quantifiable environmental impact data for sustainability reports</li>
+                    <li><strong>Net Zero Commitment:</strong> Tangible progress towards corporate net-zero targets</li>
+                    <li><strong>Green Credentials:</strong> Enhanced reputation as an environmentally responsible employer</li>
+                    <li><strong>Future Compliance:</strong> Preparation for incoming environmental regulations and requirements</li>
+                </ul>
+            </div>
+
+            <div class="guidance-section">
+                <div class="methodology-title">Calculation Methodology</div>
+                <div class="methodology-text">
+                    <strong>CO₂ Emissions:</strong> Based on UK electricity grid carbon intensity (varies by renewable %) vs petrol vehicle emissions (2.31 kg CO₂/litre, 35 mpg average).
+                </div>
+                <div class="methodology-text">
+                    <strong>Tree Equivalency:</strong> Based on mature trees absorbing ~22kg CO₂ annually (Forestry Commission data).
+                </div>
+                <div class="methodology-text">
+                    <strong>Home Equivalency:</strong> Average UK household electricity consumption of 3,731 kWh/year (Ofgem 2024).
+                </div>
+                <div class="methodology-text">
+                    <strong>Netflix Streaming:</strong> Based on 36g CO₂ per hour of streaming (includes data center energy, transmission networks, and device usage).
+                </div>
+                <div class="methodology-text">
+                    <strong>EV Efficiency:</strong> Average 3.5 miles per kWh based on typical destination charging vehicles.
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-container">
+            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="cta-button">
+                🗓️ Book some time with Voqa to talk about EV Charging
+            </a>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * EV Environmental Impact Calculator - Professional Tool
+         * Calculate EV charging environmental impact and sustainability metrics
+         * 
+         * Formula: CO₂ Avoided = (Petrol Emissions - Electricity Emissions) × Miles Replaced
+         * Petrol Emissions: 284g CO₂/mile | EV Emissions: Variable based on grid mix
+         * 
+         * @author Voqa
+         * @version 1.2.0
+         */
+
+        function formatNumber(num, decimals = 0) {
+            if (typeof num !== 'number' || isNaN(num)) return '-';
+            return num.toLocaleString('en-GB', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            });
+        }
+
+        function calculateImpact() {
+            try {
+                // Get input values
+                const numChargers = parseInt(document.getElementById('numChargers').value) || 0;
+                const chargingRate = parseFloat(document.querySelector('input[name="chargingRate"]:checked').value) || 0;
+                const sessionsPerDay = parseFloat(document.getElementById('sessionsPerDay').value) || 0;
+                const sessionDuration = parseFloat(document.getElementById('sessionDuration').value) || 0;
+                const operatingDays = parseInt(document.getElementById('operatingDays').value) || 0;
+                const renewablePercentage = parseInt(document.getElementById('renewablePercentage').value) || 0;
+
+                // Calculate annual energy delivered
+                const dailyEnergyPerCharger = sessionsPerDay * sessionDuration * chargingRate;
+                const annualEnergyTotal = numChargers * dailyEnergyPerCharger * operatingDays;
+
+                // Update energy display
+                document.getElementById('annualEnergy').textContent = formatNumber(annualEnergyTotal, 0);
+                document.getElementById('energyBreakdown').textContent = 
+                    `${numChargers} chargers × ${sessionsPerDay} sessions/day × ${sessionDuration}hrs active charging × ${chargingRate}kW × ${operatingDays} days`;
+
+                // Carbon intensity calculations (kg CO₂/kWh)
+                const gridCarbonIntensity = {
+                    37: 0.170,   // UK grid average with 37% renewables
+                    50: 0.135,   // 50% renewables
+                    75: 0.068,   // 75% renewables  
+                    100: 0.000   // 100% renewables
+                };
+
+                const electricityCarbonIntensity = gridCarbonIntensity[renewablePercentage];
+                
+                // Petrol car emissions (kg CO₂/mile)
+                const petrolCarbonPerMile = 0.284; // Based on 2.31kg CO₂/litre, 35mpg average
+                
+                // EV efficiency (miles per kWh)
+                const evEfficiency = 3.5;
+                
+                // Calculate miles replaced
+                const milesReplaced = annualEnergyTotal * evEfficiency;
+                
+                // Calculate CO₂ from petrol equivalent
+                const petrolCO2 = milesReplaced * petrolCarbonPerMile;
+                
+                // Calculate CO₂ from electricity
+                const electricityCO2 = annualEnergyTotal * electricityCarbonIntensity;
+                
+                // Net CO₂ avoided (tonnes)
+                const co2Avoided = (petrolCO2 - electricityCO2) / 1000;
+                
+                // Tree equivalent (22kg CO₂ per tree per year)
+                const treesEquivalent = Math.round(co2Avoided * 1000 / 22);
+                
+                // Home equivalent (3,731 kWh average UK home)
+                const homesEquivalent = annualEnergyTotal / 3731;
+
+                // Netflix streaming equivalent (36g CO₂ per hour of streaming)
+                const netflixHours = Math.round((co2Avoided * 1000) / 36);
+
+                // Update displays
+                document.getElementById('co2Avoided').textContent = formatNumber(co2Avoided, 1);
+                document.getElementById('treesEquivalent').textContent = formatNumber(treesEquivalent, 0);
+                document.getElementById('homesEquivalent').textContent = formatNumber(homesEquivalent, 1);
+                document.getElementById('netflixHours').textContent = formatNumber(netflixHours, 0);
+
+                // Add animation to updated values
+                animateValue('co2Avoided', co2Avoided, 1);
+                animateValue('treesEquivalent', treesEquivalent, 0);
+                animateValue('homesEquivalent', homesEquivalent, 1);
+                animateValue('netflixHours', netflixHours, 0);
+            } catch (error) {
+                console.error('Error in calculateImpact:', error);
+            }
+        }
+
+        function animateValue(elementId, finalValue, decimals) {
+            try {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+
+                const startValue = 0;
+                const duration = 1000;
+                const startTime = performance.now();
+
+                function updateValue(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                    const currentValue = startValue + (finalValue - startValue) * easeOutQuart;
+                    
+                    element.textContent = formatNumber(currentValue, decimals);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateValue);
+                    }
+                }
+
+                requestAnimationFrame(updateValue);
+            } catch (error) {
+                console.error('Error in animateValue:', error);
+            }
+        }
+
+        /**
+         * Initialize event listeners and setup
+         */
+        function initializeApp() {
+            try {
+                // Add event listeners
+                document.getElementById('numChargers').addEventListener('input', calculateImpact);
+                document.getElementById('sessionsPerDay').addEventListener('input', calculateImpact);
+                document.getElementById('sessionDuration').addEventListener('input', calculateImpact);
+                document.getElementById('operatingDays').addEventListener('change', calculateImpact);
+                document.getElementById('renewablePercentage').addEventListener('change', function() {
+                    calculateImpact();
+                    
+                    // Show/hide grid average note
+                    const gridNote = document.getElementById('gridAverageNote');
+                    if (this.value === '37') {
+                        gridNote.style.display = 'block';
+                    } else {
+                        gridNote.style.display = 'none';
+                    }
+                });
+                
+                document.querySelectorAll('input[name="chargingRate"]').forEach(radio => {
+                    radio.addEventListener('change', calculateImpact);
+                });
+
+                // Power option click handlers
+                const powerOptions = document.querySelectorAll('.rate-option');
+                powerOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const radio = this.querySelector('input[type="radio"]');
+                        if (radio) {
+                            radio.checked = true;
+                            calculateImpact();
+                        }
+                    });
+                });
+
+                // Interactive enhancements
+                setupInteractiveEffects();
+
+                // Initial calculation
+                calculateImpact();
+
+            } catch (error) {
+                console.error('Error initializing app:', error);
+            }
+        }
+
+        /**
+         * Setup interactive visual effects
+         */
+        function setupInteractiveEffects() {
+            try {
+                // Impact card hover effects
+                const impactCards = document.querySelectorAll('.impact-card');
+                impactCards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-8px) scale(1.02)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(-5px) scale(1)';
+                    });
+                });
+
+                // Form group focus effects
+                const formGroups = document.querySelectorAll('.form-group');
+                formGroups.forEach(group => {
+                    const input = group.querySelector('input, select');
+                    if (input) {
+                        input.addEventListener('focus', function() {
+                            group.style.transform = 'translateX(5px)';
+                        });
+                        
+                        input.addEventListener('blur', function() {
+                            group.style.transform = 'translateX(0)';
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error('Error setting up interactive effects:', error);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>
