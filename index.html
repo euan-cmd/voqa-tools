@@ -3,44 +3,627 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOQA Calculator Tools</title>
+    <title>VOQA Calculator Tools - Professional Sustainability & EV Solutions</title>
+    <meta name="description" content="Professional sustainability and EV charging calculators for businesses. Calculate environmental impact, ROI, and charging efficiency with our comprehensive tools.">
+    <meta name="keywords" content="EV charging calculator, sustainability calculator, carbon footprint, ROI calculator, environmental impact, VOQA">
+    <meta name="author" content="Voqa">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
-        .calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
-        .calculator-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; }
-        .calculator-card h3 { color: #333; }
-        .calculator-card a { background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px; }
-        .calculator-card a:hover { background: #005a87; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+        }
+        
+        :root {
+            --primary: #005C80;
+            --primary-dark: #004A6B;
+            --accent: #F7D7BC;
+            --accent-light: #F8D4B4;
+            --success: #098C47;
+            --danger: #FF4747;
+            --text-dark: #0E215A;
+            --text-light: #ffffff;
+            --bg-light: #f8f9fa;
+            --border: #E8F0F0;
+        }
+        
+        body {
+            font-family: 'Red Hat Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(247, 215, 188, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 92, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(0, 92, 128, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 40px 0 60px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 100;
+            animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 800;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            animation: fadeIn 0.8s ease-out;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: clamp(16px, 3vw, 20px);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 18px 32px;
+            border-radius: 50px;
+            font-size: clamp(14px, 2.5vw, 16px);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-height: 48px;
+            justify-content: center;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .header-cta:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 800;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            animation: slideRight 0.6s ease-out 0.4s both;
+            line-height: 1.2;
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section-subtitle {
+            font-size: clamp(14px, 2.5vw, 18px);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px auto;
+            animation: fadeIn 0.6s ease-out 0.6s both;
+            line-height: 1.5;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            padding: 40px 32px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .calculator-card:nth-child(1) { animation-delay: 0.2s; }
+        .calculator-card:nth-child(2) { animation-delay: 0.4s; }
+        .calculator-card:nth-child(3) { animation-delay: 0.6s; }
+        .calculator-card:nth-child(4) { animation-delay: 0.8s; }
+
+        .calculator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .calculator-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 92, 128, 0.15);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .card-title {
+            font-size: clamp(18px, 3vw, 22px);
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            justify-content: center;
+            min-height: 48px;
+        }
+
+        .card-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .card-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 92, 128, 0.3);
+        }
+
+        .features-section {
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            margin: 60px 0;
+            padding: 50px 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            animation: slideLeft 0.6s ease-out 1s both;
+        }
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .features-title {
+            font-size: clamp(22px, 4vw, 28px);
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .feature-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            animation: fadeIn 0.8s ease-out 1.2s both;
+        }
+
+        .cta-title {
+            font-size: clamp(20px, 4vw, 26px);
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .cta-subtitle {
+            font-size: clamp(14px, 2.5vw, 16px);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 20px 36px;
+            border-radius: 50px;
+            font-size: clamp(14px, 3vw, 16px);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-height: 56px;
+            justify-content: center;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .features-section {
+                margin: 40px 0;
+                padding: 30px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .cta-section {
+                margin-top: 40px;
+                padding: 30px 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>VOQA Calculator Tools</h1>
-    <p>Professional sustainability and EV charging calculators for your business needs.</p>
-    
-    <div class="calculator-grid">
-        <div class="calculator-card">
-            <h3>EV Charging Range Calculator</h3>
-            <p>Calculate electric vehicle charging ranges and efficiency.</p>
-            <a href="./ev-charging/">Launch Calculator</a>
-        </div>
-        
-        <div class="calculator-card">
-            <h3>Sustainability Calculator</h3>
-            <p>Measure your environmental impact and carbon footprint.</p>
-            <a href="./sustainability/">Launch Calculator</a>
-        </div>
-        
-        <div class="calculator-card">
-            <h3>Workplace ROI Calculator</h3>
-            <p>Calculate return on investment for workplace EV charging.</p>
-            <a href="./workplace-roi/">Launch Calculator</a>
-        </div>
-        
-        <div class="calculator-card">
-            <h3>Hotel EV Calculator</h3>
-            <p>EV charging solutions for hospitality businesses.</p>
-            <a href="./hotel-calculator/">Launch Calculator</a>
+    <div class="header">
+        <div class="header-content">
+            <h1 class="header-title">Voqa EV Charging Calculators</h1>
+            <p class="header-subtitle">Professional sustainability and EV charging calculators designed for modern businesses to measure impact, optimise efficiency, and drive sustainable growth.</p>
+
         </div>
     </div>
+
+    <div class="container">
+
+        
+        <div class="calculator-grid">
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">⚡</span>
+                    <h3 class="card-title">EV Charging Range Calculator</h3>
+                    <p class="card-description">Calculate electric vehicle charging ranges, efficiency metrics, and optimal charging strategies for your fleet or facilities.</p>
+                </div>
+                <a href="./ev-charging/" class="card-button">
+                    🚗 Launch Calculator
+                </a>
+            </div>
+            
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">🌍</span>
+                    <h3 class="card-title">Environmental Impact Calculator</h3>
+                    <p class="card-description">Measure your environmental impact, carbon footprint reduction, and sustainability metrics with professional-grade accuracy.</p>
+                </div>
+                <a href="./sustainability/" class="card-button">
+                    📊 Launch Calculator
+                </a>
+            </div>
+            
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">💼</span>
+                    <h3 class="card-title">Workplace ROI Calculator</h3>
+                    <p class="card-description">Calculate comprehensive return on investment for workplace EV charging infrastructure, including cost savings and employee benefits.</p>
+                </div>
+                <a href="./workplace-roi/" class="card-button">
+                    💰 Launch Calculator
+                </a>
+            </div>
+            
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">🏨</span>
+                    <h3 class="card-title">Hotel EV Calculator</h3>
+                    <p class="card-description">Specialised EV charging solutions and ROI analysis for hospitality businesses, guest satisfaction, and revenue optimisation.</p>
+                </div>
+                <a href="./hotel-calculator/" class="card-button">
+                    🛎️ Launch Calculator
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Enhanced interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Staggered animation for calculator cards
+            const cards = document.querySelectorAll('.calculator-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${0.2 + index * 0.2}s`;
+            });
+
+            // Enhanced hover effects for cards
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-12px) scale(1.03)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+            });
+
+            // Smooth scroll for any internal links (if added later)
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add subtle parallax effect to background
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const background = document.body;
+                background.style.transform = `translateY(${scrolled * 0.1}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
