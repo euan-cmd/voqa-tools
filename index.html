@@ -72,6 +72,32 @@
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
+        .back-to-voqa {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        .back-to-voqa:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-light);
+            transform: translateY(-1px);
+        }
+
         @keyframes slideDown {
             from {
                 transform: translateY(-100%);
@@ -88,6 +114,7 @@
             margin: 0 auto;
             padding: 0 40px;
             text-align: center;
+            margin-top: 20px; /* Ensure space below the back button */
         }
 
         .header-title {
@@ -491,6 +518,14 @@
             
             .header-content {
                 padding: 0 20px;
+                margin-top: 30px; /* Extra space on mobile */
+            }
+
+            .back-to-voqa {
+                left: 20px;
+                top: 16px;
+                padding: 8px 14px;
+                font-size: 13px;
             }
             
             .calculator-grid {
@@ -514,6 +549,20 @@
             }
         }
 
+        @media (max-width: 600px) {
+            .header-content {
+                margin-top: 40px; /* Even more space on very small screens */
+            }
+            
+            .back-to-voqa {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 20px auto;
+                display: inline-flex;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation: none !important;
@@ -524,6 +573,9 @@
 </head>
 <body>
     <div class="header">
+        <a href="https://www.voqa.com" class="back-to-voqa">
+            ← Back to Voqa
+        </a>
         <div class="header-content">
             <h1 class="header-title">Voqa EV Charging Calculators</h1>
             <p class="header-subtitle">Professional sustainability and EV charging calculators designed for modern businesses to measure impact, optimise efficiency, and drive sustainable growth.</p>
@@ -541,7 +593,7 @@
                     <h3 class="card-title">EV Charging Range Calculator</h3>
                     <p class="card-description">Calculate electric vehicle charging ranges, efficiency metrics, and optimal charging strategies for your fleet or facilities.</p>
                 </div>
-                <a href="./ev-charging/" class="card-button">
+                <a href="https://euan-cmd.github.io/voqa-tools/ev-charging/" class="card-button">
                     🚗 Launch Calculator
                 </a>
             </div>
@@ -552,7 +604,7 @@
                     <h3 class="card-title">Environmental Impact Calculator</h3>
                     <p class="card-description">Measure your environmental impact, carbon footprint reduction, and sustainability metrics with professional-grade accuracy.</p>
                 </div>
-                <a href="./sustainability/" class="card-button">
+                <a href="https://euan-cmd.github.io/voqa-tools/sustainability/" class="card-button">
                     📊 Launch Calculator
                 </a>
             </div>
@@ -563,7 +615,7 @@
                     <h3 class="card-title">Workplace ROI Calculator</h3>
                     <p class="card-description">Calculate comprehensive return on investment for workplace EV charging infrastructure, including cost savings and employee benefits.</p>
                 </div>
-                <a href="./workplace-roi/" class="card-button">
+                <a href="https://euan-cmd.github.io/voqa-tools/workplace-roi/" class="card-button">
                     💰 Launch Calculator
                 </a>
             </div>
@@ -574,7 +626,7 @@
                     <h3 class="card-title">Hotel EV Calculator</h3>
                     <p class="card-description">Specialised EV charging solutions and ROI analysis for hospitality businesses, guest satisfaction, and revenue optimisation.</p>
                 </div>
-                <a href="./hotel-calculator/" class="card-button">
+                <a href="https://euan-cmd.github.io/voqa-tools/hotel-calculator/" class="card-button">
                     🛎️ Launch Calculator
                 </a>
             </div>
