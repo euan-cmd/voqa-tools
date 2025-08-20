@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EV Charger Environmental Impact Calculator - Voqa</title>
-    <meta name="description" content="Calculate CO2 emissions avoided, environmental benefits, and sustainability metrics for EV charging infrastructure. Professional tool for ESG reporting and environmental impact assessment.">
-    <meta name="keywords" content="EV charging, environmental impact, CO2 emissions, sustainability, ESG reporting, carbon footprint, electric vehicle">
+    <title>EV Charging Range Calculator - Voqa</title>
+    <meta name="description" content="Calculate EV charging range and energy delivery for different vehicles, charger power ratings, and dwell times. Professional tool for EV charging infrastructure planning.">
+    <meta name="keywords" content="EV charging, electric vehicle, range calculator, charging infrastructure, kWh, charging stations">
     <meta name="author" content="Voqa">
     
     <!-- Fonts -->
@@ -268,8 +268,6 @@
         .form-group:nth-child(3) { animation-delay: 0.3s; }
         .form-group:nth-child(4) { animation-delay: 0.4s; }
         .form-group:nth-child(5) { animation-delay: 0.5s; }
-        .form-group:nth-child(6) { animation-delay: 0.6s; }
-        .form-group:nth-child(7) { animation-delay: 0.7s; }
 
         label {
             display: block;
@@ -312,14 +310,14 @@
             transform: translateY(-2px);
         }
 
-        .charging-rate {
+        .power-options {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             margin-top: 10px;
         }
 
-        .rate-option {
+        .power-option {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -340,7 +338,7 @@
             width: 100%;
         }
 
-        .rate-option::before {
+        .power-option::before {
             content: '';
             position: absolute;
             top: 50%;
@@ -353,18 +351,18 @@
             transition: width 0.4s, height 0.4s;
         }
 
-        .rate-option:hover::before {
+        .power-option:hover::before {
             width: 200px;
             height: 200px;
         }
 
-        .rate-option:hover {
+        .power-option:hover {
             border-color: var(--primary);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 92, 128, 0.15);
         }
 
-        .rate-option input[type="radio"] {
+        .power-option input[type="radio"] {
             width: auto;
             margin: 0;
             accent-color: var(--primary);
@@ -372,7 +370,7 @@
             flex-shrink: 0;
         }
 
-        .rate-option .rate-text {
+        .power-option label {
             margin: 0;
             font-size: 16px;
             font-weight: 600;
@@ -381,14 +379,21 @@
             cursor: pointer;
         }
 
-        .calculation-display {
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .result-card {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             padding: 24px;
             border-radius: 16px;
-            margin-top: 12px;
             position: relative;
             animation: slideUp 0.5s ease-out;
             color: var(--text-light);
+            text-align: center;
         }
 
         @keyframes slideUp {
@@ -402,66 +407,7 @@
             }
         }
 
-        .calc-header {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-light);
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .calc-explainer {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.5;
-            font-style: italic;
-            position: relative;
-            z-index: 1;
-        }
-
-        .impact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .impact-card {
-            background: white;
-            padding: 28px 24px;
-            border-radius: 16px;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            min-height: 160px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .impact-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--success);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
-        .impact-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .impact-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .impact-icon {
+        .result-icon {
             font-size: 48px;
             margin-bottom: 16px;
             display: block;
@@ -477,11 +423,13 @@
             }
         }
 
-        .impact-value {
+        .result-value {
             font-size: clamp(24px, 6vw, 32px);
             font-weight: 800;
-            color: var(--success);
+            color: var(--accent);
             margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
             animation: countUp 1s ease-out;
             line-height: 1.1;
         }
@@ -497,19 +445,23 @@
             }
         }
 
-        .impact-label {
+        .result-label {
             font-size: 14px;
             font-weight: 600;
-            color: var(--text-dark);
+            color: var(--text-light);
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
         }
 
-        .impact-description {
+        .result-description {
             font-size: 12px;
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.4;
+            position: relative;
+            z-index: 1;
         }
 
         .guidance-section {
@@ -553,110 +505,7 @@
             margin-bottom: 15px;
         }
 
-        .benefits-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 16px;
-            animation: slideLeft 0.6s ease-out;
-        }
-
-        .benefits-title {
-            color: var(--success);
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .benefits-title::before {
-            content: '🌱';
-            font-size: 24px;
-        }
-
-        .benefits-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .benefits-list li {
-            margin-bottom: 12px;
-            padding-left: 30px;
-            position: relative;
-            color: var(--text-dark);
-            font-size: 14px;
-            line-height: 1.6;
-            transition: transform 0.3s ease;
-        }
-
-        .benefits-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--success);
-            font-weight: bold;
-            font-size: 18px;
-            animation: checkIn 0.5s ease-out backwards;
-        }
-
-        .benefits-list li:nth-child(1) { animation-delay: 0.1s; }
-        .benefits-list li:nth-child(2) { animation-delay: 0.2s; }
-        .benefits-list li:nth-child(3) { animation-delay: 0.3s; }
-        .benefits-list li:nth-child(4) { animation-delay: 0.4s; }
-        .benefits-list li:nth-child(5) { animation-delay: 0.5s; }
-
-        @keyframes checkIn {
-            from {
-                opacity: 0;
-                transform: scale(0) rotate(-180deg);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) rotate(0);
-            }
-        }
-
-        .benefits-list li:hover {
-            transform: translateX(5px);
-        }
-
-        .methodology-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
-        }
-
-        .methodology-section:first-of-type {
-            background: rgba(0, 92, 128, 0.08);
-        }
-
-        .methodology-title {
-            color: var(--primary);
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .methodology-title::before {
-            content: '📊';
-            font-size: 20px;
-        }
-
-        .methodology-text {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .custom-note {
+        .custom-dwell-note {
             margin-top: 8px;
             font-size: 12px;
             font-style: italic;
@@ -722,6 +571,60 @@
             border-color: var(--primary);
         }
 
+        .comparison-table {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .comparison-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .comparison-table .dwell-time-header {
+            text-align: left;
+        }
+
+        .comparison-table .voqa-highlight {
+            background: linear-gradient(135deg, rgba(247, 215, 188, 0.05) 0%, rgba(248, 212, 180, 0.05) 100%);
+        }
+
+        .comparison-table .voqa-brand {
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 6px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(247, 215, 188, 0.3);
+        }
+
+        .comparison-table .custom-row td {
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, rgba(247, 215, 188, 0.3) 0%, rgba(248, 212, 180, 0.2) 100%);
+            font-weight: 600;
+        }
+
+        .comparison-table .custom-row .custom-time {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
         @media (max-width: 900px) {
             .container {
                 padding: 30px 20px;
@@ -737,16 +640,16 @@
                 gap: 15px;
             }
             
-            .charging-rate {
+            .power-options {
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
-
-            .impact-grid {
+            
+            .results-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-
+            
             .section-title {
                 font-size: 24px;
             }
@@ -763,7 +666,7 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <div class="header-title">🌱 EV Charger Environmental Impact Calculator</div>
+            <div class="header-title">🔋 EV Charging Range Calculator</div>
             <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
                 📅 Book some time with Voqa to talk about EV Charging
             </a>
@@ -772,182 +675,207 @@
 
     <div class="container">
         <div class="card">
-            <h2 class="section-title">⚙️ Configure Your Setup</h2>
+            <h2 class="section-title">🔧 Calculate EV Range</h2>
             
             <div class="guidance-section">
                 <h4 class="guidance-title">How to Use This Calculator</h4>
                 <div class="guidance-text">
-                    This environmental impact calculator helps you understand the carbon footprint reduction and sustainability benefits of your EV charging infrastructure. 
-                    For example: "If I install 10 charging bays that each serve 2 cars per day, how much CO₂ will be prevented annually?"
+                    This EV range calculator helps you understand the real-world driver experience at your charging location. 
+                    For example: "If I plug my Polestar 2 into your charger for 60 minutes, how many miles of range will be added to my battery?"
                 </div>
                 <div class="guidance-text">
-                    The tool calculates the difference between petrol car emissions and EV electricity emissions, giving you concrete metrics for <strong>ESG reporting</strong>, sustainability communications, and environmental impact assessment.
+                    This tool assumes vehicles arrive with a <strong>20% state of charge</strong> and calculates charging up to 100%. 
+                    For high-power chargers and longer dwell times, the battery may reach full capacity before the session ends.
                 </div>
                 <div class="guidance-text">
-                    This will help you quantify your contribution to corporate net-zero targets and communicate environmental benefits to stakeholders.
+                    This tool will help you understand the driver experience and the impact of choices you'll need to make when planning your EV charging infrastructure.
                 </div>
             </div>
             
             <div class="form-group" style="margin-top: 40px;">
-                <label for="numChargers">Number of EV Charging Bays</label>
-                <input type="number" id="numChargers" value="10" min="1" max="100">
-                <div class="custom-note">
-                    Enter the total number of charging points at your location
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Charger Power Rating</label>
-                <div class="charging-rate">
-                    <div class="rate-option">
-                        <input type="radio" name="chargingRate" value="7.4" id="rate74" checked>
-                        <span class="rate-text">7.4kW</span>
-                    </div>
-                    <div class="rate-option">
-                        <input type="radio" name="chargingRate" value="22" id="rate22">
-                        <span class="rate-text">22kW</span>
-                    </div>
-                </div>
-                <div class="custom-note">
-                    Select the power rating that matches your charging infrastructure
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="sessionsPerDay">Average Charging Sessions per Charger per Day</label>
-                <input type="number" id="sessionsPerDay" value="2" min="0.1" max="10" step="0.1">
-                <div class="custom-note">
-                    Estimate how many different vehicles use each charger daily
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="sessionDuration">Active Charging Duration per Session (hours)</label>
-                <input type="number" id="sessionDuration" value="3" min="0.5" max="8" step="0.5">
-                <div class="custom-note">
-                    Time spent actively charging (excludes idle/connection time)
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="operatingDays">Operating Days per Year</label>
-                <select id="operatingDays">
-                    <option value="250">Weekdays only (250 days)</option>
-                    <option value="300">6 days/week (300 days)</option>
-                    <option value="365" selected>7 days/week (365 days)</option>
+                <label for="vehicleSelect">Select EV Model</label>
+                <select id="vehicleSelect">
+                    <option value="">Choose a vehicle...</option>
+                    <option value="4.5">Tesla Model 3 (4.5 mi/kWh)</option>
+                    <option value="4.2">Tesla Model Y (4.2 mi/kWh)</option>
+                    <option value="4.0">Volkswagen ID.3 (4.0 mi/kWh)</option>
+                    <option value="3.9">Polestar 2 (3.9 mi/kWh)</option>
+                    <option value="3.8">Kia EV6 (3.8 mi/kWh)</option>
+                    <option value="3.8">MG ZS EV (3.8 mi/kWh)</option>
+                    <option value="3.7">Hyundai Ioniq 5 (3.7 mi/kWh)</option>
+                    <option value="3.6">BMW i4 (3.6 mi/kWh)</option>
+                    <option value="3.5">Nissan Leaf (3.5 mi/kWh)</option>
+                    <option value="3.4">Audi Q4 e-tron (3.4 mi/kWh)</option>
+                    <option value="custom">Custom Vehicle</option>
                 </select>
-                <div class="custom-note">
-                    Select how many days per year your charging station operates
+                <div class="custom-dwell-note">
+                    Efficiency ratings (mi/kWh) are taken from OEM factsheets and may vary based on driving conditions, weather, and vehicle configuration.
+                </div>
+            </div>
+
+            <div class="form-group" id="customEfficiencyGroup" style="display: none;">
+                <label for="customEfficiency">Custom Vehicle Efficiency (mi/kWh)</label>
+                <input type="number" id="customEfficiency" min="1" max="6" step="0.1" placeholder="e.g. 3.5">
+                <div class="custom-dwell-note">
+                    Enter the efficiency rating for your specific vehicle model
+                </div>
+            </div>
+
+            <div class="form-group" id="customBatteryGroup" style="display: none;">
+                <label for="customBattery">Custom Battery Capacity (kWh)</label>
+                <input type="number" id="customBattery" min="40" max="200" step="1" placeholder="e.g. 75">
+                <div class="custom-dwell-note">
+                    Enter the usable battery capacity of your vehicle (typically 10-15% less than total capacity)
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="renewablePercentage">Renewable Energy Mix (%)</label>
-                <select id="renewablePercentage">
-                    <option value="37">UK Grid Average (37%)</option>
-                    <option value="50">Above Average (50%)</option>
-                    <option value="75">High Renewable (75%)</option>
-                    <option value="100" selected>100% Renewable</option>
+                <label>Charger Power Rating (kW)</label>
+                <div class="power-options">
+                    <div class="power-option">
+                        <input type="radio" name="powerRating" value="7.4" id="power74" checked>
+                        <label for="power74">7.4kW</label>
+                    </div>
+                    <div class="power-option">
+                        <input type="radio" name="powerRating" value="11" id="power11">
+                        <label for="power11">11kW</label>
+                    </div>
+                    <div class="power-option">
+                        <input type="radio" name="powerRating" value="22" id="power22">
+                        <label for="power22">22kW*</label>
+                    </div>
+                    <div class="power-option">
+                        <input type="radio" name="powerRating" value="50" id="power50">
+                        <label for="power50">50kW</label>
+                    </div>
+                </div>
+                <div class="custom-dwell-note" style="margin-top: 12px;">
+                    *Many EVs can only charge at 11kW maximum on AC chargers, even when connected to a 22kW charger. Always check your vehicle's AC charging capabilities.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dwellTime">Dwell Time (minutes)</label>
+                <select id="dwellTime">
+                    <option value="60">60 minutes (1 hour)</option>
+                    <option value="120">120 minutes (2 hours)</option>
+                    <option value="240">240 minutes (4 hours)</option>
+                    <option value="480">480 minutes (8 hours)</option>
+                    <option value="custom">Custom duration</option>
                 </select>
-                <div id="gridAverageNote" style="margin-top: 8px; font-size: 12px; color: #666; line-height: 1.4; display: none;">
-                    *UK Grid Average based on live National Grid data for the past year (36.5% renewables). Source: <a href="https://grid.iamkate.com/" target="_blank" style="color: var(--primary); text-decoration: none;">Grid.iamkate.com - National Grid Live</a>
-                </div>
-                <div class="custom-note">
-                    Choose your electricity supply's renewable energy percentage
-                </div>
             </div>
 
-            <div class="form-group">
-                <div class="calculation-display">
-                    <div class="calc-header">
-                        ⚡ Annual Energy Delivered: <span id="annualEnergy">-</span> kWh
-                    </div>
-                    <div class="calc-explainer">
-                        <span id="energyBreakdown">-</span>
-                    </div>
+            <div class="form-group" id="customDwellGroup" style="display: none;">
+                <label for="customDwellTime">Custom Dwell Time (minutes)</label>
+                <input type="number" id="customDwellTime" min="5" max="720" step="5" placeholder="e.g. 90">
+                <div class="custom-dwell-note">
+                    Enter a custom dwell time specific to your business location (5-720 minutes)
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2 class="section-title">🌱 Environmental Impact</h2>
+            <h2 class="section-title">📊 Range Results</h2>
             
-            <div class="impact-grid">
-                <div class="impact-card">
-                    <span class="impact-icon">CO₂</span>
-                    <div class="impact-value" id="co2Avoided">-</div>
-                    <div class="impact-label">CO₂ Avoided</div>
-                    <div class="impact-description">Tonnes of CO₂ emissions prevented annually</div>
+            <div class="results-grid">
+                <div class="result-card">
+                    <span class="result-icon">🔋</span>
+                    <div class="result-value" id="rangeAdded">-</div>
+                    <div class="result-label">Miles of Range Added</div>
+                    <div class="result-description">Range added to the EV battery during the charging session</div>
                 </div>
 
-                <div class="impact-card">
-                    <span class="impact-icon">🌳</span>
-                    <div class="impact-value" id="treesEquivalent">-</div>
-                    <div class="impact-label">Trees Planted Equivalent</div>
-                    <div class="impact-description">To absorb this much CO₂, you'd need to plant this many trees</div>
+                <div class="result-card">
+                    <span class="result-icon">⚡</span>
+                    <div class="result-value" id="energyDelivered">-</div>
+                    <div class="result-label">Energy Delivered (kWh)</div>
+                    <div class="result-description">Total electrical energy transferred to the vehicle</div>
                 </div>
 
-                <div class="impact-card">
-                    <span class="impact-icon">🏠</span>
-                    <div class="impact-value" id="homesEquivalent">-</div>
-                    <div class="impact-label">Homes Powered Equivalent</div>
-                    <div class="impact-description">This much clean energy could power this many UK homes for a year</div>
+                <div class="result-card">
+                    <span class="result-icon">🕒</span>
+                    <div class="result-value" id="chargingRate">-</div>
+                    <div class="result-label">Charging Rate (mi/hr)</div>
+                    <div class="result-description">Miles of range added per hour of charging</div>
                 </div>
 
-                <div class="impact-card">
-                    <span class="impact-icon">📺</span>
-                    <div class="impact-value" id="netflixHours">-</div>
-                    <div class="impact-label">Netflix Hours Equivalent</div>
-                    <div class="impact-description">This CO₂ saving equals the emissions from this many hours of Netflix streaming</div>
+                <div class="result-card">
+                    <span class="result-icon">🚗</span>
+                    <div class="result-value" id="vehicleEfficiency">-</div>
+                    <div class="result-label">Vehicle Efficiency</div>
+                    <div class="result-description">Miles per kWh for the selected vehicle</div>
                 </div>
             </div>
 
+            <div class="guidance-section">
+                <h4 class="guidance-title">Understanding Your Results</h4>
+                <div class="guidance-text">
+                    <strong>Range Added:</strong> This is the practical benefit your customers will experience - how many additional miles they can drive after charging at your location.
+                </div>
+                <div class="guidance-text">
+                    <strong>Energy Delivered:</strong> The actual electrical energy consumed, which determines your electricity costs and grid impact.
+                </div>
+                <div class="guidance-text">
+                    <strong>Charging Rate:</strong> This helps you communicate the speed benefit to customers - "Get X miles of range per hour of charging."
+                </div>
+                <div class="guidance-text">
+                    <strong>Business Impact:</strong> Understanding these metrics helps you choose the right charger power rating for your customer dwell times and communicate the value proposition effectively.
+                </div>
+                <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(13, 110, 253, 0.1); border-radius: 8px; border: 1px solid rgba(13, 110, 253, 0.3);">
+                    <strong>💡 AC vs DC Charging:</strong> AC chargers (7.4kW, 11kW, 22kW) use the vehicle's onboard charger, which may limit actual charging speed. DC chargers (50kW+) bypass the onboard charger for faster charging but require more complex infrastructure.
+                </div>
+            </div>
         </div>
 
         <div class="card">
-            <div class="guidance-section">
-                <div class="methodology-title">How EV Charging Reduces Carbon Emissions</div>
-                <div class="methodology-text">
-                    <strong>The Carbon Reduction Process:</strong> When someone charges their EV at your location instead of filling up with petrol, you're directly replacing high-carbon fuel with lower-carbon electricity.
-                </div>
-                <div class="methodology-text">
-                    <strong>Petrol Vehicle Emissions:</strong> A typical petrol car emits ~284g CO₂ per mile driven (based on 2.31kg CO₂/litre fuel and 35mpg average efficiency).
-                </div>
-                <div class="methodology-text">
-                    <strong>EV Electricity Emissions:</strong> An EV using UK grid electricity emits ~49g CO₂ per mile (3.5 miles/kWh efficiency × current grid intensity). With 100% renewable electricity, this drops to 0g CO₂/mile.
-                </div>
-                <div class="methodology-text">
-                    <strong>Net Carbon Saving:</strong> Each mile driven electric instead of petrol saves ~235g CO₂ - an 83% reduction in transport emissions per mile.
-                </div>
+            <h2 class="section-title">📈 Scenario Comparison - Range Added</h2>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="dwell-time-header">Charger Power</th>
+                            <th>7.4kW</th>
+                            <th>11kW</th>
+                            <th>22kW</th>
+                            <th>50kW</th>
+                        </tr>
+                        <tr>
+                            <td style="border: none; background: transparent;"></td>
+                            <td colspan="3" style="border: none; background: transparent; padding: 4px;">
+                                <div class="voqa-brand">⚡ Voqa EV Charger Range</div>
+                            </td>
+                            <td style="border: none; background: transparent;"></td>
+                        </tr>
+                        <tr>
+                            <th class="dwell-time-header">Dwell Time</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparisonTableBody">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
             </div>
 
-            <div class="benefits-section">
-                <h4 class="benefits-title">Corporate Sustainability Benefits</h4>
-                <ul class="benefits-list">
-                    <li><strong>Carbon Footprint Reduction:</strong> Directly reduce Scope 3 emissions from employee commuting</li>
-                    <li><strong>ESG Reporting:</strong> Quantifiable environmental impact data for sustainability reports</li>
-                    <li><strong>Net Zero Commitment:</strong> Tangible progress towards corporate net-zero targets</li>
-                    <li><strong>Green Credentials:</strong> Enhanced reputation as an environmentally responsible employer</li>
-                    <li><strong>Future Compliance:</strong> Preparation for incoming environmental regulations and requirements</li>
-                </ul>
-            </div>
-
             <div class="guidance-section">
-                <div class="methodology-title">Calculation Methodology</div>
-                <div class="methodology-text">
-                    <strong>CO₂ Emissions:</strong> Based on UK electricity grid carbon intensity (varies by renewable %) vs petrol vehicle emissions (2.31 kg CO₂/litre, 35 mpg average).
+                <div class="guidance-text">
+                    <strong>7.4kW:</strong> Ideal for overnight parking, employee charging, or locations with 6+ hour dwell times. Lower installation costs.
                 </div>
-                <div class="methodology-text">
-                    <strong>Tree Equivalency:</strong> Based on mature trees absorbing ~22kg CO₂ annually (Forestry Commission data).
+                <div class="guidance-text">
+                    <strong>11kW:</strong> Good balance for 2-4 hour stays like shopping centers, restaurants, or workplace charging. Most EVs can utilize this power level.
                 </div>
-                <div class="methodology-text">
-                    <strong>Home Equivalency:</strong> Average UK household electricity consumption of 3,731 kWh/year (Ofgem 2024).
+                <div class="guidance-text">
+                    <strong>22kW:</strong> Best for 1-2 hour visits, providing meaningful range for shorter stops. <strong>Important:</strong> Many EVs can only charge at 11kW maximum on AC chargers, so the actual charging speed may be limited by the vehicle, not the charger.
                 </div>
-                <div class="methodology-text">
-                    <strong>Netflix Streaming:</strong> Based on 36g CO₂ per hour of streaming (includes data center energy, transmission networks, and device usage).
+                <div class="guidance-text">
+                    <strong>50kW:</strong> Rapid DC charging for quick stops (30-60 minutes). Requires significant electrical infrastructure investment.
                 </div>
-                <div class="methodology-text">
-                    <strong>EV Efficiency:</strong> Average 3.5 miles per kWh based on typical destination charging vehicles.
+                <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
+                    <strong>⚠️ AC Charging Limitation:</strong> Most EVs have onboard chargers that limit AC charging to 11kW, regardless of the charger's capacity. Always verify your vehicle's AC charging specifications before expecting 22kW charging speeds.
                 </div>
             </div>
         </div>
@@ -961,17 +889,33 @@
 
     <script>
         /**
-         * EV Environmental Impact Calculator - Professional Tool
-         * Calculate EV charging environmental impact and sustainability metrics
+         * EV Range Calculator - Professional Tool
+         * Calculate EV charging range and energy delivery
          * 
-         * Formula: CO₂ Avoided = (Petrol Emissions - Electricity Emissions) × Miles Replaced
-         * Petrol Emissions: 284g CO₂/mile | EV Emissions: Variable based on grid mix
+         * Formula: Range (miles) = (Dwell Time ÷ 60) × Power (kW) × Efficiency (mi/kWh)
+         * Battery capacity limits: 20% starting SoC, charging to 100%
          * 
          * @author Voqa
-         * @version 1.2.0
+         * @version 1.1.0
          */
 
-        function formatNumber(num, decimals = 0) {
+        // Vehicle efficiency data (miles per kWh)
+        const vehicles = {
+            '4.5': 'Tesla Model 3',
+            '4.2': 'Tesla Model Y', 
+            '4.0': 'Volkswagen ID.3',
+            '3.9': 'Polestar 2',
+            '3.8': 'Kia EV6 / MG ZS EV',
+            '3.7': 'Hyundai Ioniq 5',
+            '3.6': 'BMW i4',
+            '3.5': 'Nissan Leaf',
+            '3.4': 'Audi Q4 e-tron'
+        };
+
+        /**
+         * Format number with specified decimal places
+         */
+        function formatNumber(num, decimals = 1) {
             if (typeof num !== 'number' || isNaN(num)) return '-';
             return num.toLocaleString('en-GB', {
                 minimumFractionDigits: decimals,
@@ -979,79 +923,228 @@
             });
         }
 
-        function calculateImpact() {
+        /**
+         * Get battery capacity for a vehicle based on efficiency
+         */
+        function getBatteryCapacity(efficiency, isCustom = false) {
+            if (isCustom) {
+                const customBattery = document.getElementById('customBattery');
+                const customCapacity = parseFloat(customBattery?.value || 0);
+                if (customCapacity > 0) {
+                    return customCapacity;
+                }
+                return 80;
+            }
+            
+            // Estimates based on typical EVs
+            if (efficiency >= 4.5) return 75; // Tesla Model 3
+            if (efficiency >= 4.0) return 82; // Tesla Model Y, VW ID.3
+            if (efficiency >= 3.8) return 78; // Polestar 2, Kia EV6
+            if (efficiency >= 3.6) return 77; // Hyundai Ioniq 5, BMW i4
+            if (efficiency >= 3.4) return 82; // Nissan Leaf, Audi Q4 e-tron
+            return 80; // Default
+        }
+
+        /**
+         * Calculate EV range and energy delivery with battery capacity limits
+         */
+        function calculateRange() {
             try {
-                // Get input values
-                const numChargers = parseInt(document.getElementById('numChargers').value) || 0;
-                const chargingRate = parseFloat(document.querySelector('input[name="chargingRate"]:checked').value) || 0;
-                const sessionsPerDay = parseFloat(document.getElementById('sessionsPerDay').value) || 0;
-                const sessionDuration = parseFloat(document.getElementById('sessionDuration').value) || 0;
-                const operatingDays = parseInt(document.getElementById('operatingDays').value) || 0;
-                const renewablePercentage = parseInt(document.getElementById('renewablePercentage').value) || 0;
+                const vehicleSelect = document.getElementById('vehicleSelect');
+                const customEfficiency = document.getElementById('customEfficiency');
+                const powerRatingElement = document.querySelector('input[name="powerRating"]:checked');
+                const dwellTimeSelect = document.getElementById('dwellTime');
+                const customDwellTime = document.getElementById('customDwellTime');
 
-                // Calculate annual energy delivered
-                const dailyEnergyPerCharger = sessionsPerDay * sessionDuration * chargingRate;
-                const annualEnergyTotal = numChargers * dailyEnergyPerCharger * operatingDays;
+                if (!vehicleSelect || !powerRatingElement || !dwellTimeSelect) {
+                    return;
+                }
 
-                // Update energy display
-                document.getElementById('annualEnergy').textContent = formatNumber(annualEnergyTotal, 0);
-                document.getElementById('energyBreakdown').textContent = 
-                    `${numChargers} chargers × ${sessionsPerDay} sessions/day × ${sessionDuration}hrs active charging × ${chargingRate}kW × ${operatingDays} days`;
+                const powerRating = parseFloat(powerRatingElement.value) || 0;
 
-                // Carbon intensity calculations (kg CO₂/kWh)
-                const gridCarbonIntensity = {
-                    37: 0.170,   // UK grid average with 37% renewables
-                    50: 0.135,   // 50% renewables
-                    75: 0.068,   // 75% renewables  
-                    100: 0.000   // 100% renewables
-                };
+                // Determine efficiency and check if custom vehicle
+                let efficiency = 0;
+                let isCustomVehicle = false;
+                if (vehicleSelect.value === 'custom') {
+                    efficiency = parseFloat(customEfficiency?.value || 0);
+                    isCustomVehicle = true;
+                } else {
+                    efficiency = parseFloat(vehicleSelect.value) || 0;
+                }
 
-                const electricityCarbonIntensity = gridCarbonIntensity[renewablePercentage];
-                
-                // Petrol car emissions (kg CO₂/mile)
-                const petrolCarbonPerMile = 0.284; // Based on 2.31kg CO₂/litre, 35mpg average
-                
-                // EV efficiency (miles per kWh)
-                const evEfficiency = 3.5;
-                
-                // Calculate miles replaced
-                const milesReplaced = annualEnergyTotal * evEfficiency;
-                
-                // Calculate CO₂ from petrol equivalent
-                const petrolCO2 = milesReplaced * petrolCarbonPerMile;
-                
-                // Calculate CO₂ from electricity
-                const electricityCO2 = annualEnergyTotal * electricityCarbonIntensity;
-                
-                // Net CO₂ avoided (tonnes)
-                const co2Avoided = (petrolCO2 - electricityCO2) / 1000;
-                
-                // Tree equivalent (22kg CO₂ per tree per year)
-                const treesEquivalent = Math.round(co2Avoided * 1000 / 22);
-                
-                // Home equivalent (3,731 kWh average UK home)
-                const homesEquivalent = annualEnergyTotal / 3731;
+                // Determine dwell time
+                let dwellTimeMinutes = 0;
+                if (dwellTimeSelect.value === 'custom') {
+                    dwellTimeMinutes = parseFloat(customDwellTime?.value || 0);
+                } else {
+                    dwellTimeMinutes = parseFloat(dwellTimeSelect.value) || 0;
+                }
 
-                // Netflix streaming equivalent (36g CO₂ per hour of streaming)
-                const netflixHours = Math.round((co2Avoided * 1000) / 36);
+                // Validate inputs
+                if (efficiency <= 0 || powerRating <= 0 || dwellTimeMinutes <= 0) {
+                    document.getElementById('rangeAdded').textContent = '-';
+                    document.getElementById('energyDelivered').textContent = '-';
+                    document.getElementById('chargingRate').textContent = '-';
+                    document.getElementById('vehicleEfficiency').textContent = '-';
+                    return;
+                }
+
+                // Battery capacity and charging calculations
+                const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
+                const initialSoC = 0.20; // 20% starting charge
+                const targetSoC = 1.00; // 100% target charge
+                const availableCapacity = batteryCapacity * (targetSoC - initialSoC);
+                
+                const dwellTimeHours = dwellTimeMinutes / 60;
+                const maxEnergyFromTime = dwellTimeHours * powerRating;
+                
+                const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
+                const rangeAdded = energyDelivered * efficiency;
+                const chargingRatePerHour = powerRating * efficiency;
+                
+                const timeToFullCharge = availableCapacity / powerRating;
+                const batteryFull = timeToFullCharge < dwellTimeHours;
 
                 // Update displays
-                document.getElementById('co2Avoided').textContent = formatNumber(co2Avoided, 1);
-                document.getElementById('treesEquivalent').textContent = formatNumber(treesEquivalent, 0);
-                document.getElementById('homesEquivalent').textContent = formatNumber(homesEquivalent, 1);
-                document.getElementById('netflixHours').textContent = formatNumber(netflixHours, 0);
+                const rangeElement = document.getElementById('rangeAdded');
+                const energyElement = document.getElementById('energyDelivered');
+                const rateElement = document.getElementById('chargingRate');
+                const efficiencyElement = document.getElementById('vehicleEfficiency');
 
-                // Add animation to updated values
-                animateValue('co2Avoided', co2Avoided, 1);
-                animateValue('treesEquivalent', treesEquivalent, 0);
-                animateValue('homesEquivalent', homesEquivalent, 1);
-                animateValue('netflixHours', netflixHours, 0);
+                if (rangeElement) {
+                    if (batteryFull) {
+                        rangeElement.innerHTML = `${formatNumber(rangeAdded, 1)}<br><small style="font-size: 12px; color: var(--accent-light);">Battery Full</small>`;
+                    } else {
+                        rangeElement.textContent = formatNumber(rangeAdded, 1);
+                    }
+                }
+                
+                if (energyElement) {
+                    if (batteryFull) {
+                        energyElement.innerHTML = `${formatNumber(energyDelivered, 1)}<br><small style="font-size: 12px; color: var(--accent-light);">Capped at 100%</small>`;
+                    } else {
+                        energyElement.textContent = formatNumber(energyDelivered, 1);
+                    }
+                }
+                
+                if (rateElement) rateElement.textContent = formatNumber(chargingRatePerHour, 1);
+                if (efficiencyElement) efficiencyElement.textContent = `${formatNumber(efficiency, 1)} mi/kWh`;
+
+                // Update comparison table
+                updateComparisonTable(efficiency);
+
+                // Add animations if values are valid
+                if (rangeAdded > 0) {
+                    animateValue('rangeAdded', rangeAdded, 1, batteryFull);
+                    animateValue('energyDelivered', energyDelivered, 1, batteryFull);
+                    animateValue('chargingRate', chargingRatePerHour, 1);
+                }
             } catch (error) {
-                console.error('Error in calculateImpact:', error);
+                console.error('Error in calculateRange:', error);
             }
         }
 
-        function animateValue(elementId, finalValue, decimals) {
+        /**
+         * Update the scenario comparison table
+         */
+        function updateComparisonTable(efficiency) {
+            if (efficiency <= 0) return;
+
+            try {
+                const tableBody = document.getElementById('comparisonTableBody');
+                if (!tableBody) return;
+
+                const dwellTimes = [60, 120, 240, 480];
+                const powerRatings = [7.4, 11, 22, 50];
+                const vehicleSelect = document.getElementById('vehicleSelect');
+                const isCustomVehicle = vehicleSelect && vehicleSelect.value === 'custom';
+                const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
+                const availableCapacity = batteryCapacity * 0.8;
+
+                tableBody.innerHTML = '';
+
+                dwellTimes.forEach(dwellTime => {
+                    const row = document.createElement('tr');
+                    
+                    // Dwell time cell
+                    const dwellCell = document.createElement('td');
+                    dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; background: var(--bg-light); text-align: left;';
+                    dwellCell.textContent = `${dwellTime} min`;
+                    row.appendChild(dwellCell);
+
+                    // Range cells for each power rating
+                    powerRatings.forEach((power) => {
+                        const cell = document.createElement('td');
+                        
+                        if (power <= 22) {
+                            cell.className = 'voqa-highlight';
+                        }
+                        
+                        const dwellHours = dwellTime / 60;
+                        const maxEnergyFromTime = dwellHours * power;
+                        const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
+                        const range = energyDelivered * efficiency;
+                        const timeToFull = availableCapacity / power;
+                        const batteryFull = timeToFull < dwellHours;
+                        
+                        if (batteryFull) {
+                            cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
+                        } else {
+                            cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small>${formatNumber(energyDelivered, 1)} kWh</small>`;
+                        }
+                        
+                        row.appendChild(cell);
+                    });
+
+                    tableBody.appendChild(row);
+                });
+
+                // Add custom dwell time row if applicable
+                const customDwellTimeInput = document.getElementById('customDwellTime');
+                const dwellTimeSelect = document.getElementById('dwellTime');
+                
+                if (dwellTimeSelect && dwellTimeSelect.value === 'custom' && customDwellTimeInput && customDwellTimeInput.value) {
+                    const customDwellTime = parseFloat(customDwellTimeInput.value);
+                    if (customDwellTime > 0) {
+                        const customRow = document.createElement('tr');
+                        customRow.className = 'custom-row';
+                        
+                        const customDwellCell = document.createElement('td');
+                        customDwellCell.className = 'custom-time';
+                        customDwellCell.innerHTML = `${customDwellTime} min<br><small style="font-size: 10px; font-weight: 600; color: var(--primary-dark);">⭐ Your Custom Time</small>`;
+                        customRow.appendChild(customDwellCell);
+
+                        powerRatings.forEach((power) => {
+                            const cell = document.createElement('td');
+                            
+                            const dwellHours = customDwellTime / 60;
+                            const maxEnergyFromTime = dwellHours * power;
+                            const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
+                            const range = energyDelivered * efficiency;
+                            const timeToFull = availableCapacity / power;
+                            const batteryFull = timeToFull < dwellHours;
+                            
+                            if (batteryFull) {
+                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
+                            } else {
+                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark);">${formatNumber(energyDelivered, 1)} kWh</small>`;
+                            }
+                            
+                            customRow.appendChild(cell);
+                        });
+
+                        tableBody.appendChild(customRow);
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating comparison table:', error);
+            }
+        }
+
+        /**
+         * Animate a numeric value with easing
+         */
+        function animateValue(elementId, finalValue, decimals, batteryFull = false) {
             try {
                 const element = document.getElementById(elementId);
                 if (!element) return;
@@ -1063,12 +1156,21 @@
                 function updateValue(currentTime) {
                     const elapsed = currentTime - startTime;
                     const progress = Math.min(elapsed / duration, 1);
-                    
                     const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                     const currentValue = startValue + (finalValue - startValue) * easeOutQuart;
-                    
-                    element.textContent = formatNumber(currentValue, decimals);
-                    
+
+                    if (elementId === 'vehicleEfficiency') {
+                        element.textContent = `${formatNumber(currentValue, decimals)} mi/kWh`;
+                    } else if (batteryFull && (elementId === 'rangeAdded' || elementId === 'energyDelivered')) {
+                        if (elementId === 'rangeAdded') {
+                            element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">Battery Full</small>`;
+                        } else {
+                            element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">Capped at 100%</small>`;
+                        }
+                    } else {
+                        element.textContent = formatNumber(currentValue, decimals);
+                    }
+
                     if (progress < 1) {
                         requestAnimationFrame(updateValue);
                     }
@@ -1085,35 +1187,65 @@
          */
         function initializeApp() {
             try {
-                // Add event listeners
-                document.getElementById('numChargers').addEventListener('input', calculateImpact);
-                document.getElementById('sessionsPerDay').addEventListener('input', calculateImpact);
-                document.getElementById('sessionDuration').addEventListener('input', calculateImpact);
-                document.getElementById('operatingDays').addEventListener('change', calculateImpact);
-                document.getElementById('renewablePercentage').addEventListener('change', function() {
-                    calculateImpact();
-                    
-                    // Show/hide grid average note
-                    const gridNote = document.getElementById('gridAverageNote');
-                    if (this.value === '37') {
-                        gridNote.style.display = 'block';
-                    } else {
-                        gridNote.style.display = 'none';
-                    }
-                });
-                
-                document.querySelectorAll('input[name="chargingRate"]').forEach(radio => {
-                    radio.addEventListener('change', calculateImpact);
+                // Vehicle selection
+                const vehicleSelect = document.getElementById('vehicleSelect');
+                if (vehicleSelect) {
+                    vehicleSelect.addEventListener('change', function() {
+                        const customEfficiencyGroup = document.getElementById('customEfficiencyGroup');
+                        const customBatteryGroup = document.getElementById('customBatteryGroup');
+                        if (customEfficiencyGroup && customBatteryGroup) {
+                            const isCustom = this.value === 'custom';
+                            customEfficiencyGroup.style.display = isCustom ? 'block' : 'none';
+                            customBatteryGroup.style.display = isCustom ? 'block' : 'none';
+                        }
+                        calculateRange();
+                    });
+                }
+
+                // Custom efficiency input
+                const customEfficiency = document.getElementById('customEfficiency');
+                if (customEfficiency) {
+                    customEfficiency.addEventListener('input', calculateRange);
+                }
+
+                // Custom battery capacity input
+                const customBattery = document.getElementById('customBattery');
+                if (customBattery) {
+                    customBattery.addEventListener('input', calculateRange);
+                }
+
+                // Dwell time selection
+                const dwellTime = document.getElementById('dwellTime');
+                if (dwellTime) {
+                    dwellTime.addEventListener('change', function() {
+                        const customGroup = document.getElementById('customDwellGroup');
+                        if (customGroup) {
+                            customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+                        }
+                        calculateRange();
+                    });
+                }
+
+                // Custom dwell time input
+                const customDwellTime = document.getElementById('customDwellTime');
+                if (customDwellTime) {
+                    customDwellTime.addEventListener('input', calculateRange);
+                }
+
+                // Power rating radio buttons
+                const powerRadios = document.querySelectorAll('input[name="powerRating"]');
+                powerRadios.forEach(radio => {
+                    radio.addEventListener('change', calculateRange);
                 });
 
                 // Power option click handlers
-                const powerOptions = document.querySelectorAll('.rate-option');
+                const powerOptions = document.querySelectorAll('.power-option');
                 powerOptions.forEach(option => {
                     option.addEventListener('click', function() {
                         const radio = this.querySelector('input[type="radio"]');
                         if (radio) {
                             radio.checked = true;
-                            calculateImpact();
+                            calculateRange();
                         }
                     });
                 });
@@ -1122,7 +1254,7 @@
                 setupInteractiveEffects();
 
                 // Initial calculation
-                calculateImpact();
+                calculateRange();
 
             } catch (error) {
                 console.error('Error initializing app:', error);
@@ -1134,15 +1266,15 @@
          */
         function setupInteractiveEffects() {
             try {
-                // Impact card hover effects
-                const impactCards = document.querySelectorAll('.impact-card');
-                impactCards.forEach(card => {
+                // Result card hover effects
+                const resultCards = document.querySelectorAll('.result-card');
+                resultCards.forEach(card => {
                     card.addEventListener('mouseenter', function() {
                         this.style.transform = 'translateY(-8px) scale(1.02)';
                     });
-                    
+
                     card.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(-5px) scale(1)';
+                        this.style.transform = 'translateY(0) scale(1)';
                     });
                 });
 
@@ -1154,7 +1286,7 @@
                         input.addEventListener('focus', function() {
                             group.style.transform = 'translateX(5px)';
                         });
-                        
+
                         input.addEventListener('blur', function() {
                             group.style.transform = 'translateX(0)';
                         });
