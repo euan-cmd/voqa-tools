@@ -1,1 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workplace EV Charging RoI Calculator - Voqa</title>
+    <meta name="description" content="Calculate RoI and payback period for workplace EV charging infrastructure. Professional tool for business planning and investment analysis.">
+    <meta name="keywords" content="EV charging, workplace charging, RoI calculator, electric vehicle, charging infrastructure, business investment">
+    <meta name="author" content="Voqa">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Workplace EV Charging RoI Calculator - Voqa">
+    <meta property="og:description" content="Professional RoI calculator for workplace EV charging infrastructure planning">
+    <meta property="og:url" content="https://euan-cmd.github.io/workplace-ev-calculator">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Workplace EV Charging RoI Calculator - Voqa">
+    <meta name="twitter:description" content="Professional RoI calculator for workplace EV charging infrastructure planning">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+        }
+        
+        :root {
+            --primary: #005C80;
+            --primary-dark: #004A6B;
+            --accent: #F7D7BC;
+            --accent-light: #F8D4B4;
+            --success: #098C47;
+            --danger: #FF4747;
+            --text-dark: #0E215A;
+            --text-light: #ffffff;
+            --bg-light: #f8f9fa;
+            --border: #E8F0F0;
+        }
+        
+        body {
+            font-family: 'Red Hat Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(247, 215, 188, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 92, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(0, 92, 128, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 800;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out;
+            line-height: 1.2;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .header-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-size: clamp(14px, 2.5vw, 16px);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-height: 48px;
+            justify-content: center;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .header-cta:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            padding: 32px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: clamp(22px, 4vw, 28px);
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            position: relative;
+            animation: slideRight 0.6s ease-out;
+            line-height: 1.2;
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            animation: expand 0.8s ease-out;
+        }
+
+        @keyframes expand {
+            from {
+                width: 0;
+            }
+            to {
+                width: 80px;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .form-group:nth-child(2) { animation-delay: 0.1s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.3s; }
+        .form-group:nth-child(5) { animation-delay: 0.4s; }
+        .form-group:nth-child(6) { animation-delay: 0.5s; }
+        .form-group:nth-child(7) { animation-delay: 0.6s; }
+        .form-group:nth-child(8) { animation-delay: 0.7s; }
+        .form-group:nth-child(9) { animation-delay: 0.8s; }
+        .form-group:nth-child(10) { animation-delay: 0.9s; }
+        .form-group:nth-child(11) { animation-delay: 1.0s; }
+        .form-group:nth-child(12) { animation-delay: 1.1s; }
+        .form-group:nth-child(13) { animation-delay: 1.2s; }
+        .form-group:nth-child(14) { animation-delay: 1.3s; }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: color 0.3s ease;
+        }
+
+        .form-group:hover label {
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            color: var(--text-dark);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 500;
+            min-height: 48px;
+            box-sizing: border-box;
+        }
+
+        input:hover, select:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 92, 128, 0.1);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 92, 128, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .power-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .power-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-dark);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            height: 80px;
+            width: 100%;
+        }
+
+        .power-option::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(0, 92, 128, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+
+        .power-option:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .power-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 92, 128, 0.15);
+        }
+
+        .power-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+            accent-color: var(--primary);
+            transform: scale(1.2);
+            flex-shrink: 0;
+        }
+
+        .power-option label {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .calculation-display {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 24px;
+            border-radius: 16px;
+            margin-top: 12px;
+            position: relative;
+            animation: slideUp 0.5s ease-out;
+            color: var(--text-light);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calc-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calc-explainer {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .warning-message {
+            margin-top: 10px;
+            padding: 12px 16px;
+            background: #FFF3CD;
+            border: 2px solid #FFD93D;
+            border-radius: 10px;
+            color: #856404;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .warning-message.show {
+            display: flex;
+        }
+
+        .warning-message::before {
+            content: '⚠️';
+            font-size: 20px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .result-card {
+            background: var(--primary);
+            padding: 24px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .result-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .result-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .result-value {
+            font-size: clamp(24px, 6vw, 32px);
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            animation: countUp 1s ease-out;
+            line-height: 1.1;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-description {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 92, 128, 0.08);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        tr:hover td {
+            background-color: rgba(0, 92, 128, 0.02);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            position: sticky;
+            top: 0;
+        }
+
+        .total-row {
+            background: var(--accent);
+            font-weight: 700;
+            color: var(--text-dark);
+            animation: highlight 0.6s ease-out;
+        }
+
+        @keyframes highlight {
+            from {
+                background: white;
+            }
+            to {
+                background: var(--accent);
+            }
+        }
+
+        .total-row td {
+            border-bottom: none;
+            font-size: 16px;
+        }
+
+        .summary-box {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 92, 128, 0.12);
+            position: relative;
+            overflow: hidden;
+            animation: slideLeft 0.6s ease-out;
+        }
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .summary-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 25px;
+            letter-spacing: -0.3px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            padding: 12px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .summary-item:hover {
+            transform: translateX(5px);
+        }
+
+        .summary-item.main {
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--primary);
+            border-top: 2px solid var(--accent);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .positive { 
+            color: var(--success);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .positive::before {
+            content: '↗';
+            margin-right: 5px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        
+        .negative { 
+            color: var(--danger);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .negative::before {
+            content: '↘';
+            margin-right: 5px;
+        }
+
+        .cash-flow-container {
+            grid-column: 1 / -1;
+            margin-top: 40px;
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chart-container {
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .chart-wrapper {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 30px rgba(0, 92, 128, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .guidance-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: var(--bg-light);
+            border-radius: 16px;
+            animation: slideLeft 0.6s ease-out;
+        }
+
+        .guidance-title {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guidance-title::before {
+            content: '💡';
+            font-size: 24px;
+        }
+
+        .guidance-text {
+            font-size: 14px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 30px 0 20px 0;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-subtitle::before {
+            content: '';
+            width: 30px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .benefits-list li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.8;
+            transition: transform 0.3s ease;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 18px;
+            animation: checkIn 0.5s ease-out backwards;
+        }
+
+        .benefits-list li:nth-child(1) { animation-delay: 0.1s; }
+        .benefits-list li:nth-child(2) { animation-delay: 0.2s; }
+        .benefits-list li:nth-child(3) { animation-delay: 0.3s; }
+        .benefits-list li:nth-child(4) { animation-delay: 0.4s; }
+        .benefits-list li:nth-child(5) { animation-delay: 0.5s; }
+        .benefits-list li:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes checkIn {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .benefits-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .cta-container {
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 18px 32px;
+            border-radius: 50px;
+            font-size: clamp(14px, 3vw, 16px);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+            min-height: 48px;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .custom-note {
+            margin-top: 8px;
+            font-size: 12px;
+            font-style: italic;
+            color: #666;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 30px 15px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+                gap: 15px;
+            }
+            
+            .power-options {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            .summary-box {
+                padding: 20px;
+            }
+
+            .chart-wrapper {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 16px 0;
+            }
+
+            .header-content {
+                padding: 0 15px;
+                gap: 12px;
+            }
+
+            .header-title {
+                font-size: 20px;
+                line-height: 1.3;
+            }
+
+            .header-cta {
+                padding: 12px 20px;
+                font-size: 14px;
+                min-height: 44px;
+            }
+
+            .container {
+                padding: 20px 15px;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            input, select {
+                padding: 12px 16px;
+                font-size: 16px;
+                min-height: 44px;
+            }
+
+            .power-option {
+                padding: 16px 12px;
+                height: 60px;
+                font-size: 14px;
+            }
+
+            .calculation-display {
+                padding: 16px;
+            }
+
+            .calc-header {
+                font-size: 16px;
+            }
+
+            .calc-explainer {
+                font-size: 12px;
+            }
+
+            .table-container {
+                margin: 0 -20px;
+                padding: 0 20px;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            th, td {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+
+            .result-card {
+                padding: 16px;
+            }
+
+            .result-value {
+                font-size: 20px;
+            }
+
+            .result-icon {
+                font-size: 32px;
+                margin-bottom: 12px;
+            }
+
+            .summary-box {
+                padding: 16px;
+            }
+
+            .summary-title {
+                font-size: 18px;
+                margin-bottom: 16px;
+            }
+
+            .summary-item {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+
+            .summary-item.main {
+                font-size: 16px;
+            }
+
+            .guidance-section {
+                padding: 16px;
+                margin-top: 20px;
+            }
+
+            .guidance-title {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+
+            .guidance-text {
+                font-size: 13px;
+                line-height: 1.5;
+                margin-bottom: 12px;
+            }
+
+            .benefits-list li {
+                font-size: 13px;
+                line-height: 1.6;
+                margin-bottom: 10px;
+                padding-left: 25px;
+            }
+
+            .section-subtitle {
+                font-size: 16px;
+                margin: 20px 0 15px 0;
+            }
+
+            .chart-wrapper {
+                padding: 12px;
+            }
+
+            .cta-container {
+                padding: 20px;
+            }
+
+            .cta-button {
+                padding: 14px 24px;
+                font-size: 14px;
+                min-height: 44px;
+            }
+
+            .warning-message {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">⚡ Workplace EV Charging RoI Calculator</div>
+            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
+                📅 Book some time with Voqa to talk about EV Charging
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="section-title">⚙️ Configure Your Setup</h2>
+            
+            <div class="guidance-section">
+                <h4 class="guidance-title">How to Use This Calculator</h4>
+                <div class="guidance-text">
+                    This RoI calculator helps you understand the financial returns from installing EV charging infrastructure at your workplace. 
+                    Input your specific parameters to get detailed payback periods, ROI projections, and cash flow analysis.
+                </div>
+                <div class="guidance-text">
+                    The calculator accounts for UK workplace charging grants, typical installation costs, and revenue from charging sessions to provide realistic financial projections.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="totalBays">Number of Car Parking Bays at your location</label>
+                <input type="number" id="totalBays" value="100" min="1">
+                <div class="custom-note">
+                    Total parking spaces available at your workplace
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="peakOccupancy">Peak Occupancy on your busiest day (%)</label>
+                <select id="peakOccupancy">
+                    <option value="25">25%</option>
+                    <option value="50">50%</option>
+                    <option value="75" selected>75%</option>
+                    <option value="100">100%</option>
+                </select>
+                <div class="custom-note">
+                    Percentage of parking spaces typically occupied during peak times
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="calculation-display">
+                    <div class="calc-header">
+                        🔌 Estimated Number of Bays Required
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="calc-header" style="font-size: 16px; margin-bottom: 5px;">
+                            2025 (5% EV penetration): <span id="evBaysRequired2025">-</span>
+                        </div>
+                        <div class="calc-explainer" style="margin-bottom: 15px;">
+                            <span id="evBaysExplainer2025">-</span>
+                        </div>
+                        <div class="calc-header" style="font-size: 16px; margin-bottom: 5px;">
+                            2030 (20% EV penetration): <span id="evBaysRequired2030">-</span>
+                        </div>
+                        <div class="calc-explainer" style="margin-bottom: 15px;">
+                            <span id="evBaysExplainer2030">-</span>
+                        </div>
+                        <div class="calc-explainer" style="font-size: 12px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
+                            *Actual EV penetration at your location may vary. A survey of EV occupancy on peak days would be advisable.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="evBaysOverride">How many bays to enable with an EV charging port</label>
+                <input type="number" id="evBaysOverride" placeholder="Leave blank to use 2025 calculation (5% penetration)" min="0" step="2">
+                <div id="evBaysWarning" class="warning-message">
+                    Warning: Number of EV bays must be a multiple of 2 (for dual-socket units)
+                </div>
+                <div class="custom-note">
+                    Override the calculated number with your preferred amount (must be even for dual-port units)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="installationCost">Installation Cost per Bay (£)</label>
+                <input type="number" id="installationCost" value="2000" min="0" step="0.01">
+                <div class="custom-note">
+                    Costs of site preparation and installation can vary widely however for a typical installation £2,000 is not untypical
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="unitCostInput">Cost of Dual Port Unit (£)</label>
+                <input type="number" id="unitCostInput" value="2800" min="0" step="0.01">
+                <div class="custom-note">
+                    Hardware cost for each dual-port charging unit
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pricePerKwh">Price per kWh excluding VAT (£)</label>
+                <input type="number" id="pricePerKwh" value="0.50" min="0" step="0.01">
+                <div class="custom-note">
+                    What you charge users per kWh of electricity consumed
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="electricityCost">Cost of Electricity per kWh excluding VAT (£)</label>
+                <input type="number" id="electricityCost" value="0.25" min="0" step="0.01">
+                <div class="custom-note">
+                    Your actual cost of electricity from your energy supplier
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="calculation-display">
+                    <div class="calc-header">
+                        💰 Commission per kWh: £0.06
+                    </div>
+                    <div class="calc-explainer">
+                        Commission fee levied on billed kWh transactions
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Charger Configuration</label>
+                <div class="power-options">
+                    <div class="power-option">
+                        <input type="radio" name="chargingRate" value="7.4" id="rate74" checked>
+                        <label for="rate74">7.4kW</label>
+                    </div>
+                    <div class="power-option">
+                        <input type="radio" name="chargingRate" value="22" id="rate22">
+                        <label for="rate22">22kW</label>
+                    </div>
+                </div>
+                <div class="custom-note">
+                    Dual-port units share power between two cars when both ports are in use. Each car receives 50% of the total power.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sessionsPerPort">Sessions per Port per Day</label>
+                <input type="number" id="sessionsPerPort" value="2" min="0" step="0.1">
+                <div class="custom-note">
+                    Average number of different vehicles using each charging port daily
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sessionDuration">Duration of Active Charging per Session (hours)</label>
+                <input type="number" id="sessionDuration" value="3" min="0" step="0.1">
+                <div class="calc-explainer" style="margin-top: 8px; font-size: 12px; font-style: italic; color: #666;">
+                    <span id="rangeExplanation">*EVs charging for 3 hours under the selected configuration will typically add 38.85 miles of range to their battery.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="daysPerWeek">Days per Week Charging Available</label>
+                <select id="daysPerWeek">
+                    <option value="1">1 day</option>
+                    <option value="2">2 days</option>
+                    <option value="3">3 days</option>
+                    <option value="4">4 days</option>
+                    <option value="5" selected>5 days</option>
+                    <option value="6">6 days</option>
+                    <option value="7">7 days</option>
+                </select>
+                <div class="custom-note">
+                    How many days per week your charging infrastructure operates
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">📊 RoI Analysis Summary</h2>
+            
+            <h3 class="section-subtitle">INVESTMENTS</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Calculation</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EV Charging Units</td>
+                            <td id="unitCalc">-</td>
+                            <td id="unitCost">-</td>
+                        </tr>
+                        <tr>
+                            <td>Installation Costs</td>
+                            <td id="installCalc">-</td>
+                            <td id="installCostTotal">-</td>
+                        </tr>
+                        <tr>
+                            <td>Workplace Charging Grant</td>
+                            <td id="grantCalc">-</td>
+                            <td id="grantSaving" style="color: #098C47;">-</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Total Initial Investment</strong></td>
+                            <td></td>
+                            <td id="totalInvestment"><strong>-</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="section-subtitle">PROFITS</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Calculation</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Daily kWh Consumption</td>
+                            <td id="kwhCalc">-</td>
+                            <td id="dailyKwh">-</td>
+                        </tr>
+                        <tr>
+                            <td>Net Profit per kWh</td>
+                            <td id="profitCalc">-</td>
+                            <td id="netProfit">-</td>
+                        </tr>
+                        <tr>
+                            <td>Daily Profit</td>
+                            <td id="dailyRevCalc">-</td>
+                            <td id="dailyRevenue">-</td>
+                        </tr>
+                        <tr>
+                            <td>Weekly Profit</td>
+                            <td id="weeklyRevCalc">-</td>
+                            <td id="weeklyRevenue">-</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Year 1 Profit from EV charging</strong></td>
+                            <td id="annualRevCalc">-</td>
+                            <td id="annualRevenue"><strong>-</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px; margin-bottom: 25px; padding: 15px; background: var(--bg-light); border-radius: 8px;">
+                <p style="color: var(--text-dark); font-size: 14px; line-height: 1.6; margin: 0;">
+                    <strong>Note:</strong> RoI and Payback calculations assume a 5% year-on-year increase in utilisation to account for growing EV adoption and increased charging frequency.
+                </p>
+            </div>
+
+            <div class="summary-box">
+                <h3 class="summary-title">💼 RoI SUMMARY</h3>
+                <div class="summary-item main">
+                    <span>Payback Period:</span>
+                    <span id="paybackPeriod">-</span>
+                </div>
+                <div class="summary-item main">
+                    <span>5-Year RoI:</span>
+                    <span id="fiveYearROI">-</span>
+                </div>
+            </div>
+            
+            <div class="cta-container">
+                <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="cta-button">
+                    📅 Book some time with Voqa to talk about EV Charging
+                </a>
+                
+                <div class="guidance-section">
+                    <h4 class="guidance-title" style="margin-bottom: 10px;">Beyond Financial Returns</h4>
+                    <p style="color: var(--text-dark); font-size: 14px; line-height: 1.6; margin-bottom: 15px;">
+                        Returns made from EV charging directly don't form all of the benefit that you will accrue as a business. Consider the impact that availability of EV charging will have on:
+                    </p>
+                    <ul class="benefits-list">
+                        <li><strong>Recruitment & Retention:</strong> EV charging is increasingly viewed as an essential workplace amenity, helping attract and retain top talent</li>
+                        <li><strong>Carbon Reduction Plan:</strong> Demonstrates tangible commitment to sustainability goals and supports corporate ESG objectives</li>
+                        <li><strong>Reputational Benefits:</strong> Positions your business as environmentally responsible and forward-thinking</li>
+                        <li><strong>Employee Satisfaction:</strong> Reduces range anxiety and provides convenience for EV-driving staff</li>
+                        <li><strong>Future-Proofing:</strong> Prepares your infrastructure for the inevitable increase in EV adoption</li>
+                        <li><strong>Compliance Readiness:</strong> Positions you ahead of potential future regulations requiring workplace charging</li>
+                    </ul>
+                    <p style="color: #666; font-size: 12px; font-style: italic; margin-top: 10px;">
+                        These intangible benefits often provide value that exceeds the direct financial returns shown in the ROI calculation above.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cash Flow Analysis Section -->
+        <div id="cashFlowContainer" class="cash-flow-container">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+                    <h2 class="section-title" style="margin-bottom: 0;">📈 Detailed Cash Flow Analysis</h2>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="section-subtitle">Annual Cash Flow Analysis</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="cashFlowChart" width="800" height="400"></canvas>
+                    </div>
+                    <div class="guidance-section">
+                        <div class="guidance-text">
+                            <strong>Annual Cash Flow Analysis:</strong> This chart shows your yearly cash flow. The red bar represents the initial investment, 
+                            while the blue bars show annual profits from EV charging operations. Each year after the initial investment generates consistent annual revenue 
+                            that helps recover your investment, with break-even typically occurring around <span id="breakEvenCommentary">-</span>.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="section-subtitle">Cumulative Cash Flow Analysis</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="cumulativeChart" width="800" height="400"></canvas>
+                    </div>
+                    <div class="guidance-section">
+                        <div class="guidance-text">
+                            <strong>Cumulative Analysis:</strong> This chart tracks your total accumulated cash position year by year. Starting with the initial investment, 
+                            the line rises as annual profits accumulate. The break-even point shows exactly when your total cash position returns to zero, 
+                            indicating full recovery of your initial investment. Beyond this point, all additional cash flow represents pure profit from your EV charging infrastructure.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <span class="result-icon">💰</span>
+                        <div class="result-value" id="investmentInsight">-</div>
+                        <div class="result-label">Initial Investment</div>
+                        <div class="result-description">Total upfront cost for EV charging infrastructure</div>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-icon">⏱️</span>
+                        <div class="result-value" id="breakEvenInsight">-</div>
+                        <div class="result-label">Break-even Time</div>
+                        <div class="result-description">Time to recover initial investment</div>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-icon">📈</span>
+                        <div class="result-value" id="fiveYearProfitInsight">-</div>
+                        <div class="result-label">5-Year Profit</div>
+                        <div class="result-description">Total profit after 5 years of operation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        let cashFlowChart = null;
+        let cumulativeChart = null;
+        let currentCalculationData = {};
+
+        function roundUpToNearestEven(num) {
+            if (num <= 0) return 0;
+            return Math.ceil(num / 2) * 2;
+        }
+
+        function formatCurrency(amount) {
+            if (amount < 0) {
+                return '(£' + Math.abs(amount).toLocaleString('en-GB', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + ')';
+            }
+            return '£' + amount.toLocaleString('en-GB', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        }
+
+        function formatCurrencyDetailed(amount) {
+            if (amount < 0) {
+                return '(£' + Math.abs(amount).toLocaleString('en-GB', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ')';
+            }
+            return '£' + amount.toLocaleString('en-GB', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        function formatNumber(num, decimals = 1) {
+            return num.toLocaleString('en-GB', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
+        }
+
+        function calculate() {
+            const totalBays = parseInt(document.getElementById('totalBays').value) || 0;
+            const peakOccupancy = parseInt(document.getElementById('peakOccupancy').value) || 0;
+            const installationCost = parseFloat(document.getElementById('installationCost').value) || 0;
+            const unitCostInput = parseFloat(document.getElementById('unitCostInput').value) || 0;
+            const pricePerKwh = parseFloat(document.getElementById('pricePerKwh').value) || 0;
+            const electricityCost = parseFloat(document.getElementById('electricityCost').value) || 0;
+            const sessionsPerPort = parseFloat(document.getElementById('sessionsPerPort').value) || 0;
+            const sessionDuration = parseFloat(document.getElementById('sessionDuration').value) || 0;
+            const chargingRate = parseFloat(document.querySelector('input[name="chargingRate"]:checked').value) || 0;
+            const daysPerWeek = parseInt(document.getElementById('daysPerWeek').value) || 0;
+            const evBaysOverride = parseInt(document.getElementById('evBaysOverride').value) || 0;
+
+            const calculatedEVBays2025 = roundUpToNearestEven((totalBays * peakOccupancy / 100) * 0.05);
+            const calculatedEVBays2030 = roundUpToNearestEven((totalBays * peakOccupancy / 100) * 0.20);
+            
+            let requiredEVBays = calculatedEVBays2025;
+            
+            if (evBaysOverride > 0) {
+                requiredEVBays = evBaysOverride;
+                
+                const warningElement = document.getElementById('evBaysWarning');
+                if (evBaysOverride % 2 !== 0) {
+                    warningElement.style.display = 'flex';
+                    warningElement.classList.add('show');
+                } else {
+                    warningElement.style.display = 'none';
+                    warningElement.classList.remove('show');
+                }
+            } else {
+                const warningElement = document.getElementById('evBaysWarning');
+                warningElement.style.display = 'none';
+                warningElement.classList.remove('show');
+            }
+            
+            const numberOfUnits = requiredEVBays / 2;
+            const occupiedBays = totalBays * peakOccupancy / 100;
+            const rawEVBays2025 = occupiedBays * 0.05;
+            const rawEVBays2030 = occupiedBays * 0.20;
+            
+            document.getElementById('evBaysRequired2025').textContent = calculatedEVBays2025 + ' bays';
+            document.getElementById('evBaysExplainer2025').textContent = 
+                `${totalBays} total bays × ${peakOccupancy}% occupancy × 5% EV adoption = ${formatNumber(rawEVBays2025, 2)} bays, rounded up to nearest even number (${calculatedEVBays2025}) for dual-socket units`;
+                
+            document.getElementById('evBaysRequired2030').textContent = calculatedEVBays2030 + ' bays';
+            document.getElementById('evBaysExplainer2030').textContent = 
+                `${totalBays} total bays × ${peakOccupancy}% occupancy × 20% EV adoption = ${formatNumber(rawEVBays2030, 2)} bays, rounded up to nearest even number (${calculatedEVBays2030}) for dual-socket units`;
+
+            const effectiveChargingRate = chargingRate / 2;
+            const kwhAdded = sessionDuration * effectiveChargingRate;
+            const milesAdded = kwhAdded * 3.5;
+            document.getElementById('rangeExplanation').textContent = 
+                `*EVs charging for ${sessionDuration} hours under the selected configuration will typically add ${formatNumber(milesAdded, 1)} miles of range to their battery.`;
+
+            const unitCost = numberOfUnits * unitCostInput;
+            const installCostTotal = requiredEVBays * installationCost;
+            const grantEligibleBays = Math.min(requiredEVBays, 40);
+            const grantSaving = grantEligibleBays * 350;
+            const totalInvestment = unitCost + installCostTotal - grantSaving;
+
+            const dailyKwh = requiredEVBays * sessionsPerPort * sessionDuration * effectiveChargingRate;
+            const netProfit = pricePerKwh - electricityCost - 0.06;
+            const dailyRevenue = dailyKwh * netProfit;
+            const weeklyRevenue = dailyRevenue * daysPerWeek;
+            const annualRevenue = weeklyRevenue * 52;
+
+            let totalCumulativeRevenue = 0;
+            for (let year = 1; year <= 5; year++) {
+                const growthMultiplier = Math.pow(1.05, year - 1);
+                const yearlyRevenue = annualRevenue * growthMultiplier;
+                totalCumulativeRevenue += yearlyRevenue;
+            }
+            
+            let cumulativeRevenue = 0;
+            let paybackYears = 0;
+            for (let year = 1; year <= 20; year++) {
+                const growthMultiplier = Math.pow(1.05, year - 1);
+                const yearlyRevenue = annualRevenue * growthMultiplier;
+                cumulativeRevenue += yearlyRevenue;
+                
+                if (cumulativeRevenue >= totalInvestment) {
+                    const previousCumulative = cumulativeRevenue - yearlyRevenue;
+                    const remainingInvestment = totalInvestment - previousCumulative;
+                    const fractionOfYear = remainingInvestment / yearlyRevenue;
+                    paybackYears = (year - 1) + fractionOfYear;
+                    break;
+                }
+            }
+            
+            const paybackMonths = paybackYears * 12;
+            const fiveYearROI = ((totalCumulativeRevenue - totalInvestment) / totalInvestment) * 100;
+
+            // Update display elements
+            document.getElementById('unitCalc').textContent = `${numberOfUnits} units × ${formatCurrencyDetailed(unitCostInput)}`;
+            document.getElementById('unitCost').textContent = formatCurrencyDetailed(unitCost);
+            document.getElementById('installCalc').textContent = `${requiredEVBays} bays × ${formatCurrencyDetailed(installationCost)}`;
+            document.getElementById('installCostTotal').textContent = formatCurrencyDetailed(installCostTotal);
+            document.getElementById('grantCalc').textContent = `${grantEligibleBays} bays × £350 (up to 40 bays)`;
+            document.getElementById('grantSaving').textContent = formatCurrencyDetailed(-grantSaving);
+            document.getElementById('totalInvestment').textContent = formatCurrencyDetailed(totalInvestment);
+
+            document.getElementById('kwhCalc').textContent = `${requiredEVBays} ports × ${sessionsPerPort} sessions × ${sessionDuration}hrs × ${effectiveChargingRate}kW`;
+            document.getElementById('dailyKwh').textContent = formatNumber(dailyKwh) + ' kWh';
+            document.getElementById('profitCalc').textContent = `${formatCurrencyDetailed(pricePerKwh)} - ${formatCurrencyDetailed(electricityCost)} - £0.06`;
+            document.getElementById('netProfit').textContent = formatCurrencyDetailed(netProfit);
+            document.getElementById('dailyRevCalc').textContent = `${formatNumber(dailyKwh)} kWh × ${formatCurrencyDetailed(netProfit)}`;
+            document.getElementById('dailyRevenue').textContent = formatCurrencyDetailed(dailyRevenue);
+            document.getElementById('weeklyRevCalc').textContent = `${formatCurrencyDetailed(dailyRevenue)} × ${daysPerWeek} days`;
+            document.getElementById('weeklyRevenue').textContent = formatCurrencyDetailed(weeklyRevenue);
+            document.getElementById('annualRevCalc').textContent = `${formatCurrencyDetailed(weeklyRevenue)} × 52 weeks`;
+            document.getElementById('annualRevenue').textContent = formatCurrencyDetailed(annualRevenue);
+
+            let paybackText;
+            if (paybackYears < 1) {
+                paybackText = `${Math.ceil(paybackMonths)} months`;
+            } else {
+                const wholeYears = Math.floor(paybackYears);
+                const remainingMonths = Math.round((paybackYears - wholeYears) * 12);
+                if (remainingMonths === 0) {
+                    paybackText = `${wholeYears} years`;
+                } else {
+                    paybackText = `${wholeYears} years ${remainingMonths} months`;
+                }
+            }
+            
+            document.getElementById('paybackPeriod').textContent = paybackText;
+            document.getElementById('fiveYearROI').textContent = formatNumber(fiveYearROI) + '%';
+
+            const roiElement = document.getElementById('fiveYearROI');
+            if (fiveYearROI > 0) {
+                roiElement.className = 'positive';
+            } else {
+                roiElement.className = 'negative';
+            }
+
+            currentCalculationData = {
+                totalInvestment,
+                monthlyRevenue: weeklyRevenue * 52 / 12,
+                annualRevenue,
+                paybackMonths,
+                fiveYearRevenue: totalCumulativeRevenue,
+                fiveYearROI
+            };
+
+            generateCharts();
+        }
+
+        function generateCharts() {
+            if (!currentCalculationData || !currentCalculationData.totalInvestment) {
+                return;
+            }
+            
+            const { totalInvestment, monthlyRevenue, paybackMonths, fiveYearRevenue } = currentCalculationData;
+            
+            const yearsToShow = Math.max(5, Math.ceil(paybackMonths / 12) + 2);
+            const years = [];
+            const annualCashFlow = [];
+            const cumulative = [];
+            
+            let cumulativeTotal = -totalInvestment;
+            
+            for (let year = 0; year <= yearsToShow; year++) {
+                if (year === 0) {
+                    years.push('Initial');
+                    annualCashFlow.push(-totalInvestment);
+                    cumulative.push(cumulativeTotal);
+                } else {
+                    years.push(`Year ${year}`);
+                    const growthMultiplier = Math.pow(1.05, year - 1);
+                    const annualProfit = (monthlyRevenue * 12) * growthMultiplier;
+                    annualCashFlow.push(annualProfit);
+                    cumulativeTotal += annualProfit;
+                    cumulative.push(cumulativeTotal);
+                }
+            }
+
+            const breakEvenYears = paybackMonths / 12;
+            let breakEvenText;
+            if (breakEvenYears < 1) {
+                breakEvenText = `${Math.ceil(paybackMonths)} months`;
+            } else if (breakEvenYears === Math.floor(breakEvenYears)) {
+                breakEvenText = `${Math.floor(breakEvenYears)} years`;
+            } else {
+                const wholeYears = Math.floor(breakEvenYears);
+                const remainingMonths = Math.ceil(paybackMonths - (wholeYears * 12));
+                breakEvenText = `${wholeYears} years ${remainingMonths} months`;
+            }
+            
+            document.getElementById('breakEvenCommentary').textContent = breakEvenText;
+            document.getElementById('investmentInsight').textContent = formatCurrency(totalInvestment);
+            document.getElementById('breakEvenInsight').textContent = breakEvenText;
+            document.getElementById('fiveYearProfitInsight').textContent = formatCurrency(fiveYearRevenue - totalInvestment);
+
+            if (cashFlowChart) cashFlowChart.destroy();
+            if (cumulativeChart) cumulativeChart.destroy();
+
+            const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
+            cashFlowChart = new Chart(cashFlowCtx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Annual Cash Flow',
+                        data: annualCashFlow,
+                        backgroundColor: annualCashFlow.map(value => value < 0 ? '#FF4747' : '#098C47'),
+                        borderColor: annualCashFlow.map(value => value < 0 ? '#FF4747' : '#098C47'),
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 92, 128, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#F7D7BC',
+                            borderWidth: 2,
+                            cornerRadius: 8,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Cash Flow: ' + formatCurrency(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 92, 128, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                },
+                                color: '#666',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Annual Cash Flow (£)',
+                                color: '#005C80',
+                                font: { 
+                                    weight: 'bold',
+                                    size: 14,
+                                    family: 'Red Hat Display'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#666',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Year',
+                                color: '#005C80',
+                                font: { 
+                                    weight: 'bold',
+                                    size: 14,
+                                    family: 'Red Hat Display'
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+
+            const cumulativeCtx = document.getElementById('cumulativeChart').getContext('2d');
+            
+            const gradient = cumulativeCtx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(0, 92, 128, 0.3)');
+            gradient.addColorStop(1, 'rgba(0, 92, 128, 0.05)');
+            
+            cumulativeChart = new Chart(cumulativeCtx, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Cumulative Cash Flow',
+                        data: cumulative,
+                        borderColor: '#005C80',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: cumulative.map(value => value < 0 ? '#FF4747' : '#098C47'),
+                        pointBorderColor: cumulative.map(value => value < 0 ? '#FF4747' : '#098C47'),
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointBorderWidth: 2,
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 92, 128, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#F7D7BC',
+                            borderWidth: 2,
+                            cornerRadius: 8,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Cumulative: ' + formatCurrency(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                color: function(context) {
+                                    return context.tick.value === 0 ? '#FF4747' : 'rgba(0, 92, 128, 0.1)';
+                                },
+                                lineWidth: function(context) {
+                                    return context.tick.value === 0 ? 2 : 1;
+                                },
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                },
+                                color: '#666',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Cumulative Cash Position (£)',
+                                color: '#005C80',
+                                font: { 
+                                    weight: 'bold',
+                                    size: 14,
+                                    family: 'Red Hat Display'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#666',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Year',
+                                color: '#005C80',
+                                font: { 
+                                    weight: 'bold',
+                                    size: 14,
+                                    family: 'Red Hat Display'
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        function setupInteractiveEffects() {
+            try {
+                const resultCards = document.querySelectorAll('.result-card');
+                resultCards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-8px) scale(1.02)';
+                    });
+
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0) scale(1)';
+                    });
+                });
+
+                const formGroups = document.querySelectorAll('.form-group');
+                formGroups.forEach(group => {
+                    const input = group.querySelector('input, select');
+                    if (input) {
+                        input.addEventListener('focus', function() {
+                            group.style.transform = 'translateX(5px)';
+                        });
+
+                        input.addEventListener('blur', function() {
+                            group.style.transform = 'translateX(0)';
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error('Error setting up interactive effects:', error);
+            }
+        }
+
+        function initializeApp() {
+            try {
+                document.getElementById('totalBays').addEventListener('input', calculate);
+                document.getElementById('peakOccupancy').addEventListener('change', calculate);
+                document.getElementById('installationCost').addEventListener('input', calculate);
+                document.getElementById('unitCostInput').addEventListener('input', calculate);
+                document.getElementById('pricePerKwh').addEventListener('input', calculate);
+                document.getElementById('electricityCost').addEventListener('input', calculate);
+                document.getElementById('sessionsPerPort').addEventListener('input', calculate);
+                document.getElementById('sessionDuration').addEventListener('input', calculate);
+                document.getElementById('evBaysOverride').addEventListener('input', calculate);
+                document.getElementById('daysPerWeek').addEventListener('change', calculate);
+
+                document.querySelectorAll('input[name="chargingRate"]').forEach(radio => {
+                    radio.addEventListener('change', calculate);
+                });
+
+                document.querySelectorAll('.power-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const radio = this.querySelector('input[type="radio"]');
+                        if (radio) {
+                            radio.checked = true;
+                            calculate();
+                        }
+                    });
+                });
+
+                setupInteractiveEffects();
+                calculate();
+
+            } catch (error) {
+                console.error('Error initializing app:', error);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>
