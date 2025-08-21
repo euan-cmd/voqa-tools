@@ -86,6 +86,42 @@
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
+        .back-to-calculators {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+            z-index: 10;
+        }
+
+        .back-to-calculators:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-light);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 900px) {
+            .back-to-calculators {
+                left: 20px;
+                top: 16px;
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+        }
+
         @keyframes slideDown {
             from {
                 transform: translateY(-100%);
@@ -476,40 +512,25 @@
         }
 
         .result-card {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             padding: 24px;
             border-radius: 16px;
             position: relative;
-            overflow: hidden;
             animation: slideUp 0.5s ease-out;
             color: var(--text-light);
             text-align: center;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
         }
 
-        .result-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        .result-card:hover {
+            border-color: var(--accent);
         }
 
         .result-icon {
             font-size: 48px;
             margin-bottom: 16px;
             display: block;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
         }
 
         .result-value {
@@ -672,7 +693,6 @@
         .positive::before {
             content: '↗';
             margin-right: 5px;
-            animation: bounce 1s ease-in-out infinite;
         }
         
         .negative { 
@@ -951,6 +971,18 @@
         }
 
         @media (max-width: 600px) {
+            .back-to-calculators {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 20px auto;
+                display: inline-flex;
+            }
+
+            .header-content {
+                margin-top: 20px;
+            }
+
             .header {
                 padding: 16px 0;
             }
@@ -1117,6 +1149,9 @@
 </head>
 <body>
     <div class="header">
+        <a href="https://euan-cmd.github.io/voqa-tools/" class="back-to-calculators">
+            ← Back to Calculators
+        </a>
         <div class="header-content">
             <div class="header-title">⚡ Workplace EV Charging RoI Calculator</div>
             <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
@@ -1902,17 +1937,6 @@
 
         function setupInteractiveEffects() {
             try {
-                const resultCards = document.querySelectorAll('.result-card');
-                resultCards.forEach(card => {
-                    card.addEventListener('mouseenter', function() {
-                        this.style.transform = 'translateY(-8px) scale(1.02)';
-                    });
-
-                    card.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(0) scale(1)';
-                    });
-                });
-
                 const formGroups = document.querySelectorAll('.form-group');
                 formGroups.forEach(group => {
                     const input = group.querySelector('input, select');
