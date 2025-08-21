@@ -1015,17 +1015,98 @@
             });
         }
 
+        let liveGridData = {
+            renewablePercentage: 37,
+            carbonIntensity: 0.170,
+            lastUpdated: null
+        };
+
+        async function fetchLiveGridData() {
+            try {
+                // Fetch live UK grid data from National Grid ESO API
+                const response = await fetch('https://api.carbonintensity.org.uk/intensity/factors');
+                const data = await response.json();
+                
+                if (data && data[0]) {
+                    // Calculate renewable percentage from carbon intensity
+                    // UK grid ranges from ~50g (high renewable) to ~300g (low renewable) CO2/kWh
+                    const currentIntensity = data[0].typical;
+                    const renewablePercent = Math.max(0, Math.min(100, Math.round((300 - currentIntensity) / 250 * 100)));
+                    
+                    liveGridData = {
+                        renewablePercentage: renewablePercent,
+                        carbonIntensity: currentIntensity / 1000, // Convert g to kg
+                        lastUpdated: new Date()
+                    };
+                    
+                    // Update the UK Grid Average option
+                    updateGridAverageOption();
+                    
+                    console.log('Live grid data updated:', liveGridData);
+                } else {
+                    console.log('Using fallback grid data');
+                }
+            } catch (error) {
+                console.log('Could not fetch live grid data, using fallback values:', error.message);
+                // Fallback to static values - this will be the case in Claude artifacts
+            }
+        }
+
+        function updateGridAverageOption() {
+            const renewableSelect = document.getElementById('renewablePercentage');
+            const gridOption = renewableSelect.querySelector('option[value="37"]');
+            
+            if (gridOption && liveGridData.lastUpdated) {
+                gridOption.textContent = `UK Grid Average (${liveGridData.renewablePercentage}% - Live Data)`;
+                gridOption.value = liveGridData.renewablePercentage.toString();
+                
+                // Update grid intensity mapping
+                gridCarbonIntensityLive[liveGridData.renewablePercentage] = liveGridData.carbonIntensity;
+                
+                // Show live data note
+                updateGridAverageNote(true);
+            }
+        }
+
+        function updateGridAverageNote(isLive = false) {
+            const gridNote = document.getElementById('gridAverageNote');
+            const renewableSelect = document.getElementById('renewablePercentage');
+            
+            if (renewableSelect.value === '37' || renewableSelect.value === liveGridData.renewablePercentage.toString()) {
+                if (isLive && liveGridData.lastUpdated) {
+                    gridNote.innerHTML = `*Live UK Grid Data: ${liveGridData.renewablePercentage}% renewables, ${Math.round(liveGridData.carbonIntensity * 1000)}g CO₂/kWh. Last updated: ${liveGridData.lastUpdated.toLocaleString('en-GB')}. Source: <a href="https://carbonintensity.org.uk/" target="_blank" style="color: var(--primary); text-decoration: none;">National Grid ESO Carbon Intensity API</a>`;
+                } else {
+                    gridNote.innerHTML = `*UK Grid Average based on typical values (37% renewables). For live data, this tool fetches from <a href="https://carbonintensity.org.uk/" target="_blank" style="color: var(--primary); text-decoration: none;">National Grid ESO</a> when published online.`;
+                }
+                gridNote.style.display = 'block';
+            } else {
+                gridNote.style.display = 'none';
+            }
+        }
+
+        // Dynamic grid carbon intensity including live data
+        let gridCarbonIntensityLive = {};
+
         function updateGridIntensityText(renewablePercentage) {
             const gridIntensityElement = document.getElementById('gridIntensityText');
             const gridCarbonIntensity = {
                 37: { intensity: 0.170, description: "UK grid average (37% renewables, 170g CO₂/kWh)" },
                 50: { intensity: 0.135, description: "above average renewable mix (50% renewables, 135g CO₂/kWh)" },
                 75: { intensity: 0.068, description: "high renewable mix (75% renewables, 68g CO₂/kWh)" },
-                100: { intensity: 0.000, description: "100% renewable electricity (0g CO₂/kWh)" }
+                100: { intensity: 0.000, description: "100% renewable electricity (0g CO₂/kWh)" },
+                ...gridCarbonIntensityLive
             };
             
-            if (gridIntensityElement && gridCarbonIntensity[renewablePercentage]) {
-                gridIntensityElement.textContent = gridCarbonIntensity[renewablePercentage].description;
+            // Check if it's live data
+            if (renewablePercentage == liveGridData.renewablePercentage && liveGridData.lastUpdated) {
+                const description = `live UK grid data (${liveGridData.renewablePercentage}% renewables, ${Math.round(liveGridData.carbonIntensity * 1000)}g CO₂/kWh)`;
+                if (gridIntensityElement) {
+                    gridIntensityElement.textContent = description;
+                }
+            } else if (gridCarbonIntensity[renewablePercentage]) {
+                if (gridIntensityElement) {
+                    gridIntensityElement.textContent = gridCarbonIntensity[renewablePercentage].description;
+                }
             }
         }
 
@@ -1053,10 +1134,16 @@
                     37: 0.170,   // UK grid average with 37% renewables
                     50: 0.135,   // 50% renewables
                     75: 0.068,   // 75% renewables  
-                    100: 0.000   // 100% renewables
+                    100: 0.000,  // 100% renewables
+                    ...Object.fromEntries(Object.entries(gridCarbonIntensityLive).map(([k, v]) => [k, v]))
                 };
 
-                const electricityCarbonIntensity = gridCarbonIntensity[renewablePercentage];
+                let electricityCarbonIntensity = gridCarbonIntensity[renewablePercentage];
+                
+                // Use live data if available and selected
+                if (renewablePercentage == liveGridData.renewablePercentage && liveGridData.lastUpdated) {
+                    electricityCarbonIntensity = liveGridData.carbonIntensity;
+                }
                 
                 // Petrol car emissions (kg CO₂/mile)
                 const petrolCarbonPerMile = 0.284; // Based on 2.31kg CO₂/litre, 35mpg average
@@ -1145,14 +1232,7 @@
                 document.getElementById('operatingDays').addEventListener('change', calculateImpact);
                 document.getElementById('renewablePercentage').addEventListener('change', function() {
                     calculateImpact();
-                    
-                    // Show/hide grid average note
-                    const gridNote = document.getElementById('gridAverageNote');
-                    if (this.value === '37') {
-                        gridNote.style.display = 'block';
-                    } else {
-                        gridNote.style.display = 'none';
-                    }
+                    updateGridAverageNote();
                 });
                 
                 document.querySelectorAll('input[name="chargingRate"]').forEach(radio => {
@@ -1173,6 +1253,9 @@
 
                 // Interactive enhancements
                 setupInteractiveEffects();
+
+                // Fetch live grid data (will only work when published online)
+                fetchLiveGridData();
 
                 // Initial calculation
                 calculateImpact();
