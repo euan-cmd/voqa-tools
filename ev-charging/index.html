@@ -73,6 +73,32 @@
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
+        .back-to-calculators {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        .back-to-calculators:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-light);
+            transform: translateY(-1px);
+        }
+
         @keyframes slideDown {
             from {
                 transform: translateY(-100%);
@@ -394,6 +420,12 @@
             animation: slideUp 0.5s ease-out;
             color: var(--text-light);
             text-align: center;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .result-card:hover {
+            border-color: var(--accent);
         }
 
         @keyframes slideUp {
@@ -639,6 +671,13 @@
                 padding: 0 20px;
                 gap: 15px;
             }
+
+            .back-to-calculators {
+                left: 20px;
+                top: 16px;
+                padding: 8px 14px;
+                font-size: 13px;
+            }
             
             .power-options {
                 grid-template-columns: 1fr;
@@ -655,6 +694,20 @@
             }
         }
 
+        @media (max-width: 600px) {
+            .back-to-calculators {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 20px auto;
+                display: inline-flex;
+            }
+
+            .header-content {
+                margin-top: 20px;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation: none !important;
@@ -665,6 +718,9 @@
 </head>
 <body>
     <div class="header">
+        <a href="https://euan-cmd.github.io/voqa-tools/" class="back-to-calculators">
+            ← Back to Calculators
+        </a>
         <div class="header-content">
             <div class="header-title">🔋 EV Charging Range Calculator</div>
             <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
@@ -1061,6 +1117,22 @@
                 const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
                 const availableCapacity = batteryCapacity * 0.8;
 
+                // Get current user selections
+                const powerRatingElement = document.querySelector('input[name="powerRating"]:checked');
+                const dwellTimeSelect = document.getElementById('dwellTime');
+                const customDwellTime = document.getElementById('customDwellTime');
+                
+                const selectedPower = powerRatingElement ? parseFloat(powerRatingElement.value) : null;
+                let selectedDwellTime = null;
+                
+                if (dwellTimeSelect) {
+                    if (dwellTimeSelect.value === 'custom' && customDwellTime && customDwellTime.value) {
+                        selectedDwellTime = parseFloat(customDwellTime.value);
+                    } else {
+                        selectedDwellTime = parseFloat(dwellTimeSelect.value);
+                    }
+                }
+
                 tableBody.innerHTML = '';
 
                 dwellTimes.forEach(dwellTime => {
@@ -1076,7 +1148,12 @@
                     powerRatings.forEach((power) => {
                         const cell = document.createElement('td');
                         
-                        if (power <= 22) {
+                        // Check if this cell matches current selections
+                        const isSelectedCell = (selectedPower === power && selectedDwellTime === dwellTime);
+                        
+                        if (isSelectedCell) {
+                            cell.style.cssText = 'border: 3px solid var(--primary); background: linear-gradient(135deg, rgba(247, 215, 188, 0.4) 0%, rgba(248, 212, 180, 0.3) 100%); font-weight: 700; position: relative;';
+                        } else if (power <= 22) {
                             cell.className = 'voqa-highlight';
                         }
                         
@@ -1088,9 +1165,17 @@
                         const batteryFull = timeToFull < dwellHours;
                         
                         if (batteryFull) {
-                            cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
+                            if (isSelectedCell) {
+                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745; font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh (Full)</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
+                            } else {
+                                cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
+                            }
                         } else {
-                            cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small>${formatNumber(energyDelivered, 1)} kWh</small>`;
+                            if (isSelectedCell) {
+                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark); font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
+                            } else {
+                                cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small>${formatNumber(energyDelivered, 1)} kWh</small>`;
+                            }
                         }
                         
                         row.appendChild(cell);
@@ -1100,24 +1185,28 @@
                 });
 
                 // Add custom dwell time row if applicable
-                const customDwellTimeInput = document.getElementById('customDwellTime');
-                const dwellTimeSelect = document.getElementById('dwellTime');
-                
-                if (dwellTimeSelect && dwellTimeSelect.value === 'custom' && customDwellTimeInput && customDwellTimeInput.value) {
-                    const customDwellTime = parseFloat(customDwellTimeInput.value);
-                    if (customDwellTime > 0) {
+                if (dwellTimeSelect && dwellTimeSelect.value === 'custom' && customDwellTime && customDwellTime.value) {
+                    const customDwellTimeValue = parseFloat(customDwellTime.value);
+                    if (customDwellTimeValue > 0) {
                         const customRow = document.createElement('tr');
                         customRow.className = 'custom-row';
                         
                         const customDwellCell = document.createElement('td');
                         customDwellCell.className = 'custom-time';
-                        customDwellCell.innerHTML = `${customDwellTime} min<br><small style="font-size: 10px; font-weight: 600; color: var(--primary-dark);">⭐ Your Custom Time</small>`;
+                        customDwellCell.innerHTML = `${customDwellTimeValue} min<br><small style="font-size: 10px; font-weight: 600; color: var(--primary-dark);">⭐ Your Custom Time</small>`;
                         customRow.appendChild(customDwellCell);
 
                         powerRatings.forEach((power) => {
                             const cell = document.createElement('td');
                             
-                            const dwellHours = customDwellTime / 60;
+                            // Check if this cell matches current selections (custom dwell time)
+                            const isSelectedCell = (selectedPower === power && selectedDwellTime === customDwellTimeValue);
+                            
+                            if (isSelectedCell) {
+                                cell.style.cssText = 'border: 3px solid var(--primary); background: linear-gradient(135deg, rgba(247, 215, 188, 0.5) 0%, rgba(248, 212, 180, 0.4) 100%); font-weight: 700;';
+                            }
+                            
+                            const dwellHours = customDwellTimeValue / 60;
                             const maxEnergyFromTime = dwellHours * power;
                             const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
                             const range = energyDelivered * efficiency;
@@ -1125,9 +1214,17 @@
                             const batteryFull = timeToFull < dwellHours;
                             
                             if (batteryFull) {
-                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
+                                if (isSelectedCell) {
+                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745; font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh (Full)</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
+                                } else {
+                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
+                                }
                             } else {
-                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark);">${formatNumber(energyDelivered, 1)} kWh</small>`;
+                                if (isSelectedCell) {
+                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark); font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
+                                } else {
+                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark);">${formatNumber(energyDelivered, 1)} kWh</small>`;
+                                }
                             }
                             
                             customRow.appendChild(cell);
@@ -1266,18 +1363,6 @@
          */
         function setupInteractiveEffects() {
             try {
-                // Result card hover effects
-                const resultCards = document.querySelectorAll('.result-card');
-                resultCards.forEach(card => {
-                    card.addEventListener('mouseenter', function() {
-                        this.style.transform = 'translateY(-8px) scale(1.02)';
-                    });
-
-                    card.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(0) scale(1)';
-                    });
-                });
-
                 // Form group focus effects
                 const formGroups = document.querySelectorAll('.form-group');
                 formGroups.forEach(group => {
