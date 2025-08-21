@@ -957,22 +957,6 @@
         </div>
 
         <div class="card">
-            <div class="guidance-section">
-                <div class="methodology-title">How EV Charging Reduces Carbon Emissions</div>
-                <div class="methodology-text">
-                    <strong>The Carbon Reduction Process:</strong> When someone charges their EV at your location instead of filling up with petrol, you're directly replacing high-carbon fuel with lower-carbon electricity.
-                </div>
-                <div class="methodology-text">
-                    <strong>Petrol Vehicle Emissions:</strong> A typical petrol car emits ~284g CO₂ per mile driven (based on 2.31kg CO₂/litre fuel and 35mpg average efficiency).
-                </div>
-                <div class="methodology-text">
-                    <strong>EV Electricity Emissions:</strong> An EV using UK grid electricity emits ~49g CO₂ per mile (3.5 miles/kWh efficiency × current grid intensity). With 100% renewable electricity, this drops to 0g CO₂/mile.
-                </div>
-                <div class="methodology-text">
-                    <strong>Net Carbon Saving:</strong> Each mile driven electric instead of petrol saves ~235g CO₂ - an 83% reduction in transport emissions per mile.
-                </div>
-            </div>
-
             <div class="benefits-section">
                 <h4 class="benefits-title">Corporate Sustainability Benefits</h4>
                 <ul class="benefits-list">
@@ -987,7 +971,7 @@
             <div class="guidance-section">
                 <div class="methodology-title">Calculation Methodology</div>
                 <div class="methodology-text">
-                    <strong>CO₂ Emissions:</strong> Based on UK electricity grid carbon intensity (varies by renewable %) vs petrol vehicle emissions (2.31 kg CO₂/litre, 35 mpg average).
+                    <strong>CO₂ Emissions:</strong> Based on <span id="gridIntensityText">your selected renewable energy mix</span> vs petrol vehicle emissions (2.31 kg CO₂/litre, 35 mpg average).
                 </div>
                 <div class="methodology-text">
                     <strong>Tree Equivalency:</strong> Based on mature trees absorbing ~22kg CO₂ annually (Forestry Commission data).
@@ -1029,6 +1013,20 @@
                 minimumFractionDigits: decimals,
                 maximumFractionDigits: decimals
             });
+        }
+
+        function updateGridIntensityText(renewablePercentage) {
+            const gridIntensityElement = document.getElementById('gridIntensityText');
+            const gridCarbonIntensity = {
+                37: { intensity: 0.170, description: "UK grid average (37% renewables, 170g CO₂/kWh)" },
+                50: { intensity: 0.135, description: "above average renewable mix (50% renewables, 135g CO₂/kWh)" },
+                75: { intensity: 0.068, description: "high renewable mix (75% renewables, 68g CO₂/kWh)" },
+                100: { intensity: 0.000, description: "100% renewable electricity (0g CO₂/kWh)" }
+            };
+            
+            if (gridIntensityElement && gridCarbonIntensity[renewablePercentage]) {
+                gridIntensityElement.textContent = gridCarbonIntensity[renewablePercentage].description;
+            }
         }
 
         function calculateImpact() {
@@ -1098,6 +1096,9 @@
                 animateValue('treesEquivalent', treesEquivalent, 0);
                 animateValue('homesEquivalent', homesEquivalent, 1);
                 animateValue('netflixHours', netflixHours, 0);
+
+                // Update grid intensity text in methodology
+                updateGridIntensityText(renewablePercentage);
             } catch (error) {
                 console.error('Error in calculateImpact:', error);
             }
