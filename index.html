@@ -785,12 +785,8 @@
             const hubspotData = {
                 "fields": [
                     {
-                        "name": "firstname",
-                        "value": formData.get('firstName') || ""
-                    },
-                    {
-                        "name": "lastname", 
-                        "value": formData.get('lastName') || ""
+                        "name": "0-2/name",
+                        "value": `${formData.get('firstName')} ${formData.get('lastName')}` || ""
                     },
                     {
                         "name": "email",
