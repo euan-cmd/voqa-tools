@@ -547,11 +547,9 @@
         .cta-container {
             margin-top: 30px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.98);
-            color: var(--text-dark);
+            background: transparent;
+            color: var(--text-light);
             padding: 30px;
-            border-radius: 16px;
-            backdrop-filter: blur(20px);
             position: relative;
         }
 
@@ -1110,7 +1108,7 @@
                 const tableBody = document.getElementById('comparisonTableBody');
                 if (!tableBody) return;
 
-                const dwellTimes = [60, 120, 240, 480];
+                const baseDwellTimes = [60, 120, 240, 480];
                 const powerRatings = [7.4, 11, 22, 50];
                 const vehicleSelect = document.getElementById('vehicleSelect');
                 const isCustomVehicle = vehicleSelect && vehicleSelect.value === 'custom';
@@ -1124,24 +1122,45 @@
                 
                 const selectedPower = powerRatingElement ? parseFloat(powerRatingElement.value) : null;
                 let selectedDwellTime = null;
+                let customDwellTimeValue = null;
                 
                 if (dwellTimeSelect) {
                     if (dwellTimeSelect.value === 'custom' && customDwellTime && customDwellTime.value) {
-                        selectedDwellTime = parseFloat(customDwellTime.value);
+                        customDwellTimeValue = parseFloat(customDwellTime.value);
+                        selectedDwellTime = customDwellTimeValue;
                     } else {
                         selectedDwellTime = parseFloat(dwellTimeSelect.value);
                     }
                 }
 
+                // Create ordered list of dwell times including custom time
+                let allDwellTimes = [...baseDwellTimes];
+                if (customDwellTimeValue && customDwellTimeValue > 0) {
+                    allDwellTimes.push(customDwellTimeValue);
+                    allDwellTimes.sort((a, b) => a - b);
+                }
+
                 tableBody.innerHTML = '';
 
-                dwellTimes.forEach(dwellTime => {
+                // Create table rows in chronological order
+                allDwellTimes.forEach(dwellTime => {
+                    const isCustomTime = customDwellTimeValue && dwellTime === customDwellTimeValue;
                     const row = document.createElement('tr');
+                    
+                    if (isCustomTime) {
+                        row.className = 'custom-row';
+                    }
                     
                     // Dwell time cell
                     const dwellCell = document.createElement('td');
-                    dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; background: var(--bg-light); text-align: left;';
-                    dwellCell.textContent = `${dwellTime} min`;
+                    if (isCustomTime) {
+                        dwellCell.className = 'custom-time';
+                        dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; text-align: left;';
+                        dwellCell.textContent = `${dwellTime} min`;
+                    } else {
+                        dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; background: var(--bg-light); text-align: left;';
+                        dwellCell.textContent = `${dwellTime} min`;
+                    }
                     row.appendChild(dwellCell);
 
                     // Range cells for each power rating
@@ -1153,7 +1172,7 @@
                         
                         if (isSelectedCell) {
                             cell.style.cssText = 'border: 3px solid var(--primary); background: linear-gradient(135deg, rgba(247, 215, 188, 0.4) 0%, rgba(248, 212, 180, 0.3) 100%); font-weight: 700; position: relative;';
-                        } else if (power <= 22) {
+                        } else if (power <= 22 && !isCustomTime) {
                             cell.className = 'voqa-highlight';
                         }
                         
@@ -1184,55 +1203,6 @@
                     tableBody.appendChild(row);
                 });
 
-                // Add custom dwell time row if applicable
-                if (dwellTimeSelect && dwellTimeSelect.value === 'custom' && customDwellTime && customDwellTime.value) {
-                    const customDwellTimeValue = parseFloat(customDwellTime.value);
-                    if (customDwellTimeValue > 0) {
-                        const customRow = document.createElement('tr');
-                        customRow.className = 'custom-row';
-                        
-                        const customDwellCell = document.createElement('td');
-                        customDwellCell.className = 'custom-time';
-                        customDwellCell.innerHTML = `${customDwellTimeValue} min<br><small style="font-size: 10px; font-weight: 600; color: var(--primary-dark);">⭐ Your Custom Time</small>`;
-                        customRow.appendChild(customDwellCell);
-
-                        powerRatings.forEach((power) => {
-                            const cell = document.createElement('td');
-                            
-                            // Check if this cell matches current selections (custom dwell time)
-                            const isSelectedCell = (selectedPower === power && selectedDwellTime === customDwellTimeValue);
-                            
-                            if (isSelectedCell) {
-                                cell.style.cssText = 'border: 3px solid var(--primary); background: linear-gradient(135deg, rgba(247, 215, 188, 0.5) 0%, rgba(248, 212, 180, 0.4) 100%); font-weight: 700;';
-                            }
-                            
-                            const dwellHours = customDwellTimeValue / 60;
-                            const maxEnergyFromTime = dwellHours * power;
-                            const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
-                            const range = energyDelivered * efficiency;
-                            const timeToFull = availableCapacity / power;
-                            const batteryFull = timeToFull < dwellHours;
-                            
-                            if (batteryFull) {
-                                if (isSelectedCell) {
-                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745; font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh (Full)</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
-                                } else {
-                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
-                                }
-                            } else {
-                                if (isSelectedCell) {
-                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark); font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
-                                } else {
-                                    cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark);">${formatNumber(energyDelivered, 1)} kWh</small>`;
-                                }
-                            }
-                            
-                            customRow.appendChild(cell);
-                        });
-
-                        tableBody.appendChild(customRow);
-                    }
-                }
             } catch (error) {
                 console.error('Error updating comparison table:', error);
             }
