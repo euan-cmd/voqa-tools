@@ -878,6 +878,9 @@
                 <div class="custom-note">
                     Time spent actively charging (excludes idle/connection time)
                 </div>
+                <div id="rangeAddedNote" style="margin-top: 12px; padding: 12px; background: #f0f8f0; border-radius: 8px; font-size: 12px; color: var(--success); line-height: 1.4;">
+                    <strong>Range Added:</strong> During a <span id="sessionTime">3</span>-hour session at <span id="chargingPower">7.4</span>kW charging rate, approximately <span id="rangeAdded">~78 miles</span> of driving range is added to the EV battery
+                </div>
             </div>
 
             <div class="form-group">
@@ -1071,6 +1074,32 @@
             }
         }
 
+        function updateRangeAdded() {
+            const sessionDuration = parseFloat(document.getElementById('sessionDuration').value) || 0;
+            const selectedRate = parseFloat(document.querySelector('input[name="chargingRate"]:checked').value) || 0;
+            
+            // Calculate energy added during session
+            const energyAdded = sessionDuration * selectedRate; // kWh
+            
+            // Convert to miles using average EV efficiency (3.5 miles per kWh)
+            const rangeAdded = energyAdded * 3.5;
+            
+            // Update display elements
+            const sessionTimeElement = document.getElementById('sessionTime');
+            const chargingPowerElement = document.getElementById('chargingPower');
+            const rangeElement = document.getElementById('rangeAdded');
+            
+            if (sessionTimeElement) {
+                sessionTimeElement.textContent = sessionDuration;
+            }
+            if (chargingPowerElement) {
+                chargingPowerElement.textContent = selectedRate;
+            }
+            if (rangeElement) {
+                rangeElement.textContent = `~${Math.round(rangeAdded)} miles`;
+            }
+        }
+
         function updateRateNote() {
             const selectedRate = document.querySelector('input[name="chargingRate"]:checked').value;
             const rateNote = document.getElementById('rate22Note');
@@ -1242,7 +1271,10 @@
                 // Add event listeners
                 document.getElementById('numChargers').addEventListener('input', calculateImpact);
                 document.getElementById('sessionsPerDay').addEventListener('input', calculateImpact);
-                document.getElementById('sessionDuration').addEventListener('input', calculateImpact);
+                document.getElementById('sessionDuration').addEventListener('input', function() {
+                    calculateImpact();
+                    updateRangeAdded();
+                });
                 document.getElementById('operatingDays').addEventListener('change', calculateImpact);
                 document.getElementById('renewablePercentage').addEventListener('change', function() {
                     calculateImpact();
@@ -1253,6 +1285,7 @@
                     radio.addEventListener('change', function() {
                         calculateImpact();
                         updateRateNote();
+                        updateRangeAdded();
                     });
                 });
 
@@ -1265,12 +1298,14 @@
                             radio.checked = true;
                             calculateImpact();
                             updateRateNote();
+                            updateRangeAdded();
                         }
                     });
                 });
 
                 // Initial setup
                 updateRateNote();
+                updateRangeAdded();
 
                 // Interactive enhancements
                 setupInteractiveEffects();
