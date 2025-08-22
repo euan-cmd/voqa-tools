@@ -468,6 +468,11 @@
             transition: all 0.3s ease;
         }
 
+        .impact-card.co2-card {
+            background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+            border: 2px solid #98d982;
+        }
+
         .impact-card::before {
             content: '';
             position: absolute;
@@ -481,12 +486,24 @@
             transition: transform 0.4s ease;
         }
 
+        .impact-card.co2-card::before {
+            background: #28a745;
+            transform: scaleX(1);
+        }
+
         .impact-card:hover::before {
             transform: scaleX(1);
         }
 
         .impact-card:hover {
             border-color: var(--success);
+        }
+
+        .impact-card.co2-card:hover {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2);
         }
 
         .impact-icon {
@@ -931,7 +948,7 @@
             <h2 class="section-title">🌱 Environmental Impact</h2>
             
             <div class="impact-grid">
-                <div class="impact-card">
+                <div class="impact-card co2-card">
                     <span class="impact-icon">CO₂</span>
                     <div class="impact-value" id="co2Avoided">-</div>
                     <div class="impact-label">CO₂ Avoided</div>
