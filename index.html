@@ -786,23 +786,23 @@
                 "fields": [
                     {
                         "name": "firstname",
-                        "value": formData.get('firstName')
+                        "value": formData.get('firstName') || ""
                     },
                     {
                         "name": "lastname", 
-                        "value": formData.get('lastName')
+                        "value": formData.get('lastName') || ""
                     },
                     {
                         "name": "email",
-                        "value": formData.get('email')
+                        "value": formData.get('email') || ""
                     },
                     {
                         "name": "company",
-                        "value": formData.get('company')
+                        "value": formData.get('company') || ""
                     },
                     {
                         "name": "calculator_description",
-                        "value": formData.get('description')
+                        "value": formData.get('description') || ""
                     }
                 ]
             };
