@@ -781,24 +781,42 @@
                 console.log(`${key}: "${value}"`);
             }
             
-            // Prepare data for HubSpot Forms API - using the field names from the error message
+            // Get individual form values
+            const firstName = formData.get('firstName') || "";
+            const lastName = formData.get('lastName') || "";
+            const email = formData.get('email') || "";
+            const company = formData.get('company') || "";
+            const description = formData.get('description') || "";
+            
+            console.log('=== INDIVIDUAL FIELD VALUES ===');
+            console.log('First Name:', `"${firstName}"`);
+            console.log('Last Name:', `"${lastName}"`);
+            console.log('Email:', `"${email}"`);
+            console.log('Company:', `"${company}"`);
+            console.log('Description:', `"${description}"`);
+            
+            // Prepare data for HubSpot Forms API - using standard field names
             const hubspotData = {
                 "fields": [
                     {
-                        "name": "0-2/name",
-                        "value": `${formData.get('firstName')} ${formData.get('lastName')}` || ""
+                        "name": "firstname",
+                        "value": firstName
+                    },
+                    {
+                        "name": "lastname",
+                        "value": lastName
                     },
                     {
                         "name": "email",
-                        "value": formData.get('email') || ""
+                        "value": email
                     },
                     {
                         "name": "company",
-                        "value": formData.get('company') || ""
+                        "value": company
                     },
                     {
-                        "name": "0-54/calculator_description",
-                        "value": formData.get('description') || ""
+                        "name": "calculator_description",
+                        "value": description
                     }
                 ]
             };
