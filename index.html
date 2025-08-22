@@ -795,7 +795,7 @@
             console.log('Company:', `"${company}"`);
             console.log('Description:', `"${description}"`);
             
-            // Prepare data for HubSpot Forms API - using standard field names
+            // Prepare data for HubSpot Forms API - using exact field names from screenshots
             const hubspotData = {
                 "fields": [
                     {
@@ -818,7 +818,11 @@
                         "name": "calculator_description",
                         "value": description
                     }
-                ]
+                ],
+                "context": {
+                    "pageUri": window.location.href,
+                    "pageName": "VOQA Calculator Tools - Custom Calculator Request"
+                }
             };
             
             console.log('=== HUBSPOT PAYLOAD ===');
