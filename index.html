@@ -759,22 +759,27 @@
             event.preventDefault();
             
             // REPLACE THESE WITH YOUR ACTUAL HUBSPOT VALUES
-            const PORTAL_ID = 'YOUR_PORTAL_ID_HERE'; // Replace with your Hub ID from HubSpot Settings
-            const FORM_ID = 'YOUR_FORM_ID_HERE'; // Replace with your Form ID from the embed code
+            const PORTAL_ID = '48587494'; // Replace with your Hub ID from HubSpot Settings
+            const FORM_ID = '5a37ea40-0e43-42f3-b792-01cff906be4a'; // Replace with your Form ID from the embed code
             
-            console.log('Form submission started...');
+            console.log('=== FORM SUBMISSION DEBUG START ===');
             console.log('Portal ID:', PORTAL_ID);
             console.log('Form ID:', FORM_ID);
             
+            // Check if IDs are still placeholder values
+            if (PORTAL_ID === 'YOUR_PORTAL_ID_HERE' || FORM_ID === 'YOUR_FORM_ID_HERE') {
+                console.error('❌ ERROR: You must replace Portal ID and Form ID with actual values!');
+                alert('Configuration error: Portal ID and Form ID must be updated. Check console for details.');
+                return;
+            }
+            
             const formData = new FormData(event.target);
             
-            // Log form data for debugging
-            console.log('Form data collected:');
-            console.log('First Name:', formData.get('firstName'));
-            console.log('Last Name:', formData.get('lastName'));
-            console.log('Email:', formData.get('email'));
-            console.log('Company:', formData.get('company'));
-            console.log('Description:', formData.get('description'));
+            // Log all form data
+            console.log('=== FORM DATA ===');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: "${value}"`);
+            }
             
             // Prepare data for HubSpot Forms API
             const hubspotData = {
@@ -796,20 +801,18 @@
                         "value": formData.get('company')
                     },
                     {
-                        "name": "calculator_description", // Make sure this custom field exists in your HubSpot form
+                        "name": "calculator_description",
                         "value": formData.get('description')
                     }
-                ],
-                "context": {
-                    "pageUri": window.location.href,
-                    "pageName": "VOQA Calculator Tools - Custom Calculator Request"
-                }
+                ]
             };
             
-            console.log('HubSpot data prepared:', JSON.stringify(hubspotData, null, 2));
+            console.log('=== HUBSPOT PAYLOAD ===');
+            console.log(JSON.stringify(hubspotData, null, 2));
             
             const submitUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_ID}`;
-            console.log('Submitting to URL:', submitUrl);
+            console.log('=== SUBMIT URL ===');
+            console.log(submitUrl);
             
             // Submit to HubSpot Forms API
             fetch(submitUrl, {
@@ -819,51 +822,59 @@
                 },
                 body: JSON.stringify(hubspotData)
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                console.log('Response ok:', response.ok);
+            .then(async response => {
+                console.log('=== RESPONSE INFO ===');
+                console.log('Status:', response.status);
+                console.log('Status Text:', response.statusText);
+                console.log('OK:', response.ok);
+                console.log('Headers:', [...response.headers.entries()]);
                 
-                // Always try to get the response body for more details
-                return response.text().then(responseText => {
-                    console.log('Response body:', responseText);
+                // Get response text
+                const responseText = await response.text();
+                console.log('=== RESPONSE BODY ===');
+                console.log('Raw response:', responseText);
+                
+                if (response.ok) {
+                    console.log('✅ SUCCESS: Form submitted to HubSpot');
+                    alert('Thank you for your request! We\'ll review your calculator idea and get back to you soon.');
+                    event.target.reset();
+                    hideRequestForm();
+                } else {
+                    console.log('❌ FAILED: HubSpot rejected the submission');
                     
-                    if (response.ok) {
-                        console.log('Form submitted successfully to HubSpot');
-                        alert('Thank you for your request! We\'ll review your calculator idea and get back to you soon.');
-                        event.target.reset();
-                        hideRequestForm();
-                    } else {
-                        // Parse error details
-                        let errorDetails = responseText;
-                        try {
-                            const errorJson = JSON.parse(responseText);
-                            errorDetails = JSON.stringify(errorJson, null, 2);
-                            console.error('Parsed error details:', errorJson);
-                        } catch (e) {
-                            console.error('Could not parse error response as JSON');
+                    // Try to parse JSON error
+                    try {
+                        const errorData = JSON.parse(responseText);
+                        console.log('=== PARSED ERROR ===');
+                        console.log(errorData);
+                        
+                        if (errorData.errors) {
+                            console.log('=== SPECIFIC ERRORS ===');
+                            errorData.errors.forEach((error, index) => {
+                                console.log(`Error ${index + 1}:`, error);
+                            });
                         }
-                        
-                        console.error('HubSpot submission failed:');
-                        console.error('Status:', response.status);
-                        console.error('Status Text:', response.statusText);
-                        console.error('Full Error Response:', errorDetails);
-                        
-                        // More specific error messages
-                        if (response.status === 400) {
-                            console.error('400 Bad Request - Common causes:');
-                            console.error('1. Portal ID or Form ID is incorrect');
-                            console.error('2. Required field is missing from the form');
-                            console.error('3. Field name mismatch between code and HubSpot form');
-                            console.error('4. Custom field "calculator_description" does not exist in HubSpot form');
-                        }
-                        
-                        throw new Error(`Form submission failed with status: ${response.status} - ${errorDetails}`);
+                    } catch (e) {
+                        console.log('Could not parse response as JSON');
                     }
-                });
+                    
+                    // Common 400 error causes
+                    console.log('=== COMMON 400 ERROR CAUSES ===');
+                    console.log('1. Portal ID or Form ID incorrect');
+                    console.log('2. Form not published in HubSpot');
+                    console.log('3. Required field missing from HubSpot form');
+                    console.log('4. Field name mismatch (check "calculator_description" exists)');
+                    console.log('5. Invalid email format');
+                    
+                    throw new Error(`HubSpot API returned ${response.status}: ${responseText}`);
+                }
             })
             .catch(error => {
-                console.error('Complete error details:', error);
-                alert('There was an error sending your request. Please check the browser console for details and try again, or contact us directly at info@voqa.com');
+                console.log('=== FINAL ERROR ===');
+                console.error(error);
+                console.log('=== DEBUG END ===');
+                
+                alert('Submission failed. Check browser console for detailed error information.');
             });
         }
 
