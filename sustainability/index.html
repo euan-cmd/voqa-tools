@@ -852,12 +852,15 @@
                         <span class="rate-text">7.4kW</span>
                     </div>
                     <div class="rate-option">
-                        <input type="radio" name="chargingRate" value="22" id="rate22">
+                        <input type="radio" name="chargingRate" value="11" id="rate22">
                         <span class="rate-text">22kW</span>
                     </div>
                 </div>
                 <div class="custom-note">
                     Select the power rating that matches your charging infrastructure
+                </div>
+                <div id="rate22Note" style="margin-top: 12px; padding: 12px; background: #e8f4f8; border-radius: 8px; font-size: 12px; color: var(--primary); line-height: 1.4; display: none;">
+                    <strong>Note:</strong> Most EVs have a maximum AC charging rate of 11kW. This rate (11kW) will be used in calculations even though your charger is rated at 22kW.
                 </div>
             </div>
 
@@ -1068,6 +1071,17 @@
             }
         }
 
+        function updateRateNote() {
+            const selectedRate = document.querySelector('input[name="chargingRate"]:checked').value;
+            const rateNote = document.getElementById('rate22Note');
+            
+            if (selectedRate === '11') {
+                rateNote.style.display = 'block';
+            } else {
+                rateNote.style.display = 'none';
+            }
+        }
+
         function updateGridAverageNote(isLive = false) {
             const gridNote = document.getElementById('gridAverageNote');
             const renewableSelect = document.getElementById('renewablePercentage');
@@ -1122,7 +1136,7 @@
 
                 // Calculate annual energy delivered
                 const dailyEnergyPerCharger = sessionsPerDay * sessionDuration * chargingRate;
-                const annualEnergyTotal = numChargers * dailyEnergyPerCharger * operatingDays;
+                const annualEnergyTotal = numChargers * dailyEnergyPerCharger * operatingDays * 52;
 
                 // Update energy display
                 document.getElementById('annualEnergy').textContent = formatNumber(annualEnergyTotal, 0);
@@ -1236,7 +1250,10 @@
                 });
                 
                 document.querySelectorAll('input[name="chargingRate"]').forEach(radio => {
-                    radio.addEventListener('change', calculateImpact);
+                    radio.addEventListener('change', function() {
+                        calculateImpact();
+                        updateRateNote();
+                    });
                 });
 
                 // Power option click handlers
@@ -1247,9 +1264,13 @@
                         if (radio) {
                             radio.checked = true;
                             calculateImpact();
+                            updateRateNote();
                         }
                     });
                 });
+
+                // Initial setup
+                updateRateNote();
 
                 // Interactive enhancements
                 setupInteractiveEffects();
