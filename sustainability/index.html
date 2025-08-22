@@ -67,8 +67,10 @@
             backdrop-filter: blur(20px);
             padding: 24px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -192,6 +194,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
+            padding-top: 220px;
             display: grid;
             grid-template-columns: 1fr;
             gap: 40px;
@@ -766,6 +769,7 @@
         @media (max-width: 900px) {
             .container {
                 padding: 30px 20px;
+                padding-top: 200px;
                 gap: 30px;
             }
             
@@ -801,6 +805,10 @@
         }
 
         @media (max-width: 600px) {
+            .container {
+                padding-top: 180px;
+            }
+
             .back-to-calculators {
                 position: relative;
                 left: auto;
