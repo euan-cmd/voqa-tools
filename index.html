@@ -759,8 +759,8 @@
             event.preventDefault();
             
             // REPLACE THESE WITH YOUR ACTUAL HUBSPOT VALUES
-            const PORTAL_ID = '48587494'; // Replace with your Hub ID from HubSpot Settings
-            const FORM_ID = '0fd4eb45-60a2-4324-9fe7-0935ab88a4a9'; // Replace with your Form ID from the embed code
+            const PORTAL_ID = '48587494'; // Your Portal ID from the embed code
+            const FORM_ID = '0fd4eb45-60a2-4324-9fe7-0935ab88a4a9'; // Your Form ID from the embed code
             
             console.log('=== FORM SUBMISSION DEBUG START ===');
             console.log('Portal ID:', PORTAL_ID);
@@ -781,7 +781,7 @@
                 console.log(`${key}: "${value}"`);
             }
             
-            // Prepare data for HubSpot Forms API
+            // Prepare data for HubSpot Forms API - using the field names from the error message
             const hubspotData = {
                 "fields": [
                     {
@@ -801,7 +801,7 @@
                         "value": formData.get('company') || ""
                     },
                     {
-                        "name": "calculator_description",
+                        "name": "0-54/calculator_description",
                         "value": formData.get('description') || ""
                     }
                 ]
