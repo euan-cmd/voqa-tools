@@ -817,7 +817,69 @@
         <div class="card">
             <h2 class="section-title">📊 Investment Analysis</h2>
             
-            <div class="results-grid">
+            <div class="breakdown-grid">
+                <div class="breakdown-section">
+                    <div class="breakdown-title">Investment Costs</div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Total Investment:</span>
+                        <span class="breakdown-value negative" id="totalCapex">-</span>
+                    </div>
+                </div>
+                
+                <div class="breakdown-section">
+                    <div class="breakdown-title">Annual EV Charging Contribution</div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Annual Charging Revenue:</span>
+                        <span class="breakdown-value positive" id="annualChargingRevenue">-</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Less: Annual Energy & Transaction Costs:</span>
+                        <span class="breakdown-value negative" id="combinedEnergyCosts">-</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Less: Annual Operating Costs:</span>
+                        <span class="breakdown-value negative" id="totalAnnualOpex">-</span>
+                    </div>
+                    <div class="breakdown-item breakdown-total">
+                        <span class="breakdown-label">Net Annual EV Contribution:</span>
+                        <span class="breakdown-value positive" id="netEVChargingContribution">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insights-box" style="box-shadow: none;">
+                <div class="insights-title">Key Insights</div>
+                <div class="insight-item">
+                    You need <strong id="insightBookingsNeeded">-</strong> to reach break-even on your <strong id="insightInvestmentAmount">-</strong> EV charging investment
+                </div>
+                <div class="insight-item">
+                    This equals <strong id="insightBookingsPerWeek">-</strong> extra bookings per week or a <strong id="insightOccupancyIncrease">-</strong> occupancy increase
+                </div>
+                <div class="insight-item">
+                    EV charging will contribute <strong id="insightEVContribution">-</strong>, leaving <strong id="insightRemainingAmount">-</strong> to be covered by additional room bookings
+                </div>
+                <div class="insight-item">
+                    Each additional booking generates <strong id="insightMarginPerBooking">-</strong> margin (room + F&B)
+                </div>
+                <div class="insight-item">
+                    Your new occupancy rate would be <strong id="insightNewOccupancy">-</strong> vs current <strong id="insightCurrentOccupancy">-</strong>
+                </div>
+            </div>
+
+            <div class="insights-box" style="background: #F0F8FF; border-left: none; box-shadow: none;">
+                <div class="insights-title" style="color: var(--primary);">Just as an FYI - EV Driver Booking Behaviour</div>
+                <div class="insight-item">
+                    <strong>48% of UK EV drivers would not stay at a hotel without onsite EV charging</strong> (SMS Ltd survey of 1,000+ UK EV drivers, September 2024)
+                </div>
+                <div class="insight-item">
+                    <strong>95% of EV drivers say charging availability impacts their hotel booking decisions</strong> (Virta/Kantar survey, November 2024)
+                </div>
+                <div class="insight-item">
+                    <strong>82% of EV drivers prefer hotels with charging stations</strong> (Chargie survey, cited by National Car Charging, 2025)
+                </div>
+            </div>
+
+            <div class="results-grid" style="margin-top: 40px;">
                 <div class="result-card">
                     <span class="result-icon">📅</span>
                     <div class="result-value" id="additionalBookingsPerWeek">-</div>
@@ -837,55 +899,6 @@
                     <div class="result-value" id="marginPerBooking">-</div>
                     <div class="result-label">Margin per Booking</div>
                     <div class="result-description">Combined room and F&B margin</div>
-                </div>
-            </div>
-
-            <div class="breakdown-grid">
-                <div class="breakdown-section">
-                    <div class="breakdown-title">Investment Costs</div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">Total Investment:</span>
-                        <span class="breakdown-value negative" id="totalCapex">-</span>
-                    </div>
-                </div>
-                
-                <div class="breakdown-section">
-                    <div class="breakdown-title">EV Charging Contribution</div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">Annual Charging Revenue:</span>
-                        <span class="breakdown-value positive" id="annualChargingRevenue">-</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">Less: Energy & Transaction Costs:</span>
-                        <span class="breakdown-value negative" id="combinedEnergyCosts">-</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">Less: Operating Costs:</span>
-                        <span class="breakdown-value negative" id="totalAnnualOpex">-</span>
-                    </div>
-                    <div class="breakdown-item breakdown-total">
-                        <span class="breakdown-label">Net EV Contribution:</span>
-                        <span class="breakdown-value positive" id="netEVChargingContribution">-</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="insights-box">
-                <div class="insights-title">Key Insights</div>
-                <div class="insight-item">
-                    You need <strong id="insightBookingsNeeded">-</strong> to reach break-even on your <strong id="insightInvestmentAmount">-</strong> EV charging investment
-                </div>
-                <div class="insight-item">
-                    This equals <strong id="insightBookingsPerWeek">-</strong> extra bookings per week or a <strong id="insightOccupancyIncrease">-</strong> occupancy increase
-                </div>
-                <div class="insight-item">
-                    EV charging will contribute <strong id="insightEVContribution">-</strong>, leaving <strong id="insightRemainingAmount">-</strong> to be covered by additional room bookings
-                </div>
-                <div class="insight-item">
-                    Each additional booking generates <strong id="insightMarginPerBooking">-</strong> margin (room + F&B)
-                </div>
-                <div class="insight-item">
-                    Your new occupancy rate would be <strong id="insightNewOccupancy">-</strong> vs current <strong id="insightCurrentOccupancy">-</strong>
                 </div>
             </div>
 
@@ -1094,12 +1107,6 @@
                                     weight: '500',
                                     family: 'Red Hat Display'
                                 } 
-                            },
-                            title: {
-                                display: true,
-                                text: 'Year',
-                                color: '#005C80',
-                                font: { weight: 'bold', size: 14, family: 'Red Hat Display' }
                             }
                         }
                     }
@@ -1172,12 +1179,6 @@
                                     weight: '500',
                                     family: 'Red Hat Display'
                                 } 
-                            },
-                            title: {
-                                display: true,
-                                text: 'Year',
-                                color: '#005C80',
-                                font: { weight: 'bold', size: 14, family: 'Red Hat Display' }
                             }
                         }
                     },
@@ -1321,11 +1322,25 @@
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
 
                 // Update insights
-                updateElement('insightBookingsNeeded', totalAdditionalBookingsNeeded.toLocaleString() + ` total additional bookings over ${inputs.desiredPaybackYears} years`);
+                updateElement('insightBookingsNeeded', totalAdditionalBookingsNeeded.toLocaleString() + ` total additional bookings over ${Math.round(inputs.desiredPaybackYears)} years`);
                 updateElement('insightInvestmentAmount', formatCurrency(totalCapex));
                 updateElement('insightBookingsPerWeek', formatNumber(additionalBookingsPerWeek, 1) + ' extra bookings per week');
                 updateElement('insightOccupancyIncrease', (occupancyIncreasePercent * 100).toFixed(1) + '% occupancy increase');
-                updateElement('insightEVContribution', formatCurrency(cumulativeEVContribution) + ` over ${inputs.desiredPaybackYears} years`);
+                
+                // Format payback period properly
+                const paybackMonths = Math.round(inputs.desiredPaybackYears * 12);
+                let paybackDisplay;
+                if (paybackMonths === 12) {
+                    paybackDisplay = "1 year";
+                } else if (paybackMonths < 12) {
+                    paybackDisplay = `${paybackMonths} months`;
+                } else if (paybackMonths % 12 === 0) {
+                    paybackDisplay = `${paybackMonths / 12} years`;
+                } else {
+                    paybackDisplay = `${Math.floor(paybackMonths / 12)} years ${paybackMonths % 12} months`;
+                }
+                
+                updateElement('insightEVContribution', formatCurrency(cumulativeEVContribution) + ` over ${paybackDisplay}`);
                 updateElement('insightRemainingAmount', formatCurrency(remainingToRecoverFromBookings));
                 updateElement('insightMarginPerBooking', formatCurrency(Math.round(totalMarginPerAdditionalBooking)) + ' margin');
                 updateElement('insightNewOccupancy', (newOccupancyRate * 100).toFixed(1) + '%');
