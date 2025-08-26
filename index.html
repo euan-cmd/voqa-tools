@@ -709,14 +709,68 @@
             // Get the first name for personalized response
             const firstName = document.getElementById('firstName').value;
             
-            // Hide the request form
-            hideRequestForm();
+            // HubSpot configuration
+            const PORTAL_ID = '48587494';
+            const FORM_ID = '0fd4eb45-60a2-4324-9fe7-0935ab88a4a9';
             
-            // Reset the form
-            event.target.reset();
+            const formData = new FormData(event.target);
             
-            // Show personalized success message
-            showSuccessMessage(firstName);
+            // Prepare data for HubSpot Forms API
+            const hubspotData = {
+                "fields": [
+                    {
+                        "name": "firstname",
+                        "value": formData.get('firstName') || ""
+                    },
+                    {
+                        "name": "lastname", 
+                        "value": formData.get('lastName') || ""
+                    },
+                    {
+                        "name": "email",
+                        "value": formData.get('email') || ""
+                    },
+                    {
+                        "name": "company",
+                        "value": formData.get('company') || ""
+                    },
+                    {
+                        "name": "calculator_description",
+                        "value": formData.get('description') || ""
+                    }
+                ],
+                "context": {
+                    "pageUri": window.location.href,
+                    "pageName": "VOQA Calculator Tools - Custom Calculator Request"
+                }
+            };
+            
+            const submitUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_ID}`;
+            
+            // Submit to HubSpot Forms API
+            fetch(submitUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(hubspotData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success - hide form, reset, and show success message
+                    hideRequestForm();
+                    event.target.reset();
+                    showSuccessMessage(firstName);
+                } else {
+                    // Error handling
+                    console.error('HubSpot submission failed:', response.status);
+                    alert('There was an error submitting your request. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Submission error:', error);
+                alert('There was an error submitting your request. Please try again.');
+            });
         }
 
         // Close modal when clicking outside
