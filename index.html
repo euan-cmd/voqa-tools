@@ -668,6 +668,19 @@
         </div>
     </div>
 
+    <!-- Success Message Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideSuccessMessage()">&times;</span>
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; color: var(--success); margin-bottom: 20px;">✓</div>
+                <h2 id="successTitle" style="color: var(--success); margin-bottom: 15px;">Request Submitted</h2>
+                <p id="successMessage" style="font-size: 16px; color: #666;"></p>
+                <button onclick="hideSuccessMessage()" style="background: var(--success); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; margin-top: 20px;">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Modal functionality
         function showRequestForm() {
@@ -680,23 +693,42 @@
             document.body.style.overflow = 'auto';
         }
 
+        function showSuccessMessage(firstName) {
+            document.getElementById('successMessage').textContent = `${firstName}, thanks for your suggestion. We have a look and see what we can do.`;
+            document.getElementById('successModal').style.display = 'block';
+        }
+
+        function hideSuccessMessage() {
+            document.getElementById('successModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
         function submitRequest(event) {
             event.preventDefault();
             
             // Get the first name for personalized response
             const firstName = document.getElementById('firstName').value;
             
-            // Form submission simulation with personalized message
-            alert(`${firstName}, thanks for your suggestion. We have a look and see what we can do.`);
-            event.target.reset();
+            // Hide the request form
             hideRequestForm();
+            
+            // Reset the form
+            event.target.reset();
+            
+            // Show personalized success message
+            showSuccessMessage(firstName);
         }
 
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('requestModal');
-            if (event.target === modal) {
+            const requestModal = document.getElementById('requestModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (event.target === requestModal) {
                 hideRequestForm();
+            }
+            if (event.target === successModal) {
+                hideSuccessMessage();
             }
         }
 
@@ -704,6 +736,7 @@
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 hideRequestForm();
+                hideSuccessMessage();
             }
         });
 
