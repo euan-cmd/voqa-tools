@@ -850,9 +850,6 @@
             <div class="insights-box" style="box-shadow: none;">
                 <div class="insights-title">Key Insights</div>
                 <div class="insight-item">
-                    You need <strong id="insightBookingsNeeded">-</strong> to reach break-even on your <strong id="insightInvestmentAmount">-</strong> EV charging investment
-                </div>
-                <div class="insight-item">
                     This equals <strong id="insightBookingsPerWeek">-</strong> extra bookings per week or a <strong id="insightOccupancyIncrease">-</strong> occupancy increase
                 </div>
                 <div class="insight-item">
@@ -940,7 +937,7 @@
                     <canvas id="cumulativeChart" width="800" height="300"></canvas>
                 </div>
                 <div class="calc-explainer" style="margin-top: 15px; color: var(--text-dark); text-align: center;">
-                    This chart tracks your total accumulated cash position year by year. The break-even point shows when 
+                    This chart tracks your total accumulated cash position year by year. The payback point occurs when 
                     your total cash position returns to zero, indicating full recovery of your initial investment.
                 </div>
             </div>
@@ -955,14 +952,14 @@
                 <div class="result-card">
                     <span class="result-icon">⏱️</span>
                     <div class="result-value" id="chartBreakEvenInsight">-</div>
-                    <div class="result-label">Break-even Time</div>
-                    <div class="result-description">Time to recover initial investment</div>
+                    <div class="result-label">Target Payback Time</div>
+                    <div class="result-description">Your chosen payback period</div>
                 </div>
                 <div class="result-card">
                     <span class="result-icon">📈</span>
                     <div class="result-value" id="chartFiveYearProfitInsight">-</div>
-                    <div class="result-label">5-Year Profit</div>
-                    <div class="result-description">Total profit after 5 years of operation</div>
+                    <div class="result-label">Total Profit at Payback</div>
+                    <div class="result-description">Cumulative profit at target payback period</div>
                 </div>
             </div>
         </div>
@@ -989,7 +986,11 @@
 
         const getInputValue = (id, defaultValue = 0) => {
             const element = document.getElementById(id);
-            return element ? (parseFloat(element.value) || defaultValue) : defaultValue;
+            if (!element) return defaultValue;
+            const value = parseFloat(element.value);
+            // Check for NaN, but allow zero
+            if (isNaN(value)) return defaultValue;
+            return value;
         };
 
         const updateElement = (id, value) => {
@@ -999,9 +1000,10 @@
 
         // Chart generation function
         function generateCharts() {
-            const { totalCapex, netAdditionalMargin, baseEVContribution, annualUsageGrowth, totalAnnualOpex } = currentCalculationData;
+            const { totalCapex, netAdditionalMargin, baseEVContribution, annualUsageGrowth, totalAnnualOpex, desiredPaybackYears } = currentCalculationData;
             
-            const yearsToShow = 8;
+            // Use payback period + 2 years for chart visualization
+            const yearsToShow = Math.max(5, Math.ceil(desiredPaybackYears) + 2);
             const years = [];
             const annualCashFlow = [];
             const cumulative = [];
@@ -1186,43 +1188,19 @@
                 }
             });
 
-            // Update chart insights
-            const additionalRoomContributionPerYear = netAdditionalMargin - (baseEVContribution - totalAnnualOpex);
-            
-            // Calculate break-even time using the same growth model as payback calculation
-            let breakEvenTime = 0;
-            let cumulativeRecovered = 0;
-            
-            for (let year = 1; year <= 10; year++) {
-                const growthFactor = Math.pow(1 + annualUsageGrowth, year);
-                const evContributionThisYear = baseEVContribution * growthFactor;
-                const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
-                const totalContributionThisYear = netEVContributionThisYear + additionalRoomContributionPerYear;
-                
-                cumulativeRecovered += totalContributionThisYear;
-                
-                if (cumulativeRecovered >= totalCapex && breakEvenTime === 0) {
-                    // Calculate fractional year based on how much was recovered in previous years
-                    const previousYearRecovered = cumulativeRecovered - totalContributionThisYear;
-                    const remainingToRecover = totalCapex - previousYearRecovered;
-                    const fractionOfYear = remainingToRecover / totalContributionThisYear;
-                    breakEvenTime = (year - 1) + fractionOfYear;
-                    break;
-                }
-            }
-            
-            const fiveYearProfit = (netAdditionalMargin * 5) - totalCapex;
+            // Update chart insights using target payback period
+            const totalProfitAtPayback = (netAdditionalMargin * desiredPaybackYears) - totalCapex;
             
             updateElement('chartInvestmentInsight', formatCurrency(totalCapex));
             
-            const breakEvenMonths = Math.round(breakEvenTime * 12);
-            const breakEvenDisplay = breakEvenMonths === 12 ? "1 year" :
-                                   breakEvenMonths < 12 ? `${breakEvenMonths} months` :
-                                   breakEvenMonths % 12 === 0 ? `${breakEvenMonths / 12} years` :
-                                   `${Math.floor(breakEvenMonths / 12)} years ${breakEvenMonths % 12} months`;
+            const paybackMonths = Math.round(desiredPaybackYears * 12);
+            const paybackDisplay = paybackMonths === 12 ? "1 year" :
+                                 paybackMonths < 12 ? `${paybackMonths} months` :
+                                 paybackMonths % 12 === 0 ? `${paybackMonths / 12} years` :
+                                 `${Math.floor(paybackMonths / 12)} years ${paybackMonths % 12} months`;
             
-            updateElement('chartBreakEvenInsight', breakEvenDisplay);
-            updateElement('chartFiveYearProfitInsight', formatCurrency(fiveYearProfit));
+            updateElement('chartBreakEvenInsight', paybackDisplay);
+            updateElement('chartFiveYearProfitInsight', formatCurrency(totalProfitAtPayback));
         }
 
         // Main calculation function
@@ -1281,11 +1259,24 @@
 
                 // Calculate cumulative EV contribution over payback period
                 let cumulativeEVContribution = 0;
-                for (let year = 1; year <= inputs.desiredPaybackYears; year++) {
-                    const growthFactor = Math.pow(1 + annualUsageGrowth, year);
+                const paybackYears = inputs.desiredPaybackYears;
+                const fullYears = Math.floor(paybackYears);
+                const partialYear = paybackYears - fullYears;
+                
+                // Calculate full years
+                for (let year = 1; year <= fullYears; year++) {
+                    const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1); // Start with no growth in year 1
                     const evContributionThisYear = baseEVContribution * growthFactor;
                     const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
                     cumulativeEVContribution += netEVContributionThisYear;
+                }
+                
+                // Add partial year if needed
+                if (partialYear > 0) {
+                    const growthFactor = Math.pow(1 + annualUsageGrowth, fullYears); // Growth for the partial year
+                    const evContributionThisYear = baseEVContribution * growthFactor;
+                    const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
+                    cumulativeEVContribution += netEVContributionThisYear * partialYear;
                 }
 
                 // Calculate additional bookings needed
@@ -1319,10 +1310,13 @@
                 updateElement('annualChargingRevenue', formatCurrency(annualChargingRevenue));
                 updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
                 updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
+                console.log('Annual Maintenance per Bay:', inputs.annualMaintenance);
+                console.log('Number of Charging Bays:', inputs.chargingBays);
+                console.log('Total Annual Operating Costs:', totalAnnualOpex);
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
 
                 // Update insights
-                updateElement('insightBookingsNeeded', totalAdditionalBookingsNeeded.toLocaleString() + ` total additional bookings over ${Math.round(inputs.desiredPaybackYears)} years`);
+                updateElement('insightBookingsNeeded', Math.round(totalAdditionalBookingsNeeded).toLocaleString() + ` total additional bookings over ${Math.round(inputs.desiredPaybackYears)} year${Math.round(inputs.desiredPaybackYears) !== 1 ? 's' : ''}`);
                 updateElement('insightInvestmentAmount', formatCurrency(totalCapex));
                 updateElement('insightBookingsPerWeek', formatNumber(additionalBookingsPerWeek, 1) + ' extra bookings per week');
                 updateElement('insightOccupancyIncrease', (occupancyIncreasePercent * 100).toFixed(1) + '% occupancy increase');
@@ -1352,25 +1346,11 @@
                 currentCalculationData = {
                     totalCapex,
                     totalAnnualOpex,
-                    annualChargingRevenue,
-                    annualChargingGrossMargin,
-                    annualElectricityCosts,
-                    annualTransactionFees,
                     netEVChargingContribution,
-                    additionalBookingsNeeded: additionalBookingsNeededPerYear,
-                    additionalBookingsPerDay,
-                    occupancyIncreasePercent,
-                    newOccupancyRate,
-                    totalMarginPerAdditionalBooking,
-                    roomGrossMargin,
-                    fbGrossMargin,
                     netAdditionalMargin,
                     baseEVContribution,
                     annualUsageGrowth,
-                    additionalBookingsPerWeek,
-                    desiredPaybackYears: inputs.desiredPaybackYears,
-                    totalAdditionalBookingsNeeded,
-                    cumulativeEVContribution
+                    desiredPaybackYears: inputs.desiredPaybackYears
                 };
 
                 generateCharts();
@@ -1414,11 +1394,22 @@
                 inputIds.forEach(id => {
                     const element = document.getElementById(id);
                     if (element) {
-                        element.addEventListener('input', calculate);
+                        element.addEventListener('input', () => {
+                            console.log(`Input changed: ${id} = ${element.value}`);
+                            calculate();
+                        });
+                        element.addEventListener('change', () => {
+                            console.log(`Change event: ${id} = ${element.value}`);
+                            calculate();
+                        });
+                        console.log('Added event listeners to:', id, 'Current value:', element.value);
+                    } else {
+                        console.warn('Element not found:', id);
                     }
                 });
 
-                setupInteractiveEffects();
+                // Force immediate calculation
+                console.log('Running initial calculation...');
                 calculate();
 
             } catch (error) {
