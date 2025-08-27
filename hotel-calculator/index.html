@@ -703,7 +703,7 @@
                 </div>
                 <div class="guidance-text">
                     The calculator factors in EV charging revenue, room margins, F&B spend, and shows your complete ROI timeline with cash flow projections.
-                    Use realistic assumptions based on your local EV adoption rates and hotel performance.
+                    Use the tool to reflect your hotel.
                 </div>
             </div>
             
@@ -733,6 +733,10 @@
 
             <div class="input-section">
                 <h3 class="section-subtitle">Investment Costs</h3>
+                
+                <div class="guidance-text" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 13px; color: var(--text-dark);">
+                    Costs assume 7.4kW chargers suitable for overnight charging - the primary use case for hotel guests.
+                </div>
                 
                 <div class="form-group">
                     <label for="equipmentCost">Equipment Cost per Bay (£)</label>
@@ -850,7 +854,7 @@
             <div class="insights-box" style="box-shadow: none;">
                 <div class="insights-title">Key Insights</div>
                 <div class="insight-item">
-                    This equals <strong id="insightBookingsPerWeek">-</strong> extra bookings per week or a <strong id="insightOccupancyIncrease">-</strong> occupancy increase
+                    This equals <strong id="insightBookingsPerWeek">-</strong> or a <strong id="insightOccupancyIncrease">-</strong>
                 </div>
                 <div class="insight-item">
                     EV charging will contribute <strong id="insightEVContribution">-</strong>, leaving <strong id="insightRemainingAmount">-</strong> to be covered by additional room bookings
@@ -958,8 +962,7 @@
                 <div class="result-card">
                     <span class="result-icon">📈</span>
                     <div class="result-value" id="chartFiveYearProfitInsight">-</div>
-                    <div class="result-label">Total Profit at Payback</div>
-                    <div class="result-description">Cumulative profit at target payback period</div>
+                    <div class="result-label">Long-term Profit</div>
                 </div>
             </div>
         </div>
@@ -1189,7 +1192,20 @@
             });
 
             // Update chart insights using target payback period
-            const totalProfitAtPayback = (netAdditionalMargin * desiredPaybackYears) - totalCapex;
+            // Calculate profit display period: 5 years default, or next whole year + 1 if payback > 4 years
+            const profitDisplayYears = desiredPaybackYears <= 4 ? 5 : Math.ceil(desiredPaybackYears) + 1;
+            
+            // Calculate cumulative profit with EV growth over display period
+            let cumulativeProfitWithGrowth = -totalCapex; // Start with negative investment
+            const additionalRoomContributionPerYear = netAdditionalMargin - (baseEVContribution - totalAnnualOpex);
+            
+            for (let year = 1; year <= profitDisplayYears; year++) {
+                const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
+                const evContributionThisYear = baseEVContribution * growthFactor;
+                const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
+                const totalContributionThisYear = netEVContributionThisYear + additionalRoomContributionPerYear;
+                cumulativeProfitWithGrowth += totalContributionThisYear;
+            }
             
             updateElement('chartInvestmentInsight', formatCurrency(totalCapex));
             
@@ -1200,7 +1216,13 @@
                                  `${Math.floor(paybackMonths / 12)} years ${paybackMonths % 12} months`;
             
             updateElement('chartBreakEvenInsight', paybackDisplay);
-            updateElement('chartFiveYearProfitInsight', formatCurrency(totalProfitAtPayback));
+            updateElement('chartFiveYearProfitInsight', formatCurrency(cumulativeProfitWithGrowth));
+            
+            // Update the label to show the actual time period
+            const profitLabel = document.querySelector('#chartFiveYearProfitInsight').parentElement.querySelector('.result-label');
+            if (profitLabel) {
+                profitLabel.textContent = `${profitDisplayYears}-Year Profit`;
+            }
         }
 
         // Main calculation function
