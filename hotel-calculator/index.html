@@ -717,7 +717,7 @@
 
                 <div class="form-group">
                     <label for="adr">Average Daily Rate (£)</label>
-                    <input type="number" id="adr" value="120" min="0" step="0.01">
+                    <input type="number" id="adr" value="120" min="0" step="1">
                 </div>
 
                 <div class="form-group">
@@ -727,7 +727,7 @@
 
                 <div class="form-group">
                     <label for="avgFBSpend">Average F&B Spend per Room (£)</label>
-                    <input type="number" id="avgFBSpend" value="18" min="0" step="0.01">
+                    <input type="number" id="avgFBSpend" value="18" min="0" step="1">
                 </div>
             </div>
 
@@ -740,12 +740,12 @@
                 
                 <div class="form-group">
                     <label for="equipmentCost">Equipment Cost per Bay (£)</label>
-                    <input type="number" id="equipmentCost" value="1400" min="0" step="0.01">
+                    <input type="number" id="equipmentCost" value="1400" min="0" step="1">
                 </div>
 
                 <div class="form-group">
                     <label for="installationCost">Installation Cost per Bay (£)</label>
-                    <input type="number" id="installationCost" value="2000" min="0" step="0.01">
+                    <input type="number" id="installationCost" value="2000" min="0" step="1">
                 </div>
 
                 <div class="form-group">
@@ -755,7 +755,7 @@
 
                 <div class="form-group">
                     <label for="annualMaintenance">Annual Maintenance per Bay (£)</label>
-                    <input type="number" id="annualMaintenance" value="150" min="0" step="0.01">
+                    <input type="number" id="annualMaintenance" value="150" min="0" step="1">
                 </div>
             </div>
 
@@ -782,7 +782,8 @@
 
                 <div class="form-group">
                     <label for="avgKwhPerSession">Average kWh per Session</label>
-                    <input type="number" id="avgKwhPerSession" value="30" min="0" step="0.1">
+                    <input type="number" id="avgKwhPerSession" value="30" min="0" step="1">
+                    <div class="helper-text" id="rangeEstimate">Typical range added: ~105 miles</div>
                 </div>
 
                 <div class="form-group">
@@ -1001,6 +1002,16 @@
             if (element) element.textContent = value;
         };
 
+        // Update range estimate based on kWh input
+        const updateRangeEstimate = () => {
+            const kWh = getInputValue('avgKwhPerSession', 30);
+            const milesPerKWh = 3.5; // Average EV efficiency
+            const rangeAdded = Math.round(kWh * milesPerKWh);
+            const rangeElement = document.getElementById('rangeEstimate');
+            if (rangeElement) {
+                rangeElement.textContent = `Typical range added: ~${rangeAdded} miles`;
+            }
+        };
         // Chart generation function
         function generateCharts() {
             const { totalCapex, netAdditionalMargin, baseEVContribution, annualUsageGrowth, totalAnnualOpex, desiredPaybackYears } = currentCalculationData;
@@ -1332,9 +1343,6 @@
                 updateElement('annualChargingRevenue', formatCurrency(annualChargingRevenue));
                 updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
                 updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
-                console.log('Annual Maintenance per Bay:', inputs.annualMaintenance);
-                console.log('Number of Charging Bays:', inputs.chargingBays);
-                console.log('Total Annual Operating Costs:', totalAnnualOpex);
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
 
                 // Update insights
@@ -1418,10 +1426,16 @@
                     if (element) {
                         element.addEventListener('input', () => {
                             console.log(`Input changed: ${id} = ${element.value}`);
+                            if (id === 'avgKwhPerSession') {
+                                updateRangeEstimate();
+                            }
                             calculate();
                         });
                         element.addEventListener('change', () => {
                             console.log(`Change event: ${id} = ${element.value}`);
+                            if (id === 'avgKwhPerSession') {
+                                updateRangeEstimate();
+                            }
                             calculate();
                         });
                         console.log('Added event listeners to:', id, 'Current value:', element.value);
@@ -1429,6 +1443,9 @@
                         console.warn('Element not found:', id);
                     }
                 });
+
+                // Initialize range estimate
+                updateRangeEstimate();
 
                 // Force immediate calculation
                 console.log('Running initial calculation...');
