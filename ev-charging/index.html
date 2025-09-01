@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EV Charging Range Calculator - Voqa</title>
-    <meta name="description" content="Calculate EV charging range and energy delivery for different vehicles, charger power ratings, and dwell times. Professional tool for EV charging infrastructure planning.">
-    <meta name="keywords" content="EV charging, electric vehicle, range calculator, charging infrastructure, kWh, charging stations">
+    <title>VOQA Calculator Tools - Professional Sustainability & EV Solutions</title>
+    <meta name="description" content="Professional sustainability and EV charging calculators for businesses. Calculate environmental impact, ROI, and charging efficiency with our comprehensive tools.">
+    <meta name="keywords" content="EV charging calculator, sustainability calculator, carbon footprint, ROI calculator, environmental impact, VOQA">
     <meta name="author" content="Voqa">
     
     <!-- Fonts -->
@@ -65,20 +65,17 @@
         .header {
             background: rgba(0, 92, 128, 0.95);
             backdrop-filter: blur(20px);
-            padding: 24px 0;
+            padding: 30px 0 40px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            position: relative;
             z-index: 100;
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .back-to-calculators {
+        .back-to-voqa {
             position: absolute;
             top: 20px;
-            left: 40px;
+            right: 40px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -95,10 +92,27 @@
             animation: fadeIn 0.8s ease-out 0.6s both;
         }
 
-        .back-to-calculators:hover {
+        .back-to-voqa:hover {
             background: rgba(255, 255, 255, 0.15);
             color: var(--text-light);
             transform: translateY(-1px);
+        }
+
+        .voqa-logo {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            width: 180px;
+            height: auto;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .voqa-logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
         }
 
         @keyframes slideDown {
@@ -115,91 +129,51 @@
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            padding: 0 180px;
             text-align: center;
-            gap: 20px;
+            margin-top: 25px;
+            position: relative;
         }
 
         .header-title {
-            font-size: clamp(24px, 5vw, 36px);
+            font-size: clamp(32px, 6vw, 48px);
             font-weight: 800;
             color: var(--text-light);
             letter-spacing: -0.5px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             animation: fadeIn 0.8s ease-out;
             line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: clamp(16px, 3vw, 20px);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+            line-height: 1.5;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateX(-20px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0);
             }
         }
 
-        .header-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(45deg, var(--accent), var(--accent-light));
-            color: var(--primary);
-            padding: 16px 24px;
-            border-radius: 50px;
-            font-size: clamp(14px, 2.5vw, 16px);
-            font-weight: 700;
-            text-decoration: none;
-            letter-spacing: 0.3px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: none;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-            min-height: 48px;
-            justify-content: center;
-        }
-
-        .header-cta::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .header-cta:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .header-cta:hover {
-            transform: translateY(-2px) scale(1.05);
-            border-color: var(--primary);
-        }
-
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
+            padding: 25px 40px 100px 40px;
             position: relative;
             z-index: 2;
-            animation: fadeInUp 0.8s ease-out;
-            margin-top: 140px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         @keyframes fadeInUp {
@@ -213,18 +187,224 @@
             }
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.98);
-            color: var(--text-dark);
-            padding: 32px;
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
 
-        .card::before {
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-dark);
+            padding: 40px 32px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.6s ease-out backwards;
+            border: 2px solid transparent;
+        }
+
+        .calculator-card:nth-child(1) { animation-delay: 0.2s; }
+        .calculator-card:nth-child(2) { animation-delay: 0.4s; }
+        .calculator-card:nth-child(3) { animation-delay: 0.6s; }
+        .calculator-card:nth-child(4) { animation-delay: 0.8s; }
+        .calculator-card:nth-child(5) { animation-delay: 1.0s; }
+
+        .request-button {
+            background: linear-gradient(45deg, var(--accent), var(--accent-light)) !important;
+            color: var(--primary) !important;
+        }
+
+        .request-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(247, 215, 188, 0.4) !important;
+        }
+
+        .request-note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 12px;
+            margin-bottom: 0;
+            font-style: italic;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: slideInFromTop 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .close:hover {
+            color: var(--primary);
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .consent-label {
+            display: flex !important;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+
+        .consent-label input[type="checkbox"] {
+            width: auto !important;
+            margin: 0;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .consent-text {
+            color: #666;
+            font-weight: 400;
+        }
+
+        .privacy-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #e1e5e9;
+        }
+
+        .privacy-notice {
+            color: #444;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 92, 128, 0.3);
+        }
+
+        .calculator-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -237,214 +417,18 @@
             transition: transform 0.4s ease;
         }
 
-        .card:hover::before {
+        .calculator-card:hover::before {
             transform: scaleX(1);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .section-title {
-            font-size: clamp(22px, 4vw, 28px);
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 30px;
-            letter-spacing: -0.5px;
-            position: relative;
-            animation: slideRight 0.6s ease-out;
-            line-height: 1.2;
-        }
-
-        @keyframes slideRight {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), transparent);
-            animation: expand 0.8s ease-out;
-        }
-
-        @keyframes expand {
-            from {
-                width: 0;
-            }
-            to {
-                width: 80px;
-            }
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-            animation: fadeIn 0.6s ease-out backwards;
-        }
-
-        .form-group:nth-child(1) { animation-delay: 0.1s; }
-        .form-group:nth-child(2) { animation-delay: 0.2s; }
-        .form-group:nth-child(3) { animation-delay: 0.3s; }
-        .form-group:nth-child(4) { animation-delay: 0.4s; }
-        .form-group:nth-child(5) { animation-delay: 0.5s; }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 14px;
-            letter-spacing: 0.3px;
-            transition: color 0.3s ease;
-        }
-
-        .form-group:hover label {
-            color: var(--primary);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 16px;
-            background: white;
-            color: var(--text-dark);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            font-weight: 500;
-            min-height: 48px;
-            box-sizing: border-box;
-        }
-
-        input:hover, select:hover {
+        .calculator-card:hover {
             border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 92, 128, 0.1);
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(0, 92, 128, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .power-options {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .power-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 20px 16px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid var(--border);
-            background: white;
-            border-radius: 12px;
-            font-size: 16px;
-            color: var(--text-dark);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            height: 80px;
-            width: 100%;
-        }
-
-        .power-option::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(0, 92, 128, 0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-        }
-
-        .power-option:hover::before {
-            width: 200px;
-            height: 200px;
-        }
-
-        .power-option:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 92, 128, 0.15);
         }
 
-        .power-option input[type="radio"] {
-            width: auto;
-            margin: 0;
-            accent-color: var(--primary);
-            transform: scale(1.2);
-            flex-shrink: 0;
-        }
-
-        .power-option label {
-            margin: 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-dark);
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .result-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 24px;
-            border-radius: 16px;
-            position: relative;
-            animation: slideUp 0.5s ease-out;
-            color: var(--text-light);
-            text-align: center;
-            border: 2px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-
-        .result-card:hover {
-            border-color: var(--accent);
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-icon {
+        .card-icon {
             font-size: 48px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             display: block;
             animation: bounce 2s ease-in-out infinite;
         }
@@ -458,113 +442,32 @@
             }
         }
 
-        .result-value {
-            font-size: clamp(24px, 6vw, 32px);
+        .card-title {
+            font-size: clamp(18px, 3vw, 22px);
             font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-            animation: countUp 1s ease-out;
-            line-height: 1.1;
-        }
-
-        @keyframes countUp {
-            from {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .result-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .result-description {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.4;
-            position: relative;
-            z-index: 1;
-        }
-
-        .guidance-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 16px;
-            animation: slideLeft 0.6s ease-out;
-        }
-
-        @keyframes slideLeft {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .guidance-title {
             color: var(--primary);
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
         }
 
-        .guidance-title::before {
-            content: '💡';
-            font-size: 24px;
-        }
-
-        .guidance-text {
+        .card-description {
             font-size: 14px;
-            color: var(--text-dark);
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .custom-dwell-note {
-            margin-top: 8px;
-            font-size: 12px;
-            font-style: italic;
             color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            flex-grow: 1;
         }
 
-        .cta-container {
-            margin-top: 30px;
-            text-align: center;
-            background: transparent;
-            color: var(--text-light);
-            padding: 30px;
-            position: relative;
-        }
-
-        .cta-button {
+        .card-button {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: linear-gradient(45deg, var(--accent), var(--accent-light));
-            color: var(--primary);
-            padding: 18px 32px;
+            gap: 8px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            padding: 16px 24px;
             border-radius: 50px;
-            font-size: clamp(14px, 3vw, 16px);
+            font-size: 14px;
             font-weight: 700;
             text-decoration: none;
             letter-spacing: 0.3px;
@@ -573,14 +476,12 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            z-index: 1;
             text-align: center;
-            min-height: 48px;
             justify-content: center;
-            box-sizing: border-box;
+            min-height: 48px;
         }
 
-        .cta-button::before {
+        .card-button::before {
             content: '';
             position: absolute;
             top: 50%;
@@ -588,416 +489,418 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
-            z-index: -1;
         }
 
-        .cta-button:hover::before {
-            width: 400px;
-            height: 400px;
+        .card-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
-        .cta-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            border-color: var(--primary);
-        }
-
-        .comparison-table {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-
-        .comparison-table table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        .comparison-table th,
-        .comparison-table td {
-            padding: 12px;
-            border: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .comparison-table th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .comparison-table .dwell-time-header {
-            text-align: left;
-        }
-
-        .comparison-table .voqa-highlight {
-            background: linear-gradient(135deg, rgba(247, 215, 188, 0.05) 0%, rgba(248, 212, 180, 0.05) 100%);
-        }
-
-        .comparison-table .voqa-brand {
-            background: linear-gradient(45deg, var(--accent), var(--accent-light));
-            color: var(--primary);
-            padding: 6px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(247, 215, 188, 0.3);
-        }
-
-        .comparison-table .custom-row td {
-            border: 2px solid var(--primary);
-            background: linear-gradient(135deg, rgba(247, 215, 188, 0.3) 0%, rgba(248, 212, 180, 0.2) 100%);
-            font-weight: 600;
-        }
-
-        .comparison-table .custom-row .custom-time {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            color: var(--primary);
-            font-weight: 700;
+        .card-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 92, 128, 0.3);
         }
 
         @media (max-width: 900px) {
             .container {
-                padding: 30px 20px;
-                gap: 30px;
-                margin-top: 160px;
-            }
-            
-            .header-title {
-                font-size: 24px;
+                padding: 20px 20px 80px 20px;
             }
             
             .header-content {
                 padding: 0 20px;
-                gap: 15px;
+                margin-top: 40px;
             }
 
-            .back-to-calculators {
-                left: 20px;
+            .back-to-voqa {
+                right: 20px;
                 top: 16px;
                 padding: 8px 14px;
                 font-size: 13px;
             }
-            
-            .power-options {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
 
-            .power-option {
-                height: 60px;
-                padding: 12px 8px;
-                font-size: 14px;
-            }
-
-            .power-option label {
-                font-size: 14px;
+            .voqa-logo {
+                right: 20px;
+                top: 16px;
             }
             
-            .results-grid {
+            .calculator-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .section-title {
-                font-size: 24px;
+                gap: 20px;
             }
 
-            .card {
-                padding: 24px 20px;
-            }
-
-            .header-cta {
-                padding: 14px 20px;
-                font-size: 14px;
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
             }
         }
 
         @media (max-width: 600px) {
-            .container {
-                margin-top: 140px;
-                padding: 20px 16px;
-            }
-
-            .back-to-calculators {
-                left: 16px;
-                top: 16px;
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
             .header-content {
-                padding: 0 16px;
-                gap: 12px;
-            }
-
-            .header-title {
-                font-size: 20px;
-            }
-
-            .header-cta {
-                padding: 12px 16px;
-                font-size: 13px;
-                min-height: 44px;
-            }
-
-            .power-options {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .power-option {
-                height: 50px;
-                padding: 8px 12px;
-                font-size: 13px;
-                flex-direction: row;
-                justify-content: center;
-                gap: 12px;
-            }
-
-            .power-option input[type="radio"] {
-                transform: scale(1.0);
-                margin: 0;
-            }
-
-            .power-option label {
-                font-size: 13px;
-                margin: 0;
-            }
-
-            .card {
-                padding: 20px 16px;
-            }
-
-            .section-title {
-                font-size: 20px;
-                margin-bottom: 20px;
-            }
-
-            .form-group {
-                margin-bottom: 20px;
-            }
-
-            .guidance-section {
-                padding: 20px;
                 margin-top: 20px;
+                padding: 0 20px;
+            }
+            
+            .back-to-voqa {
+                position: relative;
+                left: auto;
+                top: auto;
+                margin: 0 auto 15px auto;
+                display: inline-flex;
             }
 
-            .guidance-title {
-                font-size: 18px;
+            .voqa-logo {
+                position: relative;
+                right: auto;
+                top: auto;
+                margin: 0 auto 15px auto;
+                display: block;
+                width: 100px;
             }
 
-            .guidance-text {
-                font-size: 13px;
-            }
-
-            .result-card {
-                padding: 20px;
-            }
-
-            .result-icon {
-                font-size: 40px;
-                margin-bottom: 12px;
-            }
-
-            .result-value {
-                font-size: 24px;
-            }
-
-            .result-label {
-                font-size: 12px;
-            }
-
-            .result-description {
-                font-size: 11px;
-            }
-
-            .comparison-table {
-                font-size: 12px;
-            }
-
-            .comparison-table th,
-            .comparison-table td {
-                padding: 8px 4px;
-            }
-
-            .cta-button {
-                padding: 16px 24px;
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .container {
-                padding: 16px 12px;
-            }
-
-            .card {
-                padding: 16px 12px;
-            }
-
-            .power-options {
-                gap: 6px;
-            }
-
-            .power-option {
-                height: 48px;
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            .power-option label {
-                font-size: 12px;
-            }
-
-            .comparison-table th,
-            .comparison-table td {
-                padding: 6px 2px;
-                font-size: 11px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
+            .modal-content {
+                margin: 10px auto;
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <a href="https://euan-cmd.github.io/voqa-tools/" class="back-to-calculators">
-            ← Back to Calculators
+        <a href="https://www.voqa.com" class="back-to-voqa">
+            ← Back to Voqa
         </a>
+        
+        <svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
+            <defs>
+                <style>
+                    .cls-1 {
+                        fill: #fff;
+                        stroke-width: 0px;
+                    }
+                </style>
+            </defs>
+            <g id="Bracket">
+                <polygon class="cls-1" points="2093.72 122.69 2359.3 122.69 2359.3 98.46 2359.3 42.11 2093.72 42.11 2013.13 42.11 2013.13 122.69 2013.13 1856.11 2013.13 1936.69 2093.72 1936.69 2359.3 1936.69 2359.3 1880.33 2359.3 1856.11 2093.72 1856.11 2093.72 122.69"/>
+            </g>
+            <g id="Effortless">
+                <g>
+                    <polygon class="cls-1" points="2567.64 356.2 2567.64 310.87 2325.07 310.87 2325.07 638.03 2569.51 638.03 2569.51 592.69 2376.95 592.69 2376.95 495.01 2502.21 495.01 2502.21 450.61 2376.95 450.61 2376.95 356.2 2567.64 356.2"/>
+                    <path class="cls-1" d="M2653.17,638.03h49.07v-197.23h67.77v-41.6h-67.77v-32.72c0-12.46,3.19-21.65,9.58-27.57,6.38-5.92,15.96-8.88,28.74-8.88,5.3,0,10.21.31,14.72.93,4.52.63,9.42,1.72,14.72,3.27v-42.53c-4.67-1.56-9.98-2.64-15.89-3.27-5.93-.62-12.16-.94-18.7-.94-26.8,0-47.21,6.7-61.22,20.1-14.02,13.4-21.03,32.56-21.03,57.49v34.12h-55.15v41.6h55.15v197.23Z"/>
+                    <path class="cls-1" d="M2876.48,638.03h49.07v-197.23h67.77v-41.6h-67.77v-32.72c0-12.46,3.19-21.65,9.58-27.57,6.38-5.92,15.96-8.88,28.74-8.88,5.3,0,10.21.31,14.72.93,4.52.63,9.42,1.72,14.72,3.27v-42.53c-4.67-1.56-9.98-2.64-15.89-3.27-5.93-.62-12.16-.94-18.7-.94-26.8,0-47.21,6.7-61.22,20.1-14.02,13.4-21.03,32.56-21.03,57.49v34.12h-55.15v41.6h55.15v197.23Z"/>
+                    <path class="cls-1" d="M3087.35,626.34c19,10.91,40.04,16.36,63.1,16.36s44.48-5.45,63.33-16.36c18.85-10.9,33.81-25.7,44.87-44.4,11.06-18.7,16.59-39.72,16.59-63.1s-5.53-44.32-16.59-62.86c-11.06-18.53-26.02-33.34-44.87-44.4-18.86-11.06-39.96-16.6-63.33-16.6s-44.09,5.54-63.1,16.6c-19,11.06-34.04,25.87-45.1,44.4-11.06,18.54-16.59,39.49-16.59,62.86s5.52,44.4,16.59,63.1c11.06,18.7,26.09,33.5,45.1,44.4ZM3084.31,477.72c6.7-12.16,15.82-21.81,27.35-28.98,11.52-7.16,24.46-10.75,38.79-10.75s27.35,3.59,39.03,10.75c11.68,7.18,20.87,16.82,27.57,28.98,6.7,12.15,10.05,25.7,10.05,40.66s-3.35,28.98-10.05,41.13c-6.7,12.15-15.9,21.89-27.57,29.21-11.69,7.33-24.7,10.99-39.03,10.99s-27.27-3.66-38.79-10.99c-11.53-7.32-20.65-17.06-27.35-29.21-6.7-12.15-10.05-25.86-10.05-41.13s3.35-28.51,10.05-40.66Z"/>
+                    <path class="cls-1" d="M3389.7,479.12c6.22-13.71,14.64-24.14,25.24-31.32,10.59-7.16,22.59-10.75,35.99-10.75,4.98,0,9.97.4,14.96,1.17,4.98.78,9.66,2.1,14.02,3.97v-43.93c-6.55-2.8-14.81-4.36-24.77-4.67-14.02,0-26.49,3.12-37.4,9.35-10.91,6.23-20.26,14.95-28.04,26.17v-29.91h-49.07v238.83h49.07v-158.91Z"/>
+                    <path class="cls-1" d="M3631.14,326.75l-49.07,11.21v61.23h-50.47v41.6h50.47v136.94c0,21.19,6.15,37.24,18.46,48.15,12.31,10.91,30.3,16.36,53.98,16.36,7.16,0,14.95-.55,23.36-1.64,8.41-1.1,15.73-2.72,21.97-4.91v-41.6c-5.93,2.19-11.45,3.67-16.6,4.44-5.14.79-10.83,1.17-17.05,1.17-12.78,0-21.81-2.49-27.11-7.48-5.3-4.98-7.95-13.39-7.95-25.25v-126.19h70.11v-41.6h-70.11v-72.45Z"/>
+                    <polygon class="cls-1" points="3807.25 301.52 3758.18 310.87 3758.18 638.03 3807.25 638.03 3807.25 301.52"/>
+                    <path class="cls-1" d="M4052.62,412.05c-17.3-11.06-37-16.59-59.12-16.59s-42.77,5.45-61,16.35c-18.23,10.91-32.71,25.71-43.46,44.41-10.75,18.69-16.12,39.57-16.12,62.62s5.52,43.55,16.59,62.4c11.06,18.86,26.17,33.73,45.34,44.64,19.16,10.91,40.43,16.36,63.8,16.36,18.07,0,34.59-2.65,49.55-7.95,14.95-5.3,29.44-13.24,43.46-23.84l-31.78-30.85c-7.18,6.85-15.97,12.08-26.41,15.66-10.44,3.58-21.43,5.37-32.95,5.37-13.09,0-25.17-2.88-36.22-8.65-11.06-5.76-20.18-13.63-27.35-23.6-7.17-9.97-11.84-21.19-14.02-33.66h186.02v-13.55c0-23.68-5.07-45.02-15.2-64.03-10.13-19-23.84-34.04-41.13-45.1ZM3922.92,498.28c1.87-12.46,6.15-23.29,12.85-32.48,6.7-9.18,14.87-16.36,24.54-21.5,9.66-5.14,20.25-7.71,31.78-7.71s21.57,2.65,31.08,7.95,17.53,12.54,24.07,21.73c6.54,9.2,10.75,19.87,12.62,32.02h-136.94Z"/>
+                    <path class="cls-1" d="M4299.02,595.03c-10.13,6.23-23.45,9.35-39.96,9.35-13.4,0-26.57-2.41-39.5-7.25-12.93-4.82-25.79-12.22-38.56-22.2l-26.17,32.72c13.39,11.21,29.05,19.86,46.97,25.94,17.92,6.08,37.31,9.11,58.19,9.11,19.31,0,36.45-3.27,51.41-9.81,14.95-6.55,26.94-15.58,35.99-27.11,9.03-11.52,13.55-24.46,13.55-38.8,0-19-6.15-34.11-18.46-45.34-12.31-11.21-30.31-18.38-53.98-21.5l-43.46-6.54c-13.72-1.87-23.53-5.14-29.45-9.81-5.92-4.67-8.88-11.22-8.88-19.63,0-9.35,4.2-16.9,12.61-22.66,8.41-5.77,19.47-8.65,33.19-8.65,12.77,0,25.24,2.03,37.4,6.08,12.15,4.05,24.77,10.29,37.85,18.7l25.25-32.25c-14.96-10.29-30.38-18-46.27-23.14-15.9-5.15-32.56-7.71-50.01-7.71-19.01,0-35.6,3.12-49.77,9.35-14.19,6.23-25.25,14.8-33.19,25.7-7.95,10.91-11.92,23.53-11.92,37.86,0,18.7,6,33.81,18,45.34,11.99,11.53,29.98,18.86,53.98,21.96l43.46,6.55c12.77,1.87,22.12,5.14,28.05,9.81,5.91,4.67,8.88,11.21,8.88,19.63,0,9.97-5.07,18.07-15.19,24.3Z"/>
+                    <path class="cls-1" d="M4551.92,595.03c-10.13,6.23-23.45,9.35-39.96,9.35-13.4,0-26.57-2.41-39.5-7.25-12.93-4.82-25.79-12.22-38.56-22.2l-26.17,32.72c13.39,11.21,29.05,19.86,46.97,25.94,17.92,6.08,37.31,9.11,58.19,9.11,19.31,0,36.45-3.27,51.41-9.81,14.95-6.55,26.94-15.58,35.99-27.11,9.03-11.52,13.55-24.46,13.55-38.8,0-19-6.15-34.11-18.46-45.34-12.31-11.21-30.31-18.38-53.98-21.5l-43.46-6.54c-13.72-1.87-23.53-5.14-29.45-9.81s-8.88-11.22-8.88-19.63c0-9.35,4.2-16.9,12.61-22.66s19.47-8.65,33.19-8.65c12.77,0,25.24,2.03,37.4,6.08,12.15,4.05,24.77,10.29,37.85,18.7l25.25-32.25c-14.96-10.29-30.38-18-46.27-23.14-15.9-5.15-32.56-7.71-50.01-7.71-19.01,0-35.6,3.12-49.77,9.35-14.19,6.23-25.25,14.8-33.19,25.7-7.95,10.91-11.92,23.53-11.92,37.86,0,18.7,6,33.81,18,45.34,11.99,11.53,29.98,18.86,53.98,21.96l43.46,6.55c12.77,1.87,22.12,5.14,28.05,9.81,5.91,4.67,8.88,11.21,8.88,19.63,0,9.97-5.07,18.07-15.19,24.3Z"/>
+                    <path class="cls-1" d="M2483.04,821.45c-23.99,0-46.51,4.29-67.54,12.86-21.03,8.57-39.43,20.49-55.15,35.75-15.74,15.27-27.89,33.11-36.46,53.51-8.58,20.41-12.85,42.61-12.85,66.61s4.27,45.73,12.85,66.13c8.57,20.41,20.72,38.32,36.46,53.75,15.72,15.42,34.04,27.42,54.91,35.99,20.87,8.57,43.47,12.85,67.77,12.85,16.82,0,33.33-2.34,49.54-7.01,16.2-4.67,31.24-11.21,45.11-19.63,13.86-8.41,26.09-18.53,36.69-30.38l-34.12-34.11c-11.84,13.72-26.09,24.3-42.76,31.78-16.68,7.48-34.35,11.21-53.05,11.21-17.14,0-33.03-3.04-47.67-9.11-14.64-6.08-27.42-14.64-38.32-25.71-10.91-11.06-19.4-23.91-25.47-38.56-6.08-14.64-9.11-30.38-9.11-47.2s3.04-33.42,9.11-47.91c6.08-14.49,14.49-27.18,25.24-38.09s23.37-19.47,37.86-25.71c14.49-6.22,30.15-9.35,46.97-9.35,18.7,0,36.61,3.9,53.75,11.69,17.13,7.79,31.93,19.01,44.4,33.65l34.12-35.99c-10.29-11.84-22.44-21.96-36.46-30.38-14.02-8.41-29.13-14.96-45.34-19.63-16.2-4.67-33.03-7.01-50.47-7.01Z"/>
+                    <path class="cls-1" d="M2885.63,1153.76v-149.56c0-18.7-3.97-35.06-11.91-49.08-7.95-14.02-19.01-25-33.19-32.95-14.18-7.94-30.31-11.91-48.37-11.91-28.98,0-52.66,9.51-71.04,28.51v-123.39l-49.07,11.22v327.16h49.07v-170.59c6.55-9.66,14.64-17.06,24.31-22.2,9.65-5.15,20.56-7.71,32.71-7.71,18.07,0,32.25,5.22,42.53,15.65,10.28,10.45,15.42,24.85,15.42,43.23v141.62h49.54Z"/>
+                    <path class="cls-1" d="M3131.02,932.45c-17.14-14.79-41.29-22.2-72.45-22.2-15.89,0-31.86,2.03-47.91,6.08-16.05,4.05-33.11,10.28-51.17,18.7l18.23,36.92c14.64-7.17,27.88-12.31,39.72-15.42,11.84-3.12,23.21-4.67,34.12-4.67,18.38,0,32.4,4.13,42.06,12.39,9.66,8.26,14.49,20.64,14.49,37.15v23.84c-19.32-8.41-40.66-12.61-64.03-12.61-29.6,0-53.13,6.47-70.58,19.39-17.45,12.94-26.17,30.62-26.17,53.05,0,14.34,3.81,27.04,11.45,38.1,7.63,11.06,17.99,19.63,31.08,25.7,13.09,6.08,28.2,9.12,45.34,9.12,14.33,0,27.5-1.95,39.5-5.85,11.99-3.89,23.14-10.05,33.41-18.46v20.1h48.61v-157.97c0-27.42-8.57-48.53-25.7-63.33ZM3108.11,1100.01c-8.11,7.48-17.29,12.93-27.57,16.36-10.28,3.43-21.5,5.14-33.65,5.14-15.58,0-28.13-3.42-37.62-10.29-9.51-6.85-14.25-15.89-14.25-27.1s4.82-20.72,14.49-27.58c9.65-6.85,22.73-10.28,39.26-10.28,11.84,0,22.59,1.09,32.25,3.27,9.65,2.18,18.69,5.77,27.1,10.75v39.72Z"/>
+                    <path class="cls-1" d="M3372.23,957.93v-43.93c-6.55-2.8-14.81-4.36-24.77-4.67-14.02,0-26.49,3.12-37.4,9.35s-20.26,14.95-28.04,26.17v-29.91h-49.07v238.83h49.07v-158.91c6.22-13.71,14.64-24.14,25.24-31.32,10.59-7.16,22.59-10.75,35.99-10.75,4.98,0,9.97.4,14.96,1.17,4.98.78,9.66,2.1,14.02,3.97Z"/>
+                    <polygon class="cls-1" points="2376.95 1526.47 2502.21 1526.47 2502.21 1482.07 2376.95 1482.07 2376.95 1387.66 2567.64 1387.66 2567.64 1342.32 2325.07 1342.32 2325.07 1669.49 2569.51 1669.49 2569.51 1624.15 2376.95 1624.15 2376.95 1526.47"/>
+                    <polygon class="cls-1" points="2703.51 1606.39 2630.6 1430.66 2576.38 1430.66 2679.2 1669.49 2726.41 1669.49 2829.23 1430.66 2776.42 1430.66 2703.51 1606.39"/>
+                    <path class="cls-1" d="M3039.03,1443.51c-17.3-11.06-37-16.59-59.12-16.59s-42.77,5.45-61,16.35c-18.23,10.91-32.71,25.71-43.46,44.41-10.75,18.69-16.12,39.57-16.12,62.62s5.52,43.55,16.59,62.4c11.06,18.86,26.17,33.73,45.34,44.64s40.43,16.36,63.8,16.36c18.07,0,34.59-2.65,49.55-7.95,14.95-5.3,29.44-13.24,43.46-23.84l-31.78-30.85c-7.18,6.85-15.97,12.08-26.41,15.66-10.44,3.58-21.43,5.37-32.95,5.37-13.09,0-25.17-2.88-36.22-8.65-11.06-5.76-20.18-13.63-27.35-23.6-7.17-9.97-11.84-21.19-14.02-33.66h186.02v-13.55c0-23.68-5.07-45.02-15.2-64.03-10.13-19-23.84-34.04-41.13-45.1ZM2909.34,1529.74c1.87-12.46,6.15-23.29,12.85-32.48,6.7-9.18,14.87-16.36,24.54-21.5,9.66-5.14,20.25-7.71,31.78-7.71s21.57,2.65,31.08,7.95,17.53,12.54,24.07,21.73c6.54,9.2,10.75,19.87,12.62,32.02h-136.94Z"/>
+                    <path class="cls-1" d="M4576.79,1430.66l-75.71,179.47-68.24-179.47h-54.22l94.88,239.77-9.35,20.56c-9.35,23.37-25.09,35.05-47.21,35.05-8.11,0-15.12-.62-21.03-1.87v43.46c3.11.31,6.93.7,11.45,1.17,4.51.46,9.26.7,14.25.7,14.96,0,28.05-2.34,39.26-7.01,11.22-4.67,21.18-12.39,29.91-23.14,8.72-10.75,16.67-24.69,23.84-41.83l115.44-266.88h-53.28Z"/>
+                    <path class="cls-1" d="M3596.05,934.56c-9.98-7.78-20.88-13.62-32.71-17.53-11.85-3.9-24.15-5.84-36.92-5.84-22.75,0-43.31,5.37-61.7,16.12-18.39,10.75-32.95,25.39-43.7,43.93-10.75,18.55-16.12,39.19-16.12,61.93s5.37,43.39,16.12,61.92c10.75,18.54,25.16,33.19,43.23,43.93,18.06,10.75,38.32,16.12,60.75,16.12,26.17,0,49.7-8.1,70.58-24.3v25.7c0,18.7-5.37,32.72-16.12,42.07-10.75,9.34-26.41,14.02-46.97,14.02-12.15,0-24.47-1.63-36.92-4.9-12.47-3.27-25.55-8.49-39.26-15.66l-18.7,38.8c13.71,7.16,28.82,12.77,45.34,16.82,16.51,4.04,33.49,6.08,50.95,6.08,35.83,0,63.33-8.34,82.49-25.01s28.74-40.58,28.74-71.74v-242.1h-49.07v19.63ZM3595.59,1085.99c-7.18,8.41-16.36,14.96-27.57,19.63-11.22,4.67-23.37,7.01-36.46,7.01-14.65,0-27.89-3.51-39.72-10.52-11.85-7.01-21.19-16.51-28.05-28.51-6.85-11.99-10.29-25.47-10.29-40.43s3.43-28.82,10.29-40.66,16.12-21.27,27.81-28.27c11.69-7.01,25-10.52,39.96-10.52,13.09,0,25.16,2.42,36.22,7.25,11.06,4.83,20.33,11.29,27.81,19.4v105.62Z"/>
+                    <path class="cls-1" d="M3747.58,817.71c-8.11,0-15.12,2.97-21.03,8.88-5.93,5.92-8.88,13.09-8.88,21.5s2.96,15.5,8.88,21.26c5.92,5.77,12.92,8.65,21.03,8.65s15.49-2.88,21.26-8.65c5.76-5.76,8.65-12.85,8.65-21.26s-2.89-15.58-8.65-21.5c-5.77-5.92-12.85-8.88-21.26-8.88Z"/>
+                    <rect class="cls-1" x="3723.27" y="914.93" width="49.07" height="238.83"/>
+                    <path class="cls-1" d="M3899.32,983.16c6.55-9.66,14.64-17.06,24.31-22.2,9.65-5.15,20.56-7.71,32.71-7.71,18.07,0,32.25,5.3,42.53,15.89,10.28,10.6,15.42,24.93,15.42,43v141.62h49.54v-149.56c0-18.7-3.97-35.06-11.91-49.08-7.95-14.02-18.93-25-32.95-32.95-14.02-7.94-30.23-11.91-48.61-11.91-28.98,0-52.66,9.51-71.04,28.51v-23.84h-49.07v238.83h49.07v-170.59Z"/>
+                    <path class="cls-1" d="M4318.28,934.56c-9.98-7.78-20.88-13.62-32.71-17.53-11.85-3.9-24.15-5.84-36.92-5.84-22.75,0-43.31,5.37-61.7,16.12-18.39,10.75-32.95,25.39-43.7,43.93-10.75,18.55-16.12,39.19-16.12,61.93s5.37,43.39,16.12,61.92c10.75,18.54,25.16,33.19,43.23,43.93,18.06,10.75,38.32,16.12,60.75,16.12,26.17,0,49.7-8.1,70.58-24.3v25.7c0,18.7-5.37,32.72-16.12,42.07-10.75,9.34-26.41,14.02-46.97,14.02-12.15,0-24.47-1.63-36.92-4.9-12.47-3.27-25.55-8.49-39.26-15.66l-18.7,38.8c13.71,7.16,28.82,12.77,45.34,16.82,16.51,4.04,33.49,6.08,50.95,6.08,35.83,0,63.33-8.34,82.49-25.01,19.16-16.67,28.74-40.58,28.74-71.74v-242.1h-49.07v19.63ZM4317.82,1085.99c-7.18,8.41-16.36,14.96-27.57,19.63-11.22,4.67-23.37,7.01-36.46,7.01-14.65,0-27.89-3.51-39.72-10.52-11.85-7.01-21.19-16.51-28.05-28.51-6.85-11.99-10.29-25.47-10.29-40.43s3.43-28.82,10.29-40.66,16.12-21.27,27.81-28.27c11.69-7.01,25-10.52,39.96-10.52,13.09,0,25.16,2.42,36.22,7.25,11.06,4.83,20.33,11.29,27.81,19.4v105.62Z"/>
+                    <path class="cls-1" d="M3236.45,1434.4c-10.91,6.23-20.26,14.95-28.04,26.17v-29.91h-49.07v238.83h49.07v-158.91c6.22-13.71,14.64-24.14,25.24-31.32,10.59-7.16,22.59-10.75,35.99-10.75,4.98,0,9.97.4,14.96,1.17,4.98.78,9.66,2.1,14.02,3.97v-43.93c-6.55-2.8-14.81-4.36-24.77-4.67-14.02,0-26.49,3.12-37.4,9.35Z"/>
+                    <path class="cls-1" d="M3468.74,1610.13l-68.24-179.47h-54.22l94.88,239.77-9.35,20.56c-9.35,23.37-25.09,35.05-47.21,35.05-8.11,0-15.12-.62-21.03-1.87v43.46c3.11.31,6.93.7,11.45,1.17,4.51.46,9.26.7,14.25.7,14.96,0,28.05-2.34,39.26-7.01,11.22-4.67,21.18-12.39,29.91-23.14,8.72-10.75,16.67-24.69,23.84-41.83l115.44-266.88h-53.28l-75.71,179.47Z"/>
+                    <path class="cls-1" d="M4024.46,1388.82c-15.59-14.79-33.81-26.24-54.68-34.35-20.88-8.1-43.63-12.15-68.24-12.15h-116.84v327.16h116.84c24.62,0,47.44-4.04,68.47-12.15,21.03-8.1,39.34-19.55,54.92-34.36,15.57-14.79,27.65-32.08,36.22-51.88,8.56-19.78,12.85-41.52,12.85-65.2s-4.37-45.02-13.09-64.97c-8.73-19.93-20.88-37.31-36.45-52.11ZM4011.6,1552.41c-6.08,14.18-14.49,26.57-25.24,37.16-10.75,10.59-23.29,18.86-37.62,24.77-14.34,5.92-29.91,8.88-46.74,8.88h-65.43v-234.63h65.43c16.82,0,32.4,3.04,46.74,9.12,14.33,6.08,26.87,14.33,37.62,24.77,10.75,10.44,19.16,22.83,25.24,37.16,6.08,14.34,9.11,29.76,9.11,46.27s-3.04,32.33-9.11,46.5Z"/>
+                    <path class="cls-1" d="M4309.55,1448.18c-17.14-14.79-41.29-22.2-72.45-22.2-15.89,0-31.86,2.03-47.91,6.08-16.05,4.05-33.11,10.28-51.17,18.7l18.23,36.92c14.64-7.17,27.88-12.31,39.72-15.42,11.84-3.12,23.21-4.67,34.12-4.67,18.38,0,32.4,4.13,42.06,12.39,9.66,8.26,14.49,20.64,14.49,37.15v23.84c-19.32-8.41-40.66-12.61-64.03-12.61-29.6,0-53.13,6.47-70.58,19.39-17.45,12.94-26.17,30.62-26.17,53.05,0,14.34,3.81,27.04,11.45,38.1,7.63,11.06,17.99,19.63,31.08,25.7,13.09,6.08,28.2,9.12,45.34,9.12,14.33,0,27.5-1.95,39.5-5.85,11.99-3.89,23.14-10.05,33.41-18.46v20.1h48.61v-157.97c0-27.42-8.57-48.53-25.7-63.33ZM4286.64,1615.74c-8.11,7.48-17.29,12.93-27.57,16.36-10.28,3.43-21.5,5.14-33.65,5.14-15.58,0-28.13-3.42-37.62-10.29-9.51-6.85-14.25-15.89-14.25-27.1s4.82-20.72,14.49-27.58c9.65-6.85,22.73-10.28,39.26-10.28,11.84,0,22.59,1.09,32.25,3.27,9.65,2.18,18.69,5.77,27.1,10.75v39.72Z"/>
+                </g>
+            </g>
+            <g id="Voqa">
+                <g>
+                    <polygon class="cls-1" points="510.32 903.41 832.7 98.57 711.06 98.57 449.5 754.09 187.95 98.57 66.31 98.57 388.69 903.41 510.32 903.41"/>
+                    <polygon class="cls-1" points="1416.67 1069.66 1295.04 1069.66 972.67 1877.6 1094.3 1877.6 1355.86 1222.08 1617.42 1877.6 1739.05 1877.6 1416.68 1069.66 1416.67 1069.66"/>
+                    <path class="cls-1" d="M1355.86,911.51c233.03,0,422.62-183.59,422.62-409.24s-189.59-409.25-422.62-409.25-422.62,183.59-422.62,409.25,189.59,409.24,422.62,409.24ZM1355.86,210.8c165.97,0,300.99,130.75,300.99,291.47s-135.02,291.46-300.99,291.46-300.99-130.76-300.99-291.46,135.03-291.47,300.99-291.47Z"/>
+                    <path class="cls-1" d="M872.13,1473.35c0-225.66-189.59-409.25-422.62-409.25S26.88,1247.69,26.88,1473.35s182.04,396.69,408.59,403.91v.35h436.66v-113.12h-125.98c77.71-74.25,125.98-177.32,125.98-291.13ZM462.95,1764.48h-26.89c-159.75-6.83-287.55-134.78-287.55-291.13s135.02-291.47,300.99-291.47,300.99,130.75,300.99,291.47-127.8,284.3-287.55,291.13Z"/>
+                </g>
+            </g>
+        </svg>
+        
         <div class="header-content">
-            <div class="header-title">🔋 EV Charging Range Calculator</div>
-            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
-                📅 Book some time with Voqa to talk about EV Charging
-            </a>
+            <h1 class="header-title">Voqa EV Charging Calculators</h1>
+            <p class="header-subtitle">Professional sustainability and EV charging calculators designed for modern businesses to measure impact, optimise efficiency, and drive sustainable growth.</p>
         </div>
     </div>
 
     <div class="container">
-        <div class="card">
-            <h2 class="section-title">🔧 Calculate EV Range</h2>
-            
-            <div class="guidance-section">
-                <h4 class="guidance-title">How to Use This Calculator</h4>
-                <div class="guidance-text">
-                    This EV range calculator helps you understand the real-world driver experience at your charging location. 
-                    For example: "If I plug my Polestar 2 into your charger for 60 minutes, how many miles of range will be added to my battery?"
+        <div class="calculator-grid">
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">⚡</span>
+                    <h3 class="card-title">EV Charging Range Calculator</h3>
+                    <p class="card-description">Calculate electric vehicle charging ranges, efficiency metrics, and optimal charging strategies for your fleet or facilities.</p>
                 </div>
-                <div class="guidance-text">
-                    This tool assumes vehicles arrive with a <strong>20% state of charge</strong> and calculates charging up to 100%. 
-                    For high-power chargers and longer dwell times, the battery may reach full capacity before the session ends.
-                </div>
-                <div class="guidance-text">
-                    This tool will help you understand the driver experience and the impact of choices you'll need to make when planning your EV charging infrastructure.
-                </div>
+                <a href="https://euan-cmd.github.io/voqa-tools/ev-charging/" class="card-button">
+                    🚗 Launch Calculator
+                </a>
             </div>
             
-            <div class="form-group" style="margin-top: 40px;">
-                <label for="vehicleSelect">Select EV Model</label>
-                <select id="vehicleSelect">
-                    <option value="">Choose a vehicle...</option>
-                    <option value="4.5">Tesla Model 3 (4.5 mi/kWh)</option>
-                    <option value="4.2">Tesla Model Y (4.2 mi/kWh)</option>
-                    <option value="4.0">Volkswagen ID.3 (4.0 mi/kWh)</option>
-                    <option value="3.9">Polestar 2 (3.9 mi/kWh)</option>
-                    <option value="3.8">Kia EV6 (3.8 mi/kWh)</option>
-                    <option value="3.8">MG ZS EV (3.8 mi/kWh)</option>
-                    <option value="3.7">Hyundai Ioniq 5 (3.7 mi/kWh)</option>
-                    <option value="3.6">BMW i4 (3.6 mi/kWh)</option>
-                    <option value="3.5">Nissan Leaf (3.5 mi/kWh)</option>
-                    <option value="3.4">Audi Q4 e-tron (3.4 mi/kWh)</option>
-                    <option value="custom">Custom Vehicle</option>
-                </select>
-                <div class="custom-dwell-note">
-                    Efficiency ratings (mi/kWh) are taken from OEM factsheets and may vary based on driving conditions, weather, and vehicle configuration.
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">🌍</span>
+                    <h3 class="card-title">Environmental Impact Calculator</h3>
+                    <p class="card-description">Measure your environmental impact, carbon footprint reduction, and sustainability metrics with professional-grade accuracy.</p>
                 </div>
+                <a href="https://euan-cmd.github.io/voqa-tools/sustainability/" class="card-button">
+                    📊 Launch Calculator
+                </a>
             </div>
-
-            <div class="form-group" id="customEfficiencyGroup" style="display: none;">
-                <label for="customEfficiency">Custom Vehicle Efficiency (mi/kWh)</label>
-                <input type="number" id="customEfficiency" min="1" max="6" step="0.1" placeholder="e.g. 3.5">
-                <div class="custom-dwell-note">
-                    Enter the efficiency rating for your specific vehicle model
+            
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">💼</span>
+                    <h3 class="card-title">Workplace ROI Calculator</h3>
+                    <p class="card-description">Calculate comprehensive return on investment for workplace EV charging infrastructure, including cost savings and employee benefits.</p>
                 </div>
+                <a href="https://euan-cmd.github.io/voqa-tools/workplace-roi/" class="card-button">
+                    💰 Launch Calculator
+                </a>
             </div>
-
-            <div class="form-group" id="customBatteryGroup" style="display: none;">
-                <label for="customBattery">Custom Battery Capacity (kWh)</label>
-                <input type="number" id="customBattery" min="40" max="200" step="1" placeholder="e.g. 75">
-                <div class="custom-dwell-note">
-                    Enter the usable battery capacity of your vehicle (typically 10-15% less than total capacity)
+            
+            <div class="calculator-card">
+                <div>
+                    <span class="card-icon">🏨</span>
+                    <h3 class="card-title">Hotel EV Calculator</h3>
+                    <p class="card-description">Specialised EV charging solutions and ROI analysis for hospitality businesses, guest satisfaction, and revenue optimisation.</p>
                 </div>
+                <a href="https://euan-cmd.github.io/voqa-tools/hotel-calculator/" class="card-button">
+                    🛎️ Launch Calculator
+                </a>
             </div>
-
-            <div class="form-group">
-                <label>Charger Power Rating (kW)</label>
-                <div class="power-options">
-                    <div class="power-option">
-                        <input type="radio" name="powerRating" value="7.4" id="power74" checked>
-                        <label for="power74">7.4kW</label>
-                    </div>
-                    <div class="power-option">
-                        <input type="radio" name="powerRating" value="11" id="power11">
-                        <label for="power11">11kW</label>
-                    </div>
-                    <div class="power-option">
-                        <input type="radio" name="powerRating" value="22" id="power22">
-                        <label for="power22">22kW*</label>
-                    </div>
-                    <div class="power-option">
-                        <input type="radio" name="powerRating" value="50" id="power50">
-                        <label for="power50">50kW</label>
-                    </div>
+            
+            <div class="calculator-card request-card">
+                <div>
+                    <span class="card-icon">💡</span>
+                    <h3 class="card-title">Request a Custom Calculator</h3>
+                    <p class="card-description">Is there an EV charging calculator you would like Voqa to build? Let us know what tool would help your business and we'll consider developing it.</p>
                 </div>
-                <div class="custom-dwell-note" style="margin-top: 12px;">
-                    *Many EVs can only charge at 11kW maximum on AC chargers, even when connected to a 22kW charger. Always check your vehicle's AC charging capabilities.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="dwellTime">Dwell Time (minutes)</label>
-                <select id="dwellTime">
-                    <option value="60">60 minutes (1 hour)</option>
-                    <option value="120">120 minutes (2 hours)</option>
-                    <option value="240">240 minutes (4 hours)</option>
-                    <option value="480">480 minutes (8 hours)</option>
-                    <option value="custom">Custom duration</option>
-                </select>
-            </div>
-
-            <div class="form-group" id="customDwellGroup" style="display: none;">
-                <label for="customDwellTime">Custom Dwell Time (minutes)</label>
-                <input type="number" id="customDwellTime" min="5" max="720" step="5" placeholder="e.g. 90">
-                <div class="custom-dwell-note">
-                    Enter a custom dwell time specific to your business location (5-720 minutes)
-                </div>
+                <button onclick="showRequestForm()" class="card-button request-button">
+                    ✉️ Request Calculator
+                </button>
+                <p class="request-note">Any created calculator will be shared on this page for all to use</p>
             </div>
         </div>
+    </div>
 
-        <div class="card">
-            <h2 class="section-title">📊 Range Results</h2>
+    <!-- Request Form Modal -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideRequestForm()">&times;</span>
+            <h2>Request a Custom Calculator</h2>
+            <p>Tell us about the EV charging calculator you'd like us to build:</p>
+            <form id="requestForm" onsubmit="submitRequest(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company Name *</label>
+                    <input type="text" id="company" name="company" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Calculator Description *</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Describe the EV charging calculator you'd like us to build - what would it calculate, what inputs would it need, how would it help your business?" required></textarea>
+                </div>
+                <div class="privacy-section">
+                    <p class="privacy-notice">VOQA is committed to protecting and respecting your privacy, and we'll only use your personal information to provide the products and services you requested from us.</p>
+                    
+                    <p class="privacy-notice">In order to provide you the content requested, we need to store and process your personal data. If you consent to us storing your personal data for this purpose, please tick the checkbox below.</p>
+                    
+                    <div class="form-group">
+                        <label class="consent-label">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <span class="consent-text">I consent to VOQA processing my personal data to respond to this calculator request. *</span>
+                        </label>
+                    </div>
+                    
+                    <p class="privacy-notice">From time to time, we would like to contact you about our products and services, as well as other content that may be of interest to you. If you consent to us contacting you for this purpose, please tick below:</p>
+                    
+                    <div class="form-group">
+                        <label class="consent-label">
+                            <input type="checkbox" id="marketing-consent" name="marketing-consent">
+                            <span class="consent-text">I agree to receive other communications from VOQA.</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-button">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideSuccessMessage()">&times;</span>
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; color: var(--success); margin-bottom: 20px;">✓</div>
+                <h2 id="successTitle" style="color: var(--success); margin-bottom: 15px;">Request Submitted</h2>
+                <p id="successMessage" style="font-size: 16px; color: #666;"></p>
+                <button onclick="hideSuccessMessage()" style="background: var(--success); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; cursor: pointer; margin-top: 20px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function showRequestForm() {
+            document.getElementById('requestModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideRequestForm() {
+            document.getElementById('requestModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showSuccessMessage(firstName) {
+            document.getElementById('successMessage').textContent = `${firstName}, thanks for your suggestion. We have a look and see what we can do.`;
+            document.getElementById('successModal').style.display = 'block';
+        }
+
+        function hideSuccessMessage() {
+            document.getElementById('successModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function submitRequest(event) {
+            event.preventDefault();
             
-            <div class="results-grid">
-                <div class="result-card">
-                    <span class="result-icon">🔋</span>
-                    <div class="result-value" id="rangeAdded">-</div>
-                    <div class="result-label">Miles of Range Added</div>
-                    <div class="result-description">Range added to the EV battery during the charging session</div>
-                </div>
+            // Get the first name for personalized response
+            const firstName = document.getElementById('firstName').value;
+            
+            // HubSpot configuration
+            const PORTAL_ID = '48587494';
+            const FORM_ID = '0fd4eb45-60a2-4324-9fe7-0935ab88a4a9';
+            
+            const formData = new FormData(event.target);
+            
+            // Prepare data for HubSpot Forms API
+            const hubspotData = {
+                "fields": [
+                    {
+                        "name": "firstname",
+                        "value": formData.get('firstName') || ""
+                    },
+                    {
+                        "name": "lastname", 
+                        "value": formData.get('lastName') || ""
+                    },
+                    {
+                        "name": "email",
+                        "value": formData.get('email') || ""
+                    },
+                    {
+                        "name": "company",
+                        "value": formData.get('company') || ""
+                    },
+                    {
+                        "name": "calculator_description",
+                        "value": formData.get('description') || ""
+                    },
+                    {
+                        "name": "data_processing_consent",
+                        "value": formData.get('consent') ? "Opted In" : "Not Provided"
+                    },
+                    {
+                        "name": "data_processing_consent_date",
+                        "value": new Date().toISOString().split('T')[0]
+                    },
+                    {
+                        "name": "marketing_consent_status",
+                        "value": formData.get('marketing-consent') ? "Opted In" : "Not Provided"
+                    },
+                    {
+                        "name": "marketing_consent_date",
+                        "value": new Date().toISOString().split('T')[0]
+                    },
+                    {
+                        "name": "consent_source",
+                        "value": "VOQA Calculator Request Form"
+                    }
+                ],
+                "context": {
+                    "pageUri": window.location.href,
+                    "pageName": "VOQA Calculator Tools - Custom Calculator Request"
+                }
+            };
+            
+            const submitUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_ID}`;
+            
+            // Submit to HubSpot Forms API
+            fetch(submitUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(hubspotData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success - hide form, reset, and show success message
+                    hideRequestForm();
+                    event.target.reset();
+                    showSuccessMessage(firstName);
+                } else {
+                    // Error handling
+                    console.error('HubSpot submission failed:', response.status);
+                    alert('There was an error submitting your request. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Submission error:', error);
+                alert('There was an error submitting your request. Please try again.');
+            });
+        }
 
-                <div class="result-card">
-                    <span class="result-icon">⚡</span>
-                    <div class="result-value" id="energyDelivered">-</div>
-                    <div class="result-label">Energy Delivered (kWh)</div>
-                    <div class="result-description">Total electrical energy transferred to the vehicle</div>
-                </div>
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const requestModal = document.getElementById('requestModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (event.target === requestModal) {
+                hideRequestForm();
+            }
+            if (event.target === successModal) {
+                hideSuccessMessage();
+            }
+        }
 
-                <div class="result-card">
-                    <span class="result-icon">
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideRequestForm();
+                hideSuccessMessage();
+            }
+        });
+
+        // Enhanced interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Staggered animation for calculator cards
+            const cards = document.querySelectorAll('.calculator-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${0.2 + index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>
