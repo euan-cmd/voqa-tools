@@ -662,6 +662,7 @@
             .container {
                 padding: 30px 20px;
                 gap: 30px;
+                margin-top: 160px;
             }
             
             .header-title {
@@ -681,8 +682,18 @@
             }
             
             .power-options {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .power-option {
+                height: 60px;
+                padding: 12px 8px;
+                font-size: 14px;
+            }
+
+            .power-option label {
+                font-size: 14px;
             }
             
             .results-grid {
@@ -693,19 +704,158 @@
             .section-title {
                 font-size: 24px;
             }
+
+            .card {
+                padding: 24px 20px;
+            }
+
+            .header-cta {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 600px) {
+            .container {
+                margin-top: 140px;
+                padding: 20px 16px;
+            }
+
             .back-to-calculators {
-                position: relative;
-                left: auto;
-                top: auto;
-                margin: 0 auto 20px auto;
-                display: inline-flex;
+                left: 16px;
+                top: 16px;
+                padding: 6px 12px;
+                font-size: 12px;
             }
 
             .header-content {
+                padding: 0 16px;
+                gap: 12px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .header-cta {
+                padding: 12px 16px;
+                font-size: 13px;
+                min-height: 44px;
+            }
+
+            .power-options {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .power-option {
+                height: 50px;
+                padding: 8px 12px;
+                font-size: 13px;
+                flex-direction: row;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .power-option input[type="radio"] {
+                transform: scale(1.0);
+                margin: 0;
+            }
+
+            .power-option label {
+                font-size: 13px;
+                margin: 0;
+            }
+
+            .card {
+                padding: 20px 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .guidance-section {
+                padding: 20px;
                 margin-top: 20px;
+            }
+
+            .guidance-title {
+                font-size: 18px;
+            }
+
+            .guidance-text {
+                font-size: 13px;
+            }
+
+            .result-card {
+                padding: 20px;
+            }
+
+            .result-icon {
+                font-size: 40px;
+                margin-bottom: 12px;
+            }
+
+            .result-value {
+                font-size: 24px;
+            }
+
+            .result-label {
+                font-size: 12px;
+            }
+
+            .result-description {
+                font-size: 11px;
+            }
+
+            .comparison-table {
+                font-size: 12px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 8px 4px;
+            }
+
+            .cta-button {
+                padding: 16px 24px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 16px 12px;
+            }
+
+            .card {
+                padding: 16px 12px;
+            }
+
+            .power-options {
+                gap: 6px;
+            }
+
+            .power-option {
+                height: 48px;
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .power-option label {
+                font-size: 12px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 6px 2px;
+                font-size: 11px;
             }
         }
 
@@ -850,517 +1000,4 @@
                 </div>
 
                 <div class="result-card">
-                    <span class="result-icon">🕒</span>
-                    <div class="result-value" id="chargingRate">-</div>
-                    <div class="result-label">Charging Rate (mi/hr)</div>
-                    <div class="result-description">Miles of range added per hour of charging</div>
-                </div>
-
-                <div class="result-card">
-                    <span class="result-icon">🚗</span>
-                    <div class="result-value" id="vehicleEfficiency">-</div>
-                    <div class="result-label">Vehicle Efficiency</div>
-                    <div class="result-description">Miles per kWh for the selected vehicle</div>
-                </div>
-            </div>
-
-            <div class="guidance-section">
-                <h4 class="guidance-title">Understanding Your Results</h4>
-                <div class="guidance-text">
-                    <strong>Range Added:</strong> This is the practical benefit your customers will experience - how many additional miles they can drive after charging at your location.
-                </div>
-                <div class="guidance-text">
-                    <strong>Energy Delivered:</strong> The actual electrical energy consumed, which determines your electricity costs and grid impact.
-                </div>
-                <div class="guidance-text">
-                    <strong>Charging Rate:</strong> This helps you communicate the speed benefit to customers - "Get X miles of range per hour of charging."
-                </div>
-                <div class="guidance-text">
-                    <strong>Business Impact:</strong> Understanding these metrics helps you choose the right charger power rating for your customer dwell times and communicate the value proposition effectively.
-                </div>
-                <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(13, 110, 253, 0.1); border-radius: 8px; border: 1px solid rgba(13, 110, 253, 0.3);">
-                    <strong>💡 AC vs DC Charging:</strong> AC chargers (7.4kW, 11kW, 22kW) use the vehicle's onboard charger, which may limit actual charging speed. DC chargers (50kW+) bypass the onboard charger for faster charging but require more complex infrastructure.
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2 class="section-title">📈 Scenario Comparison - Range Added</h2>
-            
-            <div class="comparison-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="dwell-time-header">Charger Power</th>
-                            <th>7.4kW (AC)</th>
-                            <th>11kW (AC)</th>
-                            <th>22kW (AC)</th>
-                            <th>50kW (DC)</th>
-                        </tr>
-                        <tr>
-                            <td style="border: none; background: transparent;"></td>
-                            <td colspan="3" style="border: none; background: transparent; padding: 4px;">
-                                <div class="voqa-brand">⚡ Voqa EV Charger Range</div>
-                            </td>
-                            <td style="border: none; background: transparent;"></td>
-                        </tr>
-                        <tr>
-                            <th class="dwell-time-header">Dwell Time</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="comparisonTableBody">
-                        <!-- Table rows will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="guidance-section">
-                <div class="guidance-text">
-                    <strong>7.4kW:</strong> Ideal for overnight parking, employee charging, or locations with 6+ hour dwell times. Lower installation costs.
-                </div>
-                <div class="guidance-text">
-                    <strong>11kW:</strong> Good balance for 2-4 hour stays like shopping centers, restaurants, or workplace charging. Most EVs can utilize this power level.
-                </div>
-                <div class="guidance-text">
-                    <strong>22kW:</strong> Best for 1-2 hour visits, providing meaningful range for shorter stops. <strong>Important:</strong> Many EVs can only charge at 11kW maximum on AC chargers, so the actual charging speed may be limited by the vehicle, not the charger.
-                </div>
-                <div class="guidance-text">
-                    <strong>50kW:</strong> Rapid DC charging for quick stops (30-60 minutes). Requires significant electrical infrastructure investment.
-                </div>
-                <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
-                    <strong>⚠️ AC Charging Limitation:</strong> Most EVs have onboard chargers that limit AC charging to 11kW, regardless of the charger's capacity. Always verify your vehicle's AC charging specifications before expecting 22kW charging speeds.
-                </div>
-            </div>
-        </div>
-
-        <div class="cta-container">
-            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="cta-button">
-                🗓️ Book some time with Voqa to talk about EV Charging
-            </a>
-        </div>
-    </div>
-
-    <script>
-        /**
-         * EV Range Calculator - Professional Tool
-         * Calculate EV charging range and energy delivery
-         * 
-         * Formula: Range (miles) = (Dwell Time ÷ 60) × Power (kW) × Efficiency (mi/kWh)
-         * Battery capacity limits: 20% starting SoC, charging to 100%
-         * 
-         * @author Voqa
-         * @version 1.1.0
-         */
-
-        // Vehicle efficiency data (miles per kWh)
-        const vehicles = {
-            '4.5': 'Tesla Model 3',
-            '4.2': 'Tesla Model Y', 
-            '4.0': 'Volkswagen ID.3',
-            '3.9': 'Polestar 2',
-            '3.8': 'Kia EV6 / MG ZS EV',
-            '3.7': 'Hyundai Ioniq 5',
-            '3.6': 'BMW i4',
-            '3.5': 'Nissan Leaf',
-            '3.4': 'Audi Q4 e-tron'
-        };
-
-        /**
-         * Format number with specified decimal places
-         */
-        function formatNumber(num, decimals = 1) {
-            if (typeof num !== 'number' || isNaN(num)) return '-';
-            return num.toLocaleString('en-GB', {
-                minimumFractionDigits: decimals,
-                maximumFractionDigits: decimals
-            });
-        }
-
-        /**
-         * Get battery capacity for a vehicle based on efficiency
-         */
-        function getBatteryCapacity(efficiency, isCustom = false) {
-            if (isCustom) {
-                const customBattery = document.getElementById('customBattery');
-                const customCapacity = parseFloat(customBattery?.value || 0);
-                if (customCapacity > 0) {
-                    return customCapacity;
-                }
-                return 80;
-            }
-            
-            // Estimates based on typical EVs
-            if (efficiency >= 4.5) return 75; // Tesla Model 3
-            if (efficiency >= 4.0) return 82; // Tesla Model Y, VW ID.3
-            if (efficiency >= 3.8) return 78; // Polestar 2, Kia EV6
-            if (efficiency >= 3.6) return 77; // Hyundai Ioniq 5, BMW i4
-            if (efficiency >= 3.4) return 82; // Nissan Leaf, Audi Q4 e-tron
-            return 80; // Default
-        }
-
-        /**
-         * Calculate EV range and energy delivery with battery capacity limits
-         */
-        function calculateRange() {
-            try {
-                const vehicleSelect = document.getElementById('vehicleSelect');
-                const customEfficiency = document.getElementById('customEfficiency');
-                const powerRatingElement = document.querySelector('input[name="powerRating"]:checked');
-                const dwellTimeSelect = document.getElementById('dwellTime');
-                const customDwellTime = document.getElementById('customDwellTime');
-
-                if (!vehicleSelect || !powerRatingElement || !dwellTimeSelect) {
-                    return;
-                }
-
-                const powerRating = parseFloat(powerRatingElement.value) || 0;
-
-                // Determine efficiency and check if custom vehicle
-                let efficiency = 0;
-                let isCustomVehicle = false;
-                if (vehicleSelect.value === 'custom') {
-                    efficiency = parseFloat(customEfficiency?.value || 0);
-                    isCustomVehicle = true;
-                } else {
-                    efficiency = parseFloat(vehicleSelect.value) || 0;
-                }
-
-                // Determine dwell time
-                let dwellTimeMinutes = 0;
-                if (dwellTimeSelect.value === 'custom') {
-                    dwellTimeMinutes = parseFloat(customDwellTime?.value || 0);
-                } else {
-                    dwellTimeMinutes = parseFloat(dwellTimeSelect.value) || 0;
-                }
-
-                // Validate inputs
-                if (efficiency <= 0 || powerRating <= 0 || dwellTimeMinutes <= 0) {
-                    document.getElementById('rangeAdded').textContent = '-';
-                    document.getElementById('energyDelivered').textContent = '-';
-                    document.getElementById('chargingRate').textContent = '-';
-                    document.getElementById('vehicleEfficiency').textContent = '-';
-                    return;
-                }
-
-                // Battery capacity and charging calculations
-                const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
-                const initialSoC = 0.20; // 20% starting charge
-                const targetSoC = 1.00; // 100% target charge
-                const availableCapacity = batteryCapacity * (targetSoC - initialSoC);
-                
-                const dwellTimeHours = dwellTimeMinutes / 60;
-                const maxEnergyFromTime = dwellTimeHours * powerRating;
-                
-                const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
-                const rangeAdded = energyDelivered * efficiency;
-                const chargingRatePerHour = powerRating * efficiency;
-                
-                const timeToFullCharge = availableCapacity / powerRating;
-                const batteryFull = timeToFullCharge < dwellTimeHours;
-
-                // Update displays
-                const rangeElement = document.getElementById('rangeAdded');
-                const energyElement = document.getElementById('energyDelivered');
-                const rateElement = document.getElementById('chargingRate');
-                const efficiencyElement = document.getElementById('vehicleEfficiency');
-
-                if (rangeElement) {
-                    if (batteryFull) {
-                        rangeElement.innerHTML = `${formatNumber(rangeAdded, 1)}<br><small style="font-size: 12px; color: var(--accent-light);">Battery Full</small>`;
-                    } else {
-                        rangeElement.textContent = formatNumber(rangeAdded, 1);
-                    }
-                }
-                
-                if (energyElement) {
-                    if (batteryFull) {
-                        energyElement.innerHTML = `${formatNumber(energyDelivered, 1)}<br><small style="font-size: 12px; color: var(--accent-light);">Capped at 100%</small>`;
-                    } else {
-                        energyElement.textContent = formatNumber(energyDelivered, 1);
-                    }
-                }
-                
-                if (rateElement) rateElement.textContent = formatNumber(chargingRatePerHour, 1);
-                if (efficiencyElement) efficiencyElement.textContent = `${formatNumber(efficiency, 1)} mi/kWh`;
-
-                // Update comparison table
-                updateComparisonTable(efficiency);
-
-                // Add animations if values are valid
-                if (rangeAdded > 0) {
-                    animateValue('rangeAdded', rangeAdded, 1, batteryFull);
-                    animateValue('energyDelivered', energyDelivered, 1, batteryFull);
-                    animateValue('chargingRate', chargingRatePerHour, 1);
-                }
-            } catch (error) {
-                console.error('Error in calculateRange:', error);
-            }
-        }
-
-        /**
-         * Update the scenario comparison table
-         */
-        function updateComparisonTable(efficiency) {
-            if (efficiency <= 0) return;
-
-            try {
-                const tableBody = document.getElementById('comparisonTableBody');
-                if (!tableBody) return;
-
-                const baseDwellTimes = [60, 120, 240, 480];
-                const powerRatings = [7.4, 11, 22, 50];
-                const vehicleSelect = document.getElementById('vehicleSelect');
-                const isCustomVehicle = vehicleSelect && vehicleSelect.value === 'custom';
-                const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
-                const availableCapacity = batteryCapacity * 0.8;
-
-                // Get current user selections
-                const powerRatingElement = document.querySelector('input[name="powerRating"]:checked');
-                const dwellTimeSelect = document.getElementById('dwellTime');
-                const customDwellTime = document.getElementById('customDwellTime');
-                
-                const selectedPower = powerRatingElement ? parseFloat(powerRatingElement.value) : null;
-                let selectedDwellTime = null;
-                let customDwellTimeValue = null;
-                
-                if (dwellTimeSelect) {
-                    if (dwellTimeSelect.value === 'custom' && customDwellTime && customDwellTime.value) {
-                        customDwellTimeValue = parseFloat(customDwellTime.value);
-                        selectedDwellTime = customDwellTimeValue;
-                    } else {
-                        selectedDwellTime = parseFloat(dwellTimeSelect.value);
-                    }
-                }
-
-                // Create ordered list of dwell times including custom time
-                let allDwellTimes = [...baseDwellTimes];
-                if (customDwellTimeValue && customDwellTimeValue > 0) {
-                    allDwellTimes.push(customDwellTimeValue);
-                    allDwellTimes.sort((a, b) => a - b);
-                }
-
-                tableBody.innerHTML = '';
-
-                // Create table rows in chronological order
-                allDwellTimes.forEach(dwellTime => {
-                    const isCustomTime = customDwellTimeValue && dwellTime === customDwellTimeValue;
-                    const row = document.createElement('tr');
-                    
-                    if (isCustomTime) {
-                        row.className = 'custom-row';
-                    }
-                    
-                    // Dwell time cell
-                    const dwellCell = document.createElement('td');
-                    if (isCustomTime) {
-                        dwellCell.className = 'custom-time';
-                        dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; text-align: left;';
-                        dwellCell.textContent = `${dwellTime} min`;
-                    } else {
-                        dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; background: var(--bg-light); text-align: left;';
-                        dwellCell.textContent = `${dwellTime} min`;
-                    }
-                    row.appendChild(dwellCell);
-
-                    // Range cells for each power rating
-                    powerRatings.forEach((power) => {
-                        const cell = document.createElement('td');
-                        
-                        // Check if this cell matches current selections
-                        const isSelectedCell = (selectedPower === power && selectedDwellTime === dwellTime);
-                        
-                        if (isSelectedCell) {
-                            cell.style.cssText = 'border: 3px solid var(--primary); background: linear-gradient(135deg, rgba(247, 215, 188, 0.4) 0%, rgba(248, 212, 180, 0.3) 100%); font-weight: 700; position: relative;';
-                        } else if (power <= 22 && !isCustomTime) {
-                            cell.className = 'voqa-highlight';
-                        }
-                        
-                        const dwellHours = dwellTime / 60;
-                        const maxEnergyFromTime = dwellHours * power;
-                        const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
-                        const range = energyDelivered * efficiency;
-                        const timeToFull = availableCapacity / power;
-                        const batteryFull = timeToFull < dwellHours;
-                        
-                        if (batteryFull) {
-                            if (isSelectedCell) {
-                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745; font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh (Full)</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
-                            } else {
-                                cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
-                            }
-                        } else {
-                            if (isSelectedCell) {
-                                cell.innerHTML = `<strong style="color: var(--primary);">${formatNumber(range, 1)} mi</strong><br><small style="color: var(--primary-dark); font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh</small><br><small style="font-size: 10px; color: var(--primary); font-weight: 700;">📍 Your Selection</small>`;
-                            } else {
-                                cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small>${formatNumber(energyDelivered, 1)} kWh</small>`;
-                            }
-                        }
-                        
-                        row.appendChild(cell);
-                    });
-
-                    tableBody.appendChild(row);
-                });
-
-            } catch (error) {
-                console.error('Error updating comparison table:', error);
-            }
-        }
-
-        /**
-         * Animate a numeric value with easing
-         */
-        function animateValue(elementId, finalValue, decimals, batteryFull = false) {
-            try {
-                const element = document.getElementById(elementId);
-                if (!element) return;
-
-                const startValue = 0;
-                const duration = 1000;
-                const startTime = performance.now();
-
-                function updateValue(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                    const currentValue = startValue + (finalValue - startValue) * easeOutQuart;
-
-                    if (elementId === 'vehicleEfficiency') {
-                        element.textContent = `${formatNumber(currentValue, decimals)} mi/kWh`;
-                    } else if (batteryFull && (elementId === 'rangeAdded' || elementId === 'energyDelivered')) {
-                        if (elementId === 'rangeAdded') {
-                            element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">Battery Full</small>`;
-                        } else {
-                            element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">Capped at 100%</small>`;
-                        }
-                    } else {
-                        element.textContent = formatNumber(currentValue, decimals);
-                    }
-
-                    if (progress < 1) {
-                        requestAnimationFrame(updateValue);
-                    }
-                }
-
-                requestAnimationFrame(updateValue);
-            } catch (error) {
-                console.error('Error in animateValue:', error);
-            }
-        }
-
-        /**
-         * Initialize event listeners and setup
-         */
-        function initializeApp() {
-            try {
-                // Vehicle selection
-                const vehicleSelect = document.getElementById('vehicleSelect');
-                if (vehicleSelect) {
-                    vehicleSelect.addEventListener('change', function() {
-                        const customEfficiencyGroup = document.getElementById('customEfficiencyGroup');
-                        const customBatteryGroup = document.getElementById('customBatteryGroup');
-                        if (customEfficiencyGroup && customBatteryGroup) {
-                            const isCustom = this.value === 'custom';
-                            customEfficiencyGroup.style.display = isCustom ? 'block' : 'none';
-                            customBatteryGroup.style.display = isCustom ? 'block' : 'none';
-                        }
-                        calculateRange();
-                    });
-                }
-
-                // Custom efficiency input
-                const customEfficiency = document.getElementById('customEfficiency');
-                if (customEfficiency) {
-                    customEfficiency.addEventListener('input', calculateRange);
-                }
-
-                // Custom battery capacity input
-                const customBattery = document.getElementById('customBattery');
-                if (customBattery) {
-                    customBattery.addEventListener('input', calculateRange);
-                }
-
-                // Dwell time selection
-                const dwellTime = document.getElementById('dwellTime');
-                if (dwellTime) {
-                    dwellTime.addEventListener('change', function() {
-                        const customGroup = document.getElementById('customDwellGroup');
-                        if (customGroup) {
-                            customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
-                        }
-                        calculateRange();
-                    });
-                }
-
-                // Custom dwell time input
-                const customDwellTime = document.getElementById('customDwellTime');
-                if (customDwellTime) {
-                    customDwellTime.addEventListener('input', calculateRange);
-                }
-
-                // Power rating radio buttons
-                const powerRadios = document.querySelectorAll('input[name="powerRating"]');
-                powerRadios.forEach(radio => {
-                    radio.addEventListener('change', calculateRange);
-                });
-
-                // Power option click handlers
-                const powerOptions = document.querySelectorAll('.power-option');
-                powerOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const radio = this.querySelector('input[type="radio"]');
-                        if (radio) {
-                            radio.checked = true;
-                            calculateRange();
-                        }
-                    });
-                });
-
-                // Interactive enhancements
-                setupInteractiveEffects();
-
-                // Initial calculation
-                calculateRange();
-
-            } catch (error) {
-                console.error('Error initializing app:', error);
-            }
-        }
-
-        /**
-         * Setup interactive visual effects
-         */
-        function setupInteractiveEffects() {
-            try {
-                // Form group focus effects
-                const formGroups = document.querySelectorAll('.form-group');
-                formGroups.forEach(group => {
-                    const input = group.querySelector('input, select');
-                    if (input) {
-                        input.addEventListener('focus', function() {
-                            group.style.transform = 'translateX(5px)';
-                        });
-
-                        input.addEventListener('blur', function() {
-                            group.style.transform = 'translateX(0)';
-                        });
-                    }
-                });
-            } catch (error) {
-                console.error('Error setting up interactive effects:', error);
-            }
-        }
-
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
-    </script>
-</body>
-</html>
+                    <span class="result-icon">
