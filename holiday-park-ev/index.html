@@ -471,6 +471,18 @@
             letter-spacing: 0.05em;
         }
 
+        .vc-vat-tag {
+            font-size: 12px;
+            font-weight: 500;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        .vc-vat-tag strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
         .vc-vat-banner {
             font-size: 12px;
             font-weight: 700;
@@ -697,6 +709,7 @@
                     </div>
                     <div class="vc-tip-panel" id="tip-price">The rate you charge guests per kWh, exc. VAT. Public rapid chargers typically cost 65–85p/kWh. A destination rate of 45–55p is competitive, convenient for guests, and generates a healthy margin over your electricity cost and Voqa commission.</div>
                     <input type="range" min="20" max="80" step="1" value="50" id="price">
+                    <p class="vc-vat-tag">Drivers pay <strong id="price-inc-vat">60p</strong>/kWh inc. VAT</p>
                 </div>
 
                 <div class="vc-input-row">
@@ -864,7 +877,10 @@
                 const v = +el.value;
                 if      (id === 'occ')     document.getElementById('occ-val').textContent   = v + '%';
                 else if (id === 'ev')      document.getElementById('ev-val').textContent    = v + '%';
-                else if (id === 'price')   document.getElementById('price-val').textContent = v + 'p';
+                else if (id === 'price') {
+                    document.getElementById('price-val').textContent = v + 'p';
+                    document.getElementById('price-inc-vat').textContent = Math.round(v * 1.2) + 'p';
+                }
                 else if (id === 'elec')    document.getElementById('elec-val').textContent  = v + 'p';
                 else if (id === 'pitches') document.getElementById('pitches-val').textContent = v;
                 calc();
