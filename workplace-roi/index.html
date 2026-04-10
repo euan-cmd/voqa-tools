@@ -651,7 +651,7 @@
                     <div class="calc-header">🔌 Estimated Number of Bays Required</div>
                     <div style="margin-top: 15px;">
                         <div class="calc-header" style="font-size: 16px; margin-bottom: 5px;">
-                            2025 (5% EV penetration): <span id="evBaysRequired2025">-</span>
+                            2026 (6% EV penetration): <span id="evBaysRequired2025">-</span>
                         </div>
                         <div class="calc-explainer" style="margin-bottom: 15px;">
                             <span id="evBaysExplainer2025">-</span>
@@ -668,7 +668,7 @@
 
             <div class="form-group">
                 <label for="evBaysOverride">How many bays to enable with an EV charging port</label>
-                <input type="number" id="evBaysOverride" placeholder="Leave blank to use 2025 calculation (5% penetration)" min="0" step="2">
+                <input type="number" id="evBaysOverride" placeholder="Leave blank to use 2026 calculation (6% penetration)" min="0" step="2">
                 <div id="evBaysWarning" class="warning-message">
                     ⚠️ Warning: Number of EV bays must be a multiple of 2 (for dual-socket units)
                 </div>
@@ -974,7 +974,7 @@
                 const evBaysOverride = parseInt(document.getElementById('evBaysOverride').value) || 0;
 
                 // Calculate EV bays required
-                const calculatedEVBays2025 = roundUpToNearestEven((totalBays * peakOccupancy / 100) * 0.05);
+                const calculatedEVBays2025 = roundUpToNearestEven((totalBays * peakOccupancy / 100) * 0.06);
                 const calculatedEVBays2030 = roundUpToNearestEven((totalBays * peakOccupancy / 100) * 0.20);
                 
                 let requiredEVBays = calculatedEVBays2025;
@@ -994,13 +994,13 @@
                 
                 const numberOfUnits = requiredEVBays / 2;
                 const occupiedBays = totalBays * peakOccupancy / 100;
-                const rawEVBays2025 = occupiedBays * 0.05;
+                const rawEVBays2025 = occupiedBays * 0.06;
                 const rawEVBays2030 = occupiedBays * 0.20;
                 
                 // Update bay requirements display
                 document.getElementById('evBaysRequired2025').textContent = calculatedEVBays2025 + ' bays';
                 document.getElementById('evBaysExplainer2025').textContent = 
-                    `${totalBays} total bays × ${peakOccupancy}% occupancy × 5% EV adoption = ${formatNumber(rawEVBays2025, 2)} bays, rounded up to nearest even number (${calculatedEVBays2025}) for dual-socket units`;
+                    `${totalBays} total bays × ${peakOccupancy}% occupancy × 6% EV adoption = ${formatNumber(rawEVBays2025, 2)} bays, rounded up to nearest even number (${calculatedEVBays2025}) for dual-socket units`;
                     
                 document.getElementById('evBaysRequired2030').textContent = calculatedEVBays2030 + ' bays';
                 document.getElementById('evBaysExplainer2030').textContent = 
