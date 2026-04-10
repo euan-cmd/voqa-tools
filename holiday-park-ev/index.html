@@ -888,7 +888,32 @@
         });
 
         calc();
+
+        // Input persistence via localStorage
+        (function(){
+            var KEY = 'voqa-holiday-park';
+            var ids = ['pitches','occ','ev','price','elec'];
+            function save() {
+                var d = {};
+                ids.forEach(function(id){ var el=document.getElementById(id); if(el) d[id]=el.value; });
+                try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
+            }
+            ids.forEach(function(id){
+                var el = document.getElementById(id);
+                if(el) el.addEventListener('input', save);
+            });
+            try {
+                var saved = JSON.parse(localStorage.getItem(KEY)||'null');
+                if(saved) {
+                    Object.keys(saved).forEach(function(id){
+                        var el = document.getElementById(id);
+                        if(el){ el.value = saved[id]; el.dispatchEvent(new Event('input')); }
+                    });
+                }
+            } catch(e) {}
+        })();
     </script>
 
+    <button class="print-btn" onclick="window.print()">🖨 Save as PDF</button>
 </body>
 </html>
