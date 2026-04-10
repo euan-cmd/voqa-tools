@@ -65,13 +65,16 @@
         .header {
             background: rgba(0, 92, 128, 0.95);
             backdrop-filter: blur(20px);
-            padding: 40px 0 28px 0;
+            padding: 20px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
+            min-height: 140px;
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -951,13 +954,6 @@
                 transition: none !important;
             }
         }
-        .voqa-logo-link {
-            position: absolute;
-            top: 20px;
-            left: 40px;
-            display: inline-block;
-            line-height: 0;
-        }
         .voqa-logo {
             height: 48px;
             width: auto;
@@ -969,7 +965,7 @@
 </head>
 <body>
     <div class="header">
-        <a href="https://www.voqa.com" aria-label="Visit Voqa" class="voqa-logo-link">
+        <a href="https://www.voqa.com" aria-label="Visit Voqa">
         <svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
             <defs>
                 <style>.cls-1{fill:#fff;stroke-width:0px;}</style>
