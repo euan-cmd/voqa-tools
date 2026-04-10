@@ -781,6 +781,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <div style="margin-top: 12px; padding: 12px 16px; background: rgba(9, 140, 71, 0.1); border-left: 3px solid #098C47; border-radius: 4px; font-size: 13px; color: #ccc; line-height: 1.5;">
+                    <strong style="color: #098C47;">WCS Grant Update (from 1 April 2026):</strong> The Workplace Charging Scheme grant has increased from £350 to £500 per socket, raising the maximum claimable amount to £20,000 (based on 40 sockets per organisation). The scheme has been extended for a final year until 31 March 2027, after which it closes permanently — OZEV has confirmed this is the last year.
+                </div>
             </div>
 
             <h3 class="section-subtitle">PROFITS</h3>
@@ -1014,7 +1017,7 @@
                 const unitCost = numberOfUnits * unitCostInput;
                 const installCostTotal = requiredEVBays * installationCost;
                 const grantEligibleBays = Math.min(requiredEVBays, 40);
-                const grantSaving = grantEligibleBays * 350;
+                const grantSaving = grantEligibleBays * 500;
                 const totalInvestment = unitCost + installCostTotal - grantSaving;
 
                 const dailyKwh = requiredEVBays * sessionsPerPort * sessionDuration * effectiveChargingRate;
@@ -1056,7 +1059,7 @@
                 document.getElementById('unitCost').textContent = formatCurrencyDetailed(unitCost);
                 document.getElementById('installCalc').textContent = `${requiredEVBays} bays × ${formatCurrencyDetailed(installationCost)}`;
                 document.getElementById('installCostTotal').textContent = formatCurrencyDetailed(installCostTotal);
-                document.getElementById('grantCalc').textContent = `${grantEligibleBays} bays × £350 (up to 40 bays)`;
+                document.getElementById('grantCalc').textContent = `${grantEligibleBays} sockets × £500 (up to 40 sockets)`;
                 document.getElementById('grantSaving').textContent = formatCurrencyDetailed(-grantSaving);
                 document.getElementById('totalInvestment').textContent = formatCurrencyDetailed(totalInvestment);
 
