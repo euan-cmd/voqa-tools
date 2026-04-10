@@ -526,11 +526,17 @@
                 padding: 12px;
             }
         }
+        .voqa-logo-link {
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+            line-height: 0;
+        }
         .voqa-logo {
             height: 48px;
             width: auto;
+            display: block;
             opacity: 0.9;
-            flex-shrink: 0;
             transition: opacity 0.2s;
         }
         .voqa-logo:hover { opacity: 1; }
@@ -539,7 +545,7 @@
 <body>
     <!-- Fixed Header -->
     <div class="header-fixed">
-        <a href="https://www.voqa.com" aria-label="Visit Voqa">
+        <a href="https://www.voqa.com" aria-label="Visit Voqa" class="voqa-logo-link">
         <svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
             <defs>
                 <style>.cls-1{fill:#fff;stroke-width:0px;}</style>
