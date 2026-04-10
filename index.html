@@ -223,16 +223,22 @@
             transform: translateY(-1px);
         }
 
-        .voqa-logo {
+        .voqa-logo-link {
             position: absolute;
             top: 20px;
             left: 40px;
-            width: 180px;
-            height: auto;
+            display: inline-flex;
+            align-items: center;
+            line-height: 0;
+        }
+
+        .voqa-logo {
+            height: 58px;
+            width: auto;
+            display: block;
             opacity: 0.9;
             transition: all 0.3s ease;
             animation: fadeIn 0.8s ease-out 0.6s both;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
         }
 
         .voqa-logo:hover {
@@ -690,7 +696,7 @@
 </head>
 <body>
     <div class="header">
-        <a href="https://www.voqa.com" aria-label="Visit Voqa" target="_blank" rel="noopener"><svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
+        <a href="https://www.voqa.com" aria-label="Visit Voqa" target="_blank" rel="noopener" class="voqa-logo-link"><svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
             <defs>
                 <style>
                     .cls-1 {
