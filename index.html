@@ -190,8 +190,10 @@
         .header {
             background: rgba(0, 92, 128, 0.95);
             backdrop-filter: blur(20px);
-            padding: 30px 0 40px 0;
+            padding: 30px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
             position: relative;
             z-index: 100;
             animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -224,11 +226,9 @@
         }
 
         .voqa-logo-link {
-            position: absolute;
-            top: 20px;
-            left: 40px;
             display: inline-flex;
             align-items: center;
+            flex-shrink: 0;
             line-height: 0;
         }
 
@@ -258,12 +258,12 @@
         }
 
         .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 180px;
+            position: absolute;
+            left: 0;
+            right: 0;
             text-align: center;
-            margin-top: 25px;
-            position: relative;
+            pointer-events: none;
+            padding: 0 180px;
         }
 
         .header-title {
