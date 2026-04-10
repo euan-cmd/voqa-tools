@@ -962,36 +962,6 @@
             transition: opacity 0.2s;
         }
         .voqa-logo:hover { opacity: 1; }
-
-        .print-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--primary, #005C80);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,92,128,0.3);
-            transition: all 0.3s ease;
-            z-index: 998;
-            font-family: inherit;
-        }
-        .print-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,92,128,0.4);
-        }
-        @media print {
-            .header, .header-fixed { display: none !important; }
-            body { padding-top: 0 !important; background: white !important; color: #000 !important; }
-            .print-btn { display: none !important; }
-        }
     </style>
 </head>
 <body>
@@ -1659,6 +1629,5 @@
             } else { restore(); }
         })();
     </script>
-    <button class="print-btn" onclick="window.print()">🖨 Save as PDF</button>
 </body>
 </html>
