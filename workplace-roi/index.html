@@ -49,11 +49,11 @@
             min-height: 100vh;
             color: var(--text-light);
             line-height: 1.6;
-            padding-top: 220px;
+            padding-top: 0;
         }
 
         /* Fixed Header */
-        .header-fixed {
+        .header {
             position: fixed;
             top: 0;
             left: 0;
@@ -87,10 +87,9 @@
         }
 
         .header-title {
-            font-size: clamp(24px, 5vw, 36px);
+            font-size: clamp(22px, 4vw, 34px);
             font-weight: 800;
             color: var(--text-light);
-            margin-bottom: 20px;
         }
 
         .header-cta {
@@ -131,7 +130,7 @@
         /* Main Content */
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 200px auto 0;
             padding: 40px 20px;
             display: grid;
             grid-template-columns: 1fr;
@@ -481,11 +480,27 @@
             }
         }
 
-        @media (max-width: 900px) {
-            body {
-                padding-top: 160px;
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 24px;
+                min-height: 160px;
             }
-            
+
+            .container {
+                margin-top: 180px;
+            }
+
+            .voqa-logo {
+                height: 68px;
+            }
+
+            .header-cta {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 900px) {
             .back-to-calculators {
                 left: 20px;
                 top: 16px;
@@ -511,12 +526,8 @@
             }
         }
 
-        @media (max-width: 600px) {
-            body {
-                padding-top: 0;
-            }
-
-            .header-fixed {
+        @media (max-width: 520px) {
+            .header {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
@@ -538,7 +549,7 @@
                 position: static;
                 padding: 0;
                 width: 100%;
-                gap: 10px;
+                gap: 8px;
             }
 
             .header-title {
@@ -551,7 +562,8 @@
             }
 
             .container {
-                padding: 20px 15px;
+                margin-top: 0;
+                padding: 20px 12px 60px;
                 gap: 20px;
             }
 

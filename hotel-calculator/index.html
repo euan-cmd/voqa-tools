@@ -146,7 +146,7 @@
             left: 0;
             right: 0;
             z-index: 100;
-            min-height: 200px;
+            min-height: 180px;
         }
 
         .back-to-calculators {
@@ -193,7 +193,7 @@
         }
 
         .header-title {
-            font-size: clamp(24px, 5vw, 36px);
+            font-size: clamp(22px, 4vw, 34px);
             font-weight: 800;
             color: var(--text-light);
             letter-spacing: -0.5px;
@@ -244,7 +244,7 @@
 
         .container {
             max-width: 1200px;
-            margin: 220px auto 0;
+            margin: 200px auto 0;
             padding: 40px 20px;
             display: grid;
             grid-template-columns: 1.5fr 1fr;
@@ -678,18 +678,33 @@
                 gap: 20px;
             }
 
-            /* Remove sticky header on mobile */
-            .header {
-                position: relative;
-            }
-
             /* Show landscape notice on mobile */
             .mobile-landscape-notice {
                 display: block;
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 24px;
+                min-height: 160px;
+            }
+
+            .container {
+                margin-top: 180px;
+            }
+
+            .voqa-logo {
+                height: 68px;
+            }
+
+            .header-cta {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 520px) {
             .header {
                 flex-direction: column;
                 align-items: center;
@@ -697,6 +712,7 @@
                 padding: 16px 20px;
                 min-height: auto;
                 gap: 8px;
+                position: relative;
             }
 
             .voqa-logo {
@@ -711,21 +727,21 @@
                 position: static;
                 padding: 0;
                 width: 100%;
-                gap: 10px;
+                gap: 8px;
             }
 
             .header-title {
                 font-size: 22px;
             }
 
-            .btn {
+            .header-cta {
                 padding: 10px 16px;
                 font-size: 12px;
             }
 
             .container {
                 margin-top: 0;
-                padding-top: 24px;
+                padding: 20px 12px 60px;
             }
         }
 
@@ -815,7 +831,7 @@
         </a>
         <div class="header-content">
             <div class="header-title animate-fade-in">🏨 Hotel EV Charging RoI Calculator</div>
-            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="btn">
+            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="btn header-cta">
                 📅 Book some time with Voqa to talk about EV Charging
             </a>
         </div>

@@ -144,7 +144,7 @@
         }
 
         .header-title {
-            font-size: clamp(24px, 5vw, 36px);
+            font-size: clamp(22px, 4vw, 34px);
             font-weight: 800;
             color: var(--text-light);
             letter-spacing: -0.5px;
@@ -213,7 +213,7 @@
             position: relative;
             z-index: 2;
             animation: fadeInUp 0.8s ease-out;
-            margin-top: 170px;
+            margin-top: 200px;
         }
 
         @keyframes fadeInUp {
@@ -779,26 +779,10 @@
             border-color: var(--primary);
         }
 
-        @media (max-width: 1200px) {
-            .header-content {
-                padding: 0 200px;
-            }
-        }
-
         @media (max-width: 900px) {
             .container {
                 padding: 30px 20px;
                 gap: 30px;
-                margin-top: 190px;
-            }
-            
-            .header-title {
-                font-size: 24px;
-            }
-            
-            .header-content {
-                padding: 0 180px;
-                gap: 15px;
             }
 
             .back-to-calculators {
@@ -826,13 +810,29 @@
                 padding: 24px 20px;
             }
 
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 24px;
+                min-height: 160px;
+            }
+
+            .container {
+                margin-top: 180px;
+            }
+
+            .voqa-logo {
+                height: 68px;
+            }
+
             .header-cta {
-                padding: 14px 20px;
-                font-size: 14px;
+                padding: 12px 20px;
+                font-size: 13px;
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 520px) {
             .header {
                 flex-direction: column;
                 align-items: center;
@@ -850,7 +850,7 @@
                 position: static;
                 padding: 0;
                 width: 100%;
-                gap: 10px;
+                gap: 8px;
             }
 
             .header-title { font-size: 22px; }
@@ -862,7 +862,7 @@
 
             .container {
                 margin-top: 0;
-                padding-top: 20px;
+                padding: 20px 12px 60px;
             }
 
             .card {
