@@ -513,15 +513,36 @@
 
         @media (max-width: 600px) {
             body {
-                padding-top: 180px;
+                padding-top: 0;
             }
 
-            .header {
-                padding: 16px 0;
+            .header-fixed {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 16px 20px;
+                min-height: auto;
+                gap: 8px;
+                position: relative;
+            }
+
+            .voqa-logo {
+                height: 44px;
+            }
+
+            .back-to-calculators {
+                position: static;
+                margin: 0;
+                padding: 6px 12px;
+                font-size: 12px;
+                align-self: flex-start;
             }
 
             .header-content {
-                padding: 0 15px;
+                position: static;
+                padding: 0;
+                width: 100%;
+                gap: 10px;
             }
 
             .header-title {

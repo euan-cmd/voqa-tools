@@ -682,22 +682,32 @@
         }
 
         @media (max-width: 600px) {
-            .header-content {
-                margin-top: 60px;
-                padding: 0 20px;
-            }
-            
-            .back-to-voqa {
-                right: 20px;
-                top: 20px;
-                padding: 8px 14px;
-                font-size: 13px;
+            .header {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                min-height: auto;
+                gap: 8px;
             }
 
             .voqa-logo {
-                left: 20px;
-                top: 20px;
-                width: 120px;
+                height: 44px;
+                width: auto;
+            }
+
+            .back-to-voqa {
+                position: static;
+                align-self: flex-end;
+                padding: 8px 14px;
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+
+            .header-content {
+                position: static;
+                padding: 0;
+                width: 100%;
             }
 
             .modal-content {
