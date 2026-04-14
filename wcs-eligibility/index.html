@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workplace Charging Scheme — Eligibility Checker</title>
+    <title>WCS Eligibility Checker - Voqa</title>
     <meta name="description" content="Check your eligibility for the UK Government Workplace Charging Scheme grant. Up to £500 per socket, 75% of installation costs covered.">
+    <meta name="keywords" content="Workplace Charging Scheme, WCS grant, EV charging eligibility, UK government grant, electric vehicle, workplace charging">
     <meta name="author" content="Voqa">
     <link rel="icon" href="https://www.voqa.com/favicon.ico" type="image/x-icon">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tools.voqa.com/wcs-eligibility/">
+    <meta property="og:title" content="WCS Eligibility Checker - Voqa">
+    <meta property="og:description" content="Check your eligibility for the UK Government Workplace Charging Scheme grant. Up to £500 per socket, 75% of installation costs covered.">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="WCS Eligibility Checker - Voqa">
+    <meta name="twitter:description" content="Check your eligibility for the UK Government Workplace Charging Scheme grant. Up to £500 per socket, 75% of installation costs covered.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -429,13 +440,30 @@
         /* ── Hidden util ── */
         .hidden { display: none !important; }
 
-        @media (max-width: 520px) {
-            .header { min-height: 200px; }
-            .container { margin-top: 220px; }
-            .stat-row { grid-template-columns: repeat(3,1fr); gap: 8px; }
-            .stat-value { font-size: 20px; }
+        @media (max-width: 768px) {
+            .header { padding: 20px 24px; min-height: 160px; }
+            .container { margin-top: 180px; padding: 30px 16px 60px; }
+            .voqa-logo { height: 68px; }
             .result-grid { grid-template-columns: 1fr; }
+            .stat-row { gap: 8px; }
+            .card { padding: 24px; }
+            .header-cta { padding: 12px 20px; font-size: 13px; }
+        }
+
+        @media (max-width: 520px) {
+            .header { padding: 16px; min-height: 140px; }
+            .container { margin-top: 160px; padding: 20px 12px 60px; }
+            .voqa-logo { height: 52px; }
+            .card { padding: 20px 16px; }
+            .stat-row { grid-template-columns: repeat(3,1fr); gap: 6px; }
+            .stat-value { font-size: 18px; }
+            .stat-label { font-size: 10px; }
+            .result-grid { grid-template-columns: 1fr; }
+            .result-card-value { font-size: 26px; }
             .back-link { font-size: 12px; padding: 8px 12px; }
+            .btn-primary, .btn-secondary { padding: 12px 20px; font-size: 13px; }
+            .action-row { flex-direction: column; }
+            .header-cta { padding: 10px 16px; font-size: 12px; }
         }
     </style>
 </head>
@@ -614,7 +642,8 @@
     <footer>
         This tool provides indicative guidance only. Eligibility criteria are subject to change by OZEV.<br>
         Always verify at <a href="https://www.gov.uk/government/collections/workplace-charging-scheme" target="_blank">gov.uk</a> before applying.
-        Grant figures reflect the scheme as updated April 2026.
+        Grant figures reflect the scheme as updated April 2026.<br><br>
+        © 2026 Voqa Ltd. All rights reserved. · <a href="https://www.voqa.com" target="_blank" rel="noopener">voqa.com</a>
     </footer>
 
     <script>

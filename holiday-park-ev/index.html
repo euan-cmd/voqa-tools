@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <link rel="icon" href="https://www.voqa.com/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holiday Park EV Charging Calculator | Voqa</title>
+    <title>Holiday Park EV Charging Calculator - Voqa</title>
     <meta name="description" content="Calculate revenue, payback period, and infrastructure needed for guest EV charging at your holiday park. Built by Voqa.">
+    <meta name="keywords" content="EV charging, holiday park, caravan park, revenue calculator, electric vehicle, charging infrastructure, guest charging">
     <meta name="author" content="Voqa">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tools.voqa.com/holiday-park-ev/">
+    <meta property="og:title" content="Holiday Park EV Charging Calculator - Voqa">
+    <meta property="og:description" content="Calculate revenue, payback period, and infrastructure needed for guest EV charging at your holiday park. Built by Voqa.">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Holiday Park EV Charging Calculator - Voqa">
+    <meta name="twitter:description" content="Calculate revenue, payback period, and infrastructure needed for guest EV charging at your holiday park. Built by Voqa.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -577,6 +588,16 @@
             .container { margin-top: 90px; padding: 16px 12px 60px; }
             .header-cta { display: none; }
         }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            padding: 24px 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        footer a { color: rgba(255,255,255,0.65); text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -913,6 +934,9 @@
             } catch(e) {}
         })();
     </script>
+    <footer>
+        © 2026 Voqa Ltd. All rights reserved. · <a href="https://www.voqa.com" target="_blank" rel="noopener">voqa.com</a>
+    </footer>
 
 </body>
 </html>
