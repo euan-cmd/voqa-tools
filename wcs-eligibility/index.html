@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workplace Charging Scheme — Eligibility Checker</title>
+    <meta name="description" content="Check your eligibility for the UK Government Workplace Charging Scheme grant. Up to £500 per socket, 75% of installation costs covered.">
+    <meta name="author" content="Voqa">
+    <link rel="icon" href="https://www.voqa.com/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
+
+        :root {
+            --primary:      #005C80;
+            --primary-dark: #004A6B;
+            --accent:       #F7D7BC;
+            --accent-light: #F8D4B4;
+            --success:      #098C47;
+            --danger:       #DC2626;
+            --warn:         #D97706;
+            --text-dark:    #0E215A;
+            --text-light:   #ffffff;
+            --bg-light:     #f8f9fa;
+            --border:       #E8F0F0;
+        }
+
+        body {
+            font-family: 'Red Hat Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(247,215,188,0.10) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0,92,128,0.10)    0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255,255,255,0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: rgba(0,92,128,0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            min-height: 180px;
+            animation: slideDown 0.6s cubic-bezier(0.34,1.56,0.64,1);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .voqa-logo-link {
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+            line-height: 0;
+        }
+        .voqa-logo {
+            height: 87px;
+            width: auto;
+            display: block;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        .voqa-logo:hover { opacity: 1; }
+
+
+        .header-content {
+            position: absolute;
+            left: 0; right: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .header-content a { pointer-events: all; }
+
+        .header-title {
+            font-size: clamp(22px, 4vw, 34px);
+            font-weight: 800;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .header-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: var(--primary);
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transform: translate(-50%,-50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .header-cta:hover::before { width: 300px; height: 300px; }
+        .header-cta:hover { transform: translateY(-2px) scale(1.04); }
+
+        /* ── Layout ── */
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+            position: relative;
+            z-index: 2;
+            margin-top: 200px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: rgba(255,255,255,0.98);
+            color: var(--text-dark);
+            padding: 32px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .card:hover::before { transform: scaleX(1); }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* ── Stat row ── */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .stat-box {
+            background: #f0f7ff;
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-value { font-size: 26px; font-weight: 800; color: var(--primary); line-height: 1; }
+        .stat-label { font-size: 11px; color: #6b7280; margin-top: 4px; font-weight: 500; }
+
+        /* ── Progress ── */
+        .progress-wrap { margin-bottom: 20px; }
+        .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+        .progress-track { height: 6px; background: rgba(255,255,255,0.2); border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
+
+        /* ── Question label ── */
+        .q-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .q-title { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+        .q-hint  { font-size: 13px; color: #6b7280; margin-bottom: 18px; line-height: 1.5; }
+
+        /* ── Radio options ── */
+        .options { display: flex; flex-direction: column; gap: 10px; }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            background: white;
+        }
+        .option:hover { border-color: var(--primary); background: #f0f7ff; transform: translateX(4px); }
+        .option input[type=radio] { accent-color: var(--primary); width: 18px; height: 18px; flex-shrink: 0; }
+
+        /* ── Number input ── */
+        .num-row { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+        .num-input {
+            width: 100px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-dark);
+            background: white;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .num-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,92,128,0.1); }
+        .num-label { font-size: 14px; color: #6b7280; font-weight: 500; }
+
+        /* ── Buttons ── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin-top: 20px;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,92,128,0.3); }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            color: #6b7280;
+            padding: 10px 0;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: color 0.2s ease;
+            margin-top: 16px;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            border: 2px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+        /* ── Verdict banner ── */
+        .verdict {
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        .verdict-pass { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #86efac; }
+        .verdict-fail { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid #fca5a5; }
+        .verdict-icon { font-size: 40px; line-height: 1; flex-shrink: 0; }
+        .verdict-title { font-size: 19px; font-weight: 800; margin-bottom: 4px; }
+        .verdict-pass .verdict-title { color: #166534; }
+        .verdict-fail .verdict-title { color: #991b1b; }
+        .verdict-body { font-size: 14px; line-height: 1.6; }
+        .verdict-pass .verdict-body { color: #166534; }
+        .verdict-fail .verdict-body { color: #991b1b; }
+
+        /* ── Result cards ── */
+        .result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+        .result-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        .result-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+        .result-card-value { font-size: 32px; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+        .result-card-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+
+        /* ── Checks list ── */
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 14px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+        .check-item:last-child { border-bottom: none; }
+        .check-icon { font-size: 18px; line-height: 1.2; flex-shrink: 0; }
+        .check-name { font-weight: 700; color: var(--text-dark); }
+        .check-detail-pass { color: #166534; }
+        .check-detail-fail { color: #991b1b; }
+        .check-detail-warn { color: #92400e; }
+
+        /* ── Next steps ── */
+        .next-steps-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+        .next-steps-title { font-size: 16px; font-weight: 800; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .next-steps-list { list-style: none; }
+        .next-steps-list li {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .next-steps-list li:last-child { border-bottom: none; }
+        .step-num {
+            width: 24px; height: 24px;
+            background: var(--accent);
+            color: var(--primary);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .next-steps-list a { color: var(--accent); text-decoration: underline; }
+
+        /* ── Action row ── */
+        .action-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            padding: 24px 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        footer a { color: rgba(255,255,255,0.65); text-decoration: underline; }
+
+        /* ── Hidden util ── */
+        .hidden { display: none !important; }
+
+        @media (max-width: 520px) {
+            .header { min-height: 200px; }
+            .container { margin-top: 220px; }
+            .stat-row { grid-template-columns: repeat(3,1fr); gap: 8px; }
+            .stat-value { font-size: 20px; }
+            .result-grid { grid-template-columns: 1fr; }
+            .back-link { font-size: 12px; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="https://www.voqa.com" aria-label="Visit Voqa" target="_blank" rel="noopener" class="voqa-logo-link"><svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79"><defs><style>.cls-1{fill:#fff;stroke-width:0px;}</style></defs><g id="Bracket"><polygon class="cls-1" points="2093.72 122.69 2359.3 122.69 2359.3 98.46 2359.3 42.11 2093.72 42.11 2013.13 42.11 2013.13 122.69 2013.13 1856.11 2013.13 1936.69 2093.72 1936.69 2359.3 1936.69 2359.3 1880.33 2359.3 1856.11 2093.72 1856.11 2093.72 122.69"/></g><g id="Effortless"><g><polygon class="cls-1" points="2567.64 356.2 2567.64 310.87 2325.07 310.87 2325.07 638.03 2569.51 638.03 2569.51 592.69 2376.95 592.69 2376.95 495.01 2502.21 495.01 2502.21 450.61 2376.95 450.61 2376.95 356.2 2567.64 356.2"/><path class="cls-1" d="M2653.17,638.03h49.07v-197.23h67.77v-41.6h-67.77v-32.72c0-12.46,3.19-21.65,9.58-27.57,6.38-5.92,15.96-8.88,28.74-8.88,5.3,0,10.21.31,14.72.93,4.52.63,9.42,1.72,14.72,3.27v-42.53c-4.67-1.56-9.98-2.64-15.89-3.27-5.93-.62-12.16-.94-18.7-.94-26.8,0-47.21,6.7-61.22,20.1-14.02,13.4-21.03,32.56-21.03,57.49v34.12h-55.15v41.6h55.15v197.23Z"/><path class="cls-1" d="M2876.48,638.03h49.07v-197.23h67.77v-41.6h-67.77v-32.72c0-12.46,3.19-21.65,9.58-27.57,6.38-5.92,15.96-8.88,28.74-8.88,5.3,0,10.21.31,14.72.93,4.52.63,9.42,1.72,14.72,3.27v-42.53c-4.67-1.56-9.98-2.64-15.89-3.27-5.93-.62-12.16-.94-18.7-.94-26.8,0-47.21,6.7-61.22,20.1-14.02,13.4-21.03,32.56-21.03,57.49v34.12h-55.15v41.6h55.15v197.23Z"/><path class="cls-1" d="M3087.35,626.34c19,10.91,40.04,16.36,63.1,16.36s44.48-5.45,63.33-16.36c18.85-10.9,33.81-25.7,44.87-44.4,11.06-18.7,16.59-39.72,16.59-63.1s-5.53-44.32-16.59-62.86c-11.06-18.53-26.02-33.34-44.87-44.4-18.86-11.06-39.96-16.6-63.33-16.6s-44.09,5.54-63.1,16.6c-19,11.06-34.04,25.87-45.1,44.4-11.06,18.54-16.59,39.49-16.59,62.86s5.52,44.4,16.59,63.1c11.06,18.7,26.09,33.5,45.1,44.4ZM3084.31,477.72c6.7-12.16,15.82-21.81,27.35-28.98,11.52-7.16,24.46-10.75,38.79-10.75s27.35,3.59,39.03,10.75c11.68,7.18,20.87,16.82,27.57,28.98,6.7,12.15,10.05,25.7,10.05,40.66s-3.35,28.98-10.05,41.13c-6.7,12.15-15.9,21.89-27.57,29.21-11.69,7.33-24.7,10.99-39.03,10.99s-27.27-3.66-38.79-10.99c-11.53-7.32-20.65-17.06-27.35-29.21-6.7-12.15-10.05-25.86-10.05-41.13s3.35-28.51,10.05-40.66Z"/><path class="cls-1" d="M3389.7,479.12c6.22-13.71,14.64-24.14,25.24-31.32,10.59-7.16,22.59-10.75,35.99-10.75,4.98,0,9.97.4,14.96,1.17,4.98.78,9.66,2.1,14.02,3.97v-43.93c-6.55-2.8-14.81-4.36-24.77-4.67-14.02,0-26.49,3.12-37.4,9.35-10.91,6.23-20.26,14.95-28.04,26.17v-29.91h-49.07v238.83h49.07v-158.91Z"/><path class="cls-1" d="M3631.14,326.75l-49.07,11.21v61.23h-50.47v41.6h50.47v136.94c0,21.19,6.15,37.24,18.46,48.15,12.31,10.91,30.3,16.36,53.98,16.36,7.16,0,14.95-.55,23.36-1.64,8.41-1.1,15.73-2.72,21.97-4.91v-41.6c-5.93,2.19-11.45,3.67-16.6,4.44-5.14.79-10.83,1.17-17.05,1.17-12.78,0-21.81-2.49-27.11-7.48-5.3-4.98-7.95-13.39-7.95-25.25v-126.19h70.11v-41.6h-70.11v-72.45Z"/><polygon class="cls-1" points="3807.25 301.52 3758.18 310.87 3758.18 638.03 3807.25 638.03 3807.25 301.52"/><path class="cls-1" d="M4052.62,412.05c-17.3-11.06-37-16.59-59.12-16.59s-42.77,5.45-61,16.35c-18.23,10.91-32.71,25.71-43.46,44.41-10.75,18.69-16.12,39.57-16.12,62.62s5.52,43.55,16.59,62.4c11.06,18.86,26.17,33.73,45.34,44.64,19.16,10.91,40.43,16.36,63.8,16.36,18.07,0,34.59-2.65,49.55-7.95,14.95-5.3,29.44-13.24,43.46-23.84l-31.78-30.85c-7.18,6.85-15.97,12.08-26.41,15.66-10.44,3.58-21.43,5.37-32.95,5.37-13.09,0-25.17-2.88-36.22-8.65-11.06-5.76-20.18-13.63-27.35-23.6-7.17-9.97-11.84-21.19-14.02-33.66h186.02v-13.55c0-23.68-5.07-45.02-15.2-64.03-10.13-19-23.84-34.04-41.13-45.1ZM3922.92,498.28c1.87-12.46,6.15-23.29,12.85-32.48,6.7-9.18,14.87-16.36,24.54-21.5,9.66-5.14,20.25-7.71,31.78-7.71s21.57,2.65,31.08,7.95,17.53,12.54,24.07,21.73c6.54,9.2,10.75,19.87,12.62,32.02h-136.94Z"/><path class="cls-1" d="M4299.02,595.03c-10.13,6.23-23.45,9.35-39.96,9.35-13.4,0-26.57-2.41-39.5-7.25-12.93-4.82-25.79-12.22-38.56-22.2l-26.17,32.72c13.39,11.21,29.05,19.86,46.97,25.94,17.92,6.08,37.31,9.11,58.19,9.11,19.31,0,36.45-3.27,51.41-9.81,14.95-6.55,26.94-15.58,35.99-27.11,9.03-11.52,13.55-24.46,13.55-38.8,0-19-6.15-34.11-18.46-45.34-12.31-11.21-30.31-18.38-53.98-21.5l-43.46-6.54c-13.72-1.87-23.53-5.14-29.45-9.81-5.92-4.67-8.88-11.22-8.88-19.63,0-9.35,4.2-16.9,12.61-22.66,8.41-5.77,19.47-8.65,33.19-8.65,12.77,0,25.24,2.03,37.4,6.08,12.15,4.05,24.77,10.29,37.85,18.7l25.25-32.25c-14.96-10.29-30.38-18-46.27-23.14-15.9-5.15-32.56-7.71-50.01-7.71-19.01,0-35.6,3.12-49.77,9.35-14.19,6.23-25.25,14.8-33.19,25.7-7.95,10.91-11.92,23.53-11.92,37.86,0,18.7,6,33.81,18,45.34,11.99,11.53,29.98,18.86,53.98,21.96l43.46,6.55c12.77,1.87,22.12,5.14,28.05,9.81,5.91,4.67,8.88,11.21,8.88,19.63,0,9.97-5.07,18.07-15.19,24.3Z"/><path class="cls-1" d="M4551.92,595.03c-10.13,6.23-23.45,9.35-39.96,9.35-13.4,0-26.57-2.41-39.5-7.25-12.93-4.82-25.79-12.22-38.56-22.2l-26.17,32.72c13.39,11.21,29.05,19.86,46.97,25.94,17.92,6.08,37.31,9.11,58.19,9.11,19.31,0,36.45-3.27,51.41-9.81,14.95-6.55,26.94-15.58,35.99-27.11,9.03-11.52,13.55-24.46,13.55-38.8,0-19-6.15-34.11-18.46-45.34-12.31-11.21-30.31-18.38-53.98-21.5l-43.46-6.54c-13.72-1.87-23.53-5.14-29.45-9.81s-8.88-11.22-8.88-19.63c0-9.35,4.2-16.9,12.61-22.66s19.47-8.65,33.19-8.65c12.77,0,25.24,2.03,37.4,6.08,12.15,4.05,24.77,10.29,37.85,18.7l25.25-32.25c-14.96-10.29-30.38-18-46.27-23.14-15.9-5.15-32.56-7.71-50.01-7.71-19.01,0-35.6,3.12-49.77,9.35-14.19,6.23-25.25,14.8-33.19,25.7-7.95,10.91-11.92,23.53-11.92,37.86,0,18.7,6,33.81,18,45.34,11.99,11.53,29.98,18.86,53.98,21.96l43.46,6.55c12.77,1.87,22.12,5.14,28.05,9.81,5.91,4.67,8.88,11.21,8.88,19.63,0,9.97-5.07,18.07-15.19,24.3Z"/><path class="cls-1" d="M2483.04,821.45c-23.99,0-46.51,4.29-67.54,12.86-21.03,8.57-39.43,20.49-55.15,35.75-15.74,15.27-27.89,33.11-36.46,53.51-8.58,20.41-12.85,42.61-12.85,66.61s4.27,45.73,12.85,66.13c8.57,20.41,20.72,38.32,36.46,53.75,15.72,15.42,34.04,27.42,54.91,35.99,20.87,8.57,43.47,12.85,67.77,12.85,16.82,0,33.33-2.34,49.54-7.01,16.2-4.67,31.24-11.21,45.11-19.63,13.86-8.41,26.09-18.53,36.69-30.38l-34.12-34.11c-11.84,13.72-26.09,24.3-42.76,31.78-16.68,7.48-34.35,11.21-53.05,11.21-17.14,0-33.03-3.04-47.67-9.11-14.64-6.08-27.42-14.64-38.32-25.71-10.91-11.06-19.4-23.91-25.47-38.56-6.08-14.64-9.11-30.38-9.11-47.2s3.04-33.42,9.11-47.91c6.08-14.49,14.49-27.18,25.24-38.09s23.37-19.47,37.86-25.71c14.49-6.22,30.15-9.35,46.97-9.35,18.7,0,36.61,3.9,53.75,11.69,17.13,7.79,31.93,19.01,44.4,33.65l34.12-35.99c-10.29-11.84-22.44-21.96-36.46-30.38-14.02-8.41-29.13-14.96-45.34-19.63-16.2-4.67-33.03-7.01-50.47-7.01Z"/><path class="cls-1" d="M2885.63,1153.76v-149.56c0-18.7-3.97-35.06-11.91-49.08-7.95-14.02-19.01-25-33.19-32.95-14.18-7.94-30.31-11.91-48.37-11.91-28.98,0-52.66,9.51-71.04,28.51v-123.39l-49.07,11.22v327.16h49.07v-170.59c6.55-9.66,14.64-17.06,24.31-22.2,9.65-5.15,20.56-7.71,32.71-7.71,18.07,0,32.25,5.22,42.53,15.65,10.28,10.45,15.42,24.85,15.42,43.23v141.62h49.54Z"/><path class="cls-1" d="M3131.02,932.45c-17.14-14.79-41.29-22.2-72.45-22.2-15.89,0-31.86,2.03-47.91,6.08-16.05,4.05-33.11,10.28-51.17,18.7l18.23,36.92c14.64-7.17,27.88-12.31,39.72-15.42,11.84-3.12,23.21-4.67,34.12-4.67,18.38,0,32.4,4.13,42.06,12.39,9.66,8.26,14.49,20.64,14.49,37.15v23.84c-19.32-8.41-40.66-12.61-64.03-12.61-29.6,0-53.13,6.47-70.58,19.39-17.45,12.94-26.17,30.62-26.17,53.05,0,14.34,3.81,27.04,11.45,38.1,7.63,11.06,17.99,19.63,31.08,25.7,13.09,6.08,28.2,9.12,45.34,9.12,14.33,0,27.5-1.95,39.5-5.85,11.99-3.89,23.14-10.05,33.41-18.46v20.1h48.61v-157.97c0-27.42-8.57-48.53-25.7-63.33ZM3108.11,1100.01c-8.11,7.48-17.29,12.93-27.57,16.36-10.28,3.43-21.5,5.14-33.65,5.14-15.58,0-28.13-3.42-37.62-10.29-9.51-6.85-14.25-15.89-14.25-27.1s4.82-20.72,14.49-27.58c9.65-6.85,22.73-10.28,39.26-10.28,11.84,0,22.59,1.09,32.25,3.27,9.65,2.18,18.69,5.77,27.1,10.75v39.72Z"/><path class="cls-1" d="M3372.23,957.93v-43.93c-6.55-2.8-14.81-4.36-24.77-4.67-14.02,0-26.49,3.12-37.4,9.35s-20.26,14.95-28.04,26.17v-29.91h-49.07v238.83h49.07v-158.91c6.22-13.71,14.64-24.14,25.24-31.32,10.59-7.16,22.59-10.75,35.99-10.75,4.98,0,9.97.4,14.96,1.17,4.98.78,9.66,2.1,14.02,3.97Z"/><polygon class="cls-1" points="2376.95 1526.47 2502.21 1526.47 2502.21 1482.07 2376.95 1482.07 2376.95 1387.66 2567.64 1387.66 2567.64 1342.32 2325.07 1342.32 2325.07 1669.49 2569.51 1669.49 2569.51 1624.15 2376.95 1624.15 2376.95 1526.47"/><polygon class="cls-1" points="2703.51 1606.39 2630.6 1430.66 2576.38 1430.66 2679.2 1669.49 2726.41 1669.49 2829.23 1430.66 2776.42 1430.66 2703.51 1606.39"/><path class="cls-1" d="M3039.03,1443.51c-17.3-11.06-37-16.59-59.12-16.59s-42.77,5.45-61,16.35c-18.23,10.91-32.71,25.71-43.46,44.41-10.75,18.69-16.12,39.57-16.12,62.62s5.52,43.55,16.59,62.4c11.06,18.86,26.17,33.73,45.34,44.64s40.43,16.36,63.8,16.36c18.07,0,34.59-2.65,49.55-7.95,14.95-5.3,29.44-13.24,43.46-23.84l-31.78-30.85c-7.18,6.85-15.97,12.08-26.41,15.66-10.44,3.58-21.43,5.37-32.95,5.37-13.09,0-25.17-2.88-36.22-8.65-11.06-5.76-20.18-13.63-27.35-23.6-7.17-9.97-11.84-21.19-14.02-33.66h186.02v-13.55c0-23.68-5.07-45.02-15.2-64.03-10.13-19-23.84-34.04-41.13-45.1ZM2909.34,1529.74c1.87-12.46,6.15-23.29,12.85-32.48,6.7-9.18,14.87-16.36,24.54-21.5,9.66-5.14,20.25-7.71,31.78-7.71s21.57,2.65,31.08,7.95,17.53,12.54,24.07,21.73c6.54,9.2,10.75,19.87,12.62,32.02h-136.94Z"/><path class="cls-1" d="M4576.79,1430.66l-75.71,179.47-68.24-179.47h-54.22l94.88,239.77-9.35,20.56c-9.35,23.37-25.09,35.05-47.21,35.05-8.11,0-15.12-.62-21.03-1.87v43.46c3.11.31,6.93.7,11.45,1.17,4.51.46,9.26.7,14.25.7,14.96,0,28.05-2.34,39.26-7.01,11.22-4.67,21.18-12.39,29.91-23.14,8.72-10.75,16.67-24.69,23.84-41.83l115.44-266.88h-53.28Z"/><path class="cls-1" d="M3596.05,934.56c-9.98-7.78-20.88-13.62-32.71-17.53-11.85-3.9-24.15-5.84-36.92-5.84-22.75,0-43.31,5.37-61.7,16.12-18.39,10.75-32.95,25.39-43.7,43.93-10.75,18.55-16.12,39.19-16.12,61.93s5.37,43.39,16.12,61.92c10.75,18.54,25.16,33.19,43.23,43.93,18.06,10.75,38.32,16.12,60.75,16.12,26.17,0,49.7-8.1,70.58-24.3v25.7c0,18.7-5.37,32.72-16.12,42.07-10.75,9.34-26.41,14.02-46.97,14.02-12.15,0-24.47-1.63-36.92-4.9-12.47-3.27-25.55-8.49-39.26-15.66l-18.7,38.8c13.71,7.16,28.82,12.77,45.34,16.82,16.51,4.04,33.49,6.08,50.95,6.08,35.83,0,63.33-8.34,82.49-25.01s28.74-40.58,28.74-71.74v-242.1h-49.07v19.63ZM3595.59,1085.99c-7.18,8.41-16.36,14.96-27.57,19.63-11.22,4.67-23.37,7.01-36.46,7.01-14.65,0-27.89-3.51-39.72-10.52-11.85-7.01-21.19-16.51-28.05-28.51-6.85-11.99-10.29-25.47-10.29-40.43s3.43-28.82,10.29-40.66s16.12-21.27,27.81-28.27c11.69-7.01,25-10.52,39.96-10.52,13.09,0,25.16,2.42,36.22,7.25,11.06,4.83,20.33,11.29,27.81,19.4v105.62Z"/><path class="cls-1" d="M3747.58,817.71c-8.11,0-15.12,2.97-21.03,8.88-5.93,5.92-8.88,13.09-8.88,21.5s2.96,15.5,8.88,21.26c5.92,5.77,12.92,8.65,21.03,8.65s15.49-2.88,21.26-8.65c5.76-5.76,8.65-12.85,8.65-21.26s-2.89-15.58-8.65-21.5c-5.77-5.92-12.85-8.88-21.26-8.88Z"/><rect class="cls-1" x="3723.27" y="914.93" width="49.07" height="238.83"/><path class="cls-1" d="M3899.32,983.16c6.55-9.66,14.64-17.06,24.31-22.2,9.65-5.15,20.56-7.71,32.71-7.71,18.07,0,32.25,5.3,42.53,15.89,10.28,10.6,15.42,24.93,15.42,43v141.62h49.54v-149.56c0-18.7-3.97-35.06-11.91-49.08-7.95-14.02-18.93-25-32.95-32.95-14.02-7.94-30.23-11.91-48.61-11.91-28.98,0-52.66,9.51-71.04,28.51v-23.84h-49.07v238.83h49.07v-170.59Z"/><path class="cls-1" d="M4318.28,934.56c-9.98-7.78-20.88-13.62-32.71-17.53-11.85-3.9-24.15-5.84-36.92-5.84-22.75,0-43.31,5.37-61.7,16.12-18.39,10.75-32.95,25.39-43.7,43.93-10.75,18.55-16.12,39.19-16.12,61.93s5.37,43.39,16.12,61.92c10.75,18.54,25.16,33.19,43.23,43.93,18.06,10.75,38.32,16.12,60.75,16.12,26.17,0,49.7-8.1,70.58-24.3v25.7c0,18.7-5.37,32.72-16.12,42.07-10.75,9.34-26.41,14.02-46.97,14.02-12.15,0-24.47-1.63-36.92-4.9-12.47-3.27-25.55-8.49-39.26-15.66l-18.7,38.8c13.71,7.16,28.82,12.77,45.34,16.82,16.51,4.04,33.49,6.08,50.95,6.08,35.83,0,63.33-8.34,82.49-25.01,19.16-16.67,28.74-40.58,28.74-71.74v-242.1h-49.07v19.63ZM4317.82,1085.99c-7.18,8.41-16.36,14.96-27.57,19.63-11.22,4.67-23.37,7.01-36.46,7.01-14.65,0-27.89-3.51-39.72-10.52-11.85-7.01-21.19-16.51-28.05-28.51-6.85-11.99-10.29-25.47-10.29-40.43s3.43-28.82,10.29-40.66s16.12-21.27,27.81-28.27c11.69-7.01,25-10.52,39.96-10.52,13.09,0,25.16,2.42,36.22,7.25,11.06,4.83,20.33,11.29,27.81,19.4v105.62Z"/><path class="cls-1" d="M3236.45,1434.4c-10.91,6.23-20.26,14.95-28.04,26.17v-29.91h-49.07v238.83h49.07v-158.91c6.22-13.71,14.64-24.14,25.24-31.32,10.59-7.16,22.59-10.75,35.99-10.75,4.98,0,9.97.4,14.96,1.17,4.98.78,9.66,2.1,14.02,3.97v-43.93c-6.55-2.8-14.81-4.36-24.77-4.67-14.02,0-26.49,3.12-37.4,9.35Z"/><path class="cls-1" d="M3468.74,1610.13l-68.24-179.47h-54.22l94.88,239.77-9.35,20.56c-9.35,23.37-25.09,35.05-47.21,35.05-8.11,0-15.12-.62-21.03-1.87v43.46c3.11.31,6.93.7,11.45,1.17,4.51.46,9.26.7,14.25.7,14.96,0,28.05-2.34,39.26-7.01,11.22-4.67,21.18-12.39,29.91-23.14,8.72-10.75,16.67-24.69,23.84-41.83l115.44-266.88h-53.28l-75.71,179.47Z"/><path class="cls-1" d="M4024.46,1388.82c-15.59-14.79-33.81-26.24-54.68-34.35-20.88-8.1-43.63-12.15-68.24-12.15h-116.84v327.16h116.84c24.62,0,47.44-4.04,68.47-12.15,21.03-8.1,39.34-19.55,54.92-34.36,15.57-14.79,27.65-32.08,36.22-51.88,8.56-19.78,12.85-41.52,12.85-65.2s-4.37-45.02-13.09-64.97c-8.73-19.93-20.88-37.31-36.45-52.11ZM4011.6,1552.41c-6.08,14.18-14.49,26.57-25.24,37.16-10.75,10.59-23.29,18.86-37.62,24.77-14.34,5.92-29.91,8.88-46.74,8.88h-65.43v-234.63h65.43c16.82,0,32.4,3.04,46.74,9.12,14.33,6.08,26.87,14.33,37.62,24.77,10.75,10.44,19.16,22.83,25.24,37.16,6.08,14.34,9.11,29.76,9.11,46.27s-3.04,32.33-9.11,46.5Z"/><path class="cls-1" d="M4309.55,1448.18c-17.14-14.79-41.29-22.2-72.45-22.2-15.89,0-31.86,2.03-47.91,6.08-16.05,4.05-33.11,10.28-51.17,18.7l18.23,36.92c14.64-7.17,27.88-12.31,39.72-15.42,11.84-3.12,23.21-4.67,34.12-4.67,18.38,0,32.4,4.13,42.06,12.39,9.66,8.26,14.49,20.64,14.49,37.15v23.84c-19.32-8.41-40.66-12.61-64.03-12.61-29.6,0-53.13,6.47-70.58,19.39-17.45,12.94-26.17,30.62-26.17,53.05,0,14.34,3.81,27.04,11.45,38.1,7.63,11.06,17.99,19.63,31.08,25.7,13.09,6.08,28.2,9.12,45.34,9.12,14.33,0,27.5-1.95,39.5-5.85,11.99-3.89,23.14-10.05,33.41-18.46v20.1h48.61v-157.97c0-27.42-8.57-48.53-25.7-63.33ZM4286.64,1615.74c-8.11,7.48-17.29,12.93-27.57,16.36-10.28,3.43-21.5,5.14-33.65,5.14-15.58,0-28.13-3.42-37.62-10.29-9.51-6.85-14.25-15.89-14.25-27.1s4.82-20.72,14.49-27.58c9.65-6.85,22.73-10.28,39.26-10.28,11.84,0,22.59,1.09,32.25,3.27,9.65,2.18,18.69,5.77,27.1,10.75v39.72Z"/></g></g><g id="Voqa"><g><polygon class="cls-1" points="510.32 903.41 832.7 98.57 711.06 98.57 449.5 754.09 187.95 98.57 66.31 98.57 388.69 903.41 510.32 903.41"/><polygon class="cls-1" points="1416.67 1069.66 1295.04 1069.66 972.67 1877.6 1094.3 1877.6 1355.86 1222.08 1617.42 1877.6 1739.05 1877.6 1416.68 1069.66 1416.67 1069.66"/><path class="cls-1" d="M1355.86,911.51c233.03,0,422.62-183.59,422.62-409.24s-189.59-409.25-422.62-409.25-422.62,183.59-422.62,409.25,189.59,409.24,422.62,409.24ZM1355.86,210.8c165.97,0,300.99,130.75,300.99,291.47s-135.02,291.46-300.99,291.46-300.99-130.76-300.99-291.46,135.03-291.47,300.99-291.47Z"/><path class="cls-1" d="M872.13,1473.35c0-225.66-189.59-409.25-422.62-409.25S26.88,1247.69,26.88,1473.35s182.04,396.69,408.59,403.91v.35h436.66v-113.12h-125.98c77.71-74.25,125.98-177.32,125.98-291.13ZM462.95,1764.48h-26.89c-159.75-6.83-287.55-134.78-287.55-291.13s135.02-291.47,300.99-291.47,300.99,130.75,300.99,291.47-127.8,284.3-287.55,291.13Z"/></g></g></svg></a>
+        <div class="header-content">
+            <h1 class="header-title">Workplace Charging Scheme</h1>
+            <p class="header-subtitle">UK Government Grant Eligibility Checker</p>
+            <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="header-cta">
+                📅 Book some time with Voqa to talk about EV Charging
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- WCS closure warning -->
+        <div style="margin-bottom: 20px; padding: 14px 18px; background: #c0392b; border-radius: 12px; font-size: 14px; color: #fff; line-height: 1.6;">
+            <strong>⚠ Important — WCS closes 31 March 2027:</strong> The Workplace Charging Scheme has been extended for a final year only. OZEV has confirmed the scheme will close permanently after 31 March 2027 and will not be renewed. If you are eligible, act now to secure your grant before the deadline.
+        </div>
+
+        <!-- Intro -->
+        <div id="intro" class="card">
+            <div class="card-title">Check your eligibility in 30 seconds</div>
+            <p class="card-subtitle">
+                The <strong>Workplace Charging Scheme (WCS)</strong> is an OZEV grant covering up to 75% of the purchase
+                and installation cost of EV charge points — up to <strong>£500 per socket</strong>, across a maximum of
+                <strong>40 sockets</strong>. Answer 8 quick questions to find out if you qualify.
+            </p>
+            <div class="stat-row">
+                <div class="stat-box"><div class="stat-value">£500</div><div class="stat-label">max per socket</div></div>
+                <div class="stat-box"><div class="stat-value">75%</div><div class="stat-label">costs covered</div></div>
+                <div class="stat-box"><div class="stat-value">40</div><div class="stat-label">max sockets</div></div>
+            </div>
+            <button onclick="startChecker()" class="btn-primary" style="width:100%; justify-content:center;">
+                Start Eligibility Check →
+            </button>
+        </div>
+
+        <!-- Progress (shown during questions) -->
+        <div id="progress-wrap" class="progress-wrap hidden">
+            <div class="progress-meta">
+                <span id="progress-label">Question 1 of 8</span>
+                <span id="progress-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+            </div>
+        </div>
+
+        <!-- Questions -->
+        <div id="steps-wrap">
+
+            <div id="step-1" class="card hidden">
+                <div class="q-label">Question 1 of 8</div>
+                <div class="q-title">What type of organisation are you?</div>
+                <div class="q-hint">The WCS is open to businesses, charities, and public sector bodies registered in the UK.</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q1" value="business"    onclick="handleQ1(this)"> Private business (limited company, sole trader, partnership, LLP)</label>
+                    <label class="option"><input type="radio" name="q1" value="charity"     onclick="handleQ1(this)"> Registered charity</label>
+                    <label class="option"><input type="radio" name="q1" value="public"      onclick="handleQ1(this)"> Public sector body (NHS, council, university, etc.)</label>
+                    <label class="option"><input type="radio" name="q1" value="residential" onclick="handleQ1(this)"> Residential property / private individual</label>
+                </div>
+            </div>
+
+            <div id="step-2" class="card hidden">
+                <div class="q-label">Question 2 of 8</div>
+                <div class="q-title">Is your organisation registered and based in the UK?</div>
+                <div class="q-hint">You must have a UK registered address. The installation must also be at a UK site.</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q2" value="yes" onclick="handleQ2(this)"> Yes — UK registered with a UK installation site</label>
+                    <label class="option"><input type="radio" name="q2" value="no"  onclick="handleQ2(this)"> No — overseas or installation outside the UK</label>
+                </div>
+                <button onclick="goBack(2)" class="btn-back">← Back</button>
+            </div>
+
+            <div id="step-3" class="card hidden">
+                <div class="q-label">Question 3 of 8</div>
+                <div class="q-title">Do you have dedicated off-street parking at your site?</div>
+                <div class="q-hint">Charge points must be installed in off-street parking associated with your business premises — a car park, yard, or similar. On-street parking does not qualify.</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q3" value="yes"    onclick="handleQ3(this)"> Yes — dedicated off-street parking</label>
+                    <label class="option"><input type="radio" name="q3" value="shared" onclick="handleQ3(this)"> Shared car park (e.g. shared with other tenants in a building)</label>
+                    <label class="option"><input type="radio" name="q3" value="no"     onclick="handleQ3(this)"> No — only on-street or public parking available</label>
+                </div>
+                <button onclick="goBack(3)" class="btn-back">← Back</button>
+            </div>
+
+            <div id="step-4" class="card hidden">
+                <div class="q-label">Question 4 of 8</div>
+                <div class="q-title">Do you own the site, or can you get landlord permission to install?</div>
+                <div class="q-hint">You must either own the parking area or have written permission from your landlord before you can apply.</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q4" value="own"        onclick="handleQ4(this)"> We own the site / parking area</label>
+                    <label class="option"><input type="radio" name="q4" value="permission" onclick="handleQ4(this)"> We lease — and have (or can get) landlord permission</label>
+                    <label class="option"><input type="radio" name="q4" value="no"         onclick="handleQ4(this)"> We lease — and landlord permission is unlikely</label>
+                </div>
+                <button onclick="goBack(4)" class="btn-back">← Back</button>
+            </div>
+
+            <div id="step-5" class="card hidden">
+                <div class="q-label">Question 5 of 8</div>
+                <div class="q-title">Do any of your employees drive an eligible plug-in vehicle?</div>
+                <div class="q-hint">At least one employee must use (or intend to use) an eligible plug-in vehicle — this includes their own privately-owned car used for commuting. It does not need to be a company or fleet vehicle.</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q5" value="yes" onclick="handleQ5(this)"> Yes — at least one employee drives or plans to drive an eligible plug-in vehicle</label>
+                    <label class="option"><input type="radio" name="q5" value="no"  onclick="handleQ5(this)"> No — no employees use eligible plug-in vehicles</label>
+                </div>
+                <button onclick="goBack(5)" class="btn-back">← Back</button>
+            </div>
+
+            <div id="step-6" class="card hidden">
+                <div class="q-label">Question 6 of 8</div>
+                <div class="q-title">Have you previously claimed WCS grant funding at this site?</div>
+                <div class="q-hint">You cannot claim for charge points already installed before your application. You may claim more sockets if you have not yet reached the 40-socket limit.</div>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q6" value="no"      onclick="handleQ6(this)"> No — this will be our first WCS claim</label>
+                    <label class="option"><input type="radio" name="q6" value="partial" onclick="handleQ6(this)"> Yes — we have claimed before but have fewer than 40 sockets</label>
+                    <label class="option"><input type="radio" name="q6" value="maxed"   onclick="handleQ6(this)"> Yes — we already have 40 or more WCS-funded sockets</label>
+                </div>
+                <button onclick="goBack(6)" class="btn-back">← Back</button>
+            </div>
+
+            <div id="step-7" class="card hidden">
+                <div class="q-label">Question 7 of 8</div>
+                <div class="q-title">How many sockets have you already claimed WCS funding for?</div>
+                <div class="q-hint">This determines how many more you can apply for (40 maximum in total).</div>
+                <div class="num-row">
+                    <input type="number" id="existing-sockets" class="num-input" min="0" max="39" value="0">
+                    <span class="num-label">sockets already funded</span>
+                </div>
+                <div style="display:flex; gap:12px; margin-top:20px;">
+                    <button onclick="goBack(7)" class="btn-back">← Back</button>
+                    <button onclick="advanceFromQ7()" class="btn-primary">Continue →</button>
+                </div>
+            </div>
+
+            <div id="step-8" class="card hidden">
+                <div class="q-label">Question 8 of 8</div>
+                <div class="q-title">How many new sockets are you planning to install?</div>
+                <div class="q-hint" id="q8-hint">Each socket is eligible for a grant of up to £500 (75% of cost). You can apply for up to 40 sockets in total across all WCS claims.</div>
+                <div class="num-row">
+                    <input type="number" id="new-sockets" class="num-input" min="1" max="40" value="4">
+                    <span class="num-label">new sockets</span>
+                </div>
+                <div style="display:flex; gap:12px; margin-top:20px;">
+                    <button onclick="goBack(8)" class="btn-back">← Back</button>
+                    <button onclick="showResults()" class="btn-primary">See Results →</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="hidden">
+
+            <div id="verdict-banner"></div>
+
+            <div id="grant-cards" class="result-grid hidden"></div>
+
+
+            <div id="next-steps-wrap" class="next-steps-card hidden">
+                <div class="next-steps-title">Next Steps</div>
+                <ul class="next-steps-list" id="next-steps-list"></ul>
+            </div>
+
+            <div class="action-row">
+                <button onclick="resetChecker()" class="btn-secondary">← Start Again</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        This tool provides indicative guidance only. Eligibility criteria are subject to change by OZEV.<br>
+        Always verify at <a href="https://www.gov.uk/government/collections/workplace-charging-scheme" target="_blank">gov.uk</a> before applying.
+        Grant figures reflect the scheme as updated April 2026.
+    </footer>
+
+    <script>
+        const MAX_SOCKETS    = 40;
+        const GRANT_CAP      = 500;
+        const GRANT_RATE     = 0.75;
+        const TOTAL_STEPS    = 8;
+
+        let answers = { orgType: null, ukReg: null, parking: null, permission: null, vehicles: null, prevClaim: null, existing: 0, newSockets: 4 };
+        let disqualified = false;
+        let disqStep = null;
+
+        // Map each step to the previous step and the answer key to clear
+        const stepBack = { 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 6 };
+        const stepAnswerKey = { 2: 'ukReg', 3: 'parking', 4: 'permission', 5: 'vehicles', 6: 'prevClaim', 7: 'prevClaim', 8: null };
+
+        function goBack(fromStep) {
+            // Clear current step's answer and radio selection
+            const key = stepAnswerKey[fromStep];
+            if (key) answers[key] = null;
+            document.querySelectorAll(`input[name="q${fromStep}"]`).forEach(r => r.checked = false);
+            // Reset disqualified state in case user is going back from a dead end
+            disqualified = false; disqStep = null;
+            showStep(stepBack[fromStep]);
+        }
+
+        function startChecker() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('progress-wrap').classList.remove('hidden');
+            showStep(1);
+        }
+
+        function showStep(n) {
+            for (let i = 1; i <= TOTAL_STEPS; i++) {
+                document.getElementById(`step-${i}`).classList.add('hidden');
+            }
+            document.getElementById(`step-${n}`).classList.remove('hidden');
+            const pct = Math.round(((n - 1) / TOTAL_STEPS) * 100);
+            document.getElementById('progress-label').textContent = `Question ${n} of ${TOTAL_STEPS}`;
+            document.getElementById('progress-pct').textContent = `${pct}%`;
+            document.getElementById('progress-fill').style.width = `${pct}%`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function disqualify(step) {
+            disqualified = true;
+            disqStep = step;
+            showResults();
+        }
+
+        function handleQ1(el) {
+            answers.orgType = el.value;
+            el.value === 'residential' ? disqualify(1) : setTimeout(() => showStep(2), 200);
+        }
+        function handleQ2(el) {
+            answers.ukReg = el.value;
+            el.value === 'no' ? disqualify(2) : setTimeout(() => showStep(3), 200);
+        }
+        function handleQ3(el) {
+            answers.parking = el.value;
+            el.value === 'no' ? disqualify(3) : setTimeout(() => showStep(4), 200);
+        }
+        function handleQ4(el) {
+            answers.permission = el.value;
+            el.value === 'no' ? disqualify(4) : setTimeout(() => showStep(5), 200);
+        }
+        function handleQ5(el) {
+            answers.vehicles = el.value;
+            el.value === 'no' ? disqualify(5) : setTimeout(() => showStep(6), 200);
+        }
+        function handleQ6(el) {
+            answers.prevClaim = el.value;
+            if (el.value === 'maxed') {
+                disqualify(6);
+            } else if (el.value === 'partial') {
+                setTimeout(() => showStep(7), 200);
+            } else {
+                answers.existing = 0;
+                setTimeout(() => { updateQ8Hint(); showStep(8); }, 200);
+            }
+        }
+        function advanceFromQ7() {
+            answers.existing = parseInt(document.getElementById('existing-sockets').value) || 0;
+            updateQ8Hint();
+            showStep(8);
+        }
+        function updateQ8Hint() {
+            const rem = MAX_SOCKETS - answers.existing;
+            document.getElementById('q8-hint').textContent =
+                `Each socket is eligible for up to £${GRANT_CAP} grant (75% of cost). You can apply for up to ${rem} more socket${rem === 1 ? '' : 's'} (${MAX_SOCKETS} total minus ${answers.existing} already funded).`;
+            const inp = document.getElementById('new-sockets');
+            inp.max = rem;
+            if ((parseInt(inp.value) || 0) > rem) inp.value = rem;
+        }
+
+        function showResults() {
+            answers.newSockets = parseInt(document.getElementById('new-sockets')?.value) || answers.newSockets;
+            const capped = Math.min(answers.newSockets, MAX_SOCKETS - answers.existing);
+            const maxGrant = capped * GRANT_CAP;
+
+            document.getElementById('progress-wrap').classList.add('hidden');
+            document.getElementById('steps-wrap').querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById('results').classList.remove('hidden');
+
+            // Verdict
+            const vEl = document.getElementById('verdict-banner');
+            if (!disqualified) {
+                vEl.innerHTML = `<div class="verdict verdict-pass">
+                    <div class="verdict-icon">✅</div>
+                    <div>
+                        <div class="verdict-title">You appear to be eligible</div>
+                        <div class="verdict-body">Based on your answers, your organisation meets the key WCS criteria. You could claim a grant of up to <strong>£${maxGrant.toLocaleString()}</strong> for ${capped} socket${capped !== 1 ? 's' : ''}.</div>
+                    </div>
+                </div>`;
+
+                // Grant cards
+                const gcEl = document.getElementById('grant-cards');
+                gcEl.classList.remove('hidden');
+                gcEl.innerHTML = `
+                    <div class="result-card">
+                        <div class="result-card-value">£${maxGrant.toLocaleString()}</div>
+                        <div class="result-card-label">Maximum grant</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value">${capped}</div>
+                        <div class="result-card-label">Eligible sockets</div>
+                    </div>`;
+
+                // Contextual warnings based on answers
+                const warnings = [];
+                if (answers.parking === 'shared') warnings.push(`⚠️ Your car park is shared — confirm with your building management or other tenants that installation is permitted before proceeding.`);
+                if (answers.permission === 'permission') warnings.push(`⚠️ You lease your site — obtain written permission from your landlord before applying. Without it your application cannot proceed.`);
+
+                // Next steps
+                const steps = [
+                    `Consider the <strong>Voqa One</strong> — find out if it's the right EV charger for your location at <a href="https://www.voqa.com" target="_blank">voqa.com</a>, or <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank">book a call</a> to discuss your requirements.`,
+                    `Find an <a href="https://www.gov.uk/government/publications/workplace-charging-scheme-authorised-installers" target="_blank">OZEV-authorised installer</a> — you must use one to qualify for the grant.`,
+                    `Get a quote for supply and installation of the charge points.`,
+                    `Your installer applies for the WCS voucher on your behalf <em>before</em> installation begins.`,
+                    `Once approved, installation takes place and the grant is deducted from your invoice.`,
+                    `Keep records — OZEV may audit the installation after completion.`
+                ];
+
+                const nsEl = document.getElementById('next-steps-wrap');
+                nsEl.classList.remove('hidden');
+                document.getElementById('next-steps-list').innerHTML =
+                    warnings.map(w => `<li style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;margin-bottom:4px;"><span style="flex-shrink:0">⚠️</span><span>${w.replace('⚠️ ','')}</span></li>`).join('') +
+                    steps.map((s, i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('');
+            } else {
+                vEl.innerHTML = `<div class="verdict verdict-fail">
+                    <div class="verdict-icon">❌</div>
+                    <div>
+                        <div class="verdict-title">Not eligible based on your answers</div>
+                        <div class="verdict-body">One of your answers indicates you do not currently meet the WCS requirements. See the summary below for details and guidance.</div>
+                    </div>
+                </div>`;
+
+                // Not-eligible guidance
+                const guidance = {
+                    1: `The WCS is only available to businesses, charities, and public sector bodies. For residential properties, consider the <a href="https://www.gov.uk/ev-chargepoint-grant-household" target="_blank">EV Chargepoint Grant</a> instead.`,
+                    2: `Your organisation must be UK-registered and the installation must be at a UK site.`,
+                    3: `The charge point must be installed in dedicated off-street parking. On-street installs are not eligible.`,
+                    4: `Written landlord permission is a requirement. It is worth approaching your landlord — EV charging is increasingly seen as a property amenity.`,
+                    5: `At least one employee must drive (or plan to drive) an eligible plug-in vehicle — this includes their own privately-owned car. Review the <a href="https://www.gov.uk/guidance/workplace-charging-scheme-guidance-for-applicants" target="_blank">OZEV guidance</a> for the full eligible vehicle list.`,
+                    6: `You have reached the 40-socket cap under the WCS. No further grant funding is available under this scheme at this site.`
+                };
+                const nsEl = document.getElementById('next-steps-wrap');
+                nsEl.classList.remove('hidden');
+                document.getElementById('next-steps-list').innerHTML =
+                    `<li><span class="step-num">!</span><span>${guidance[disqStep]}</span></li>`;
+            }
+
+            // Checks
+            document.getElementById('checks-list').innerHTML = buildChecks(capped);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function buildChecks(capped) {
+            const rows = [];
+            const orgLabels = { business: 'Private business', charity: 'Registered charity', public: 'Public sector body', residential: 'Residential / private individual' };
+
+            if (answers.orgType) {
+                const pass = answers.orgType !== 'residential';
+                rows.push(row(pass ? 'pass' : 'fail', 'Organisation type',
+                    pass ? `${orgLabels[answers.orgType]} — eligible` : 'Residential properties are not eligible'));
+            }
+            if (answers.ukReg) {
+                rows.push(row(answers.ukReg === 'yes' ? 'pass' : 'fail', 'UK registration',
+                    answers.ukReg === 'yes' ? 'UK registered — eligible' : 'Must be UK-registered with a UK installation site'));
+            }
+            if (answers.parking) {
+                const status = answers.parking === 'yes' ? 'pass' : answers.parking === 'shared' ? 'warn' : 'fail';
+                rows.push(row(status, 'Off-street parking',
+                    answers.parking === 'yes'    ? 'Dedicated off-street parking confirmed' :
+                    answers.parking === 'shared' ? 'Shared car park — may be eligible; confirm with your installer' :
+                                                   'No off-street parking — this is a requirement'));
+            }
+            if (answers.permission) {
+                const status = answers.permission === 'own' ? 'pass' : answers.permission === 'permission' ? 'warn' : 'fail';
+                rows.push(row(status, 'Permission to install',
+                    answers.permission === 'own'        ? 'Site owner — no restrictions' :
+                    answers.permission === 'permission' ? 'Leased site — confirm landlord permission in writing before applying' :
+                                                          'Landlord permission unlikely — this is a requirement'));
+            }
+            if (answers.vehicles) {
+                rows.push(row(answers.vehicles === 'yes' ? 'pass' : 'fail', 'Eligible vehicles',
+                    answers.vehicles === 'yes' ? 'At least one employee drives an eligible plug-in vehicle' : 'No eligible vehicles — at least one employee must drive a plug-in vehicle'));
+            }
+            if (answers.prevClaim) {
+                const status = answers.prevClaim === 'no' ? 'pass' : answers.prevClaim === 'partial' ? 'warn' : 'fail';
+                rows.push(row(status, 'WCS socket cap',
+                    answers.prevClaim === 'no'      ? 'No previous claims — full 40 sockets available' :
+                    answers.prevClaim === 'partial' ? `Previous claims: ${MAX_SOCKETS - answers.existing} sockets remaining` :
+                                                      'Already at 40-socket limit — no further WCS funding available'));
+            }
+            if (!disqualified && capped > 0) {
+                rows.push(row('pass', 'Eligible sockets', `${capped} socket${capped !== 1 ? 's' : ''} — maximum grant £${(capped * GRANT_CAP).toLocaleString()}`));
+            }
+            return rows.join('');
+        }
+
+        function row(status, name, detail) {
+            const icons   = { pass: '✅', warn: '⚠️', fail: '❌' };
+            const classes = { pass: 'check-detail-pass', warn: 'check-detail-warn', fail: 'check-detail-fail' };
+            return `<div class="check-item">
+                <span class="check-icon">${icons[status]}</span>
+                <div><span class="check-name">${name}: </span><span class="${classes[status]}">${detail}</span></div>
+            </div>`;
+        }
+
+        function resetChecker() {
+            answers = { orgType: null, ukReg: null, parking: null, permission: null, vehicles: null, prevClaim: null, existing: 0, newSockets: 4 };
+            disqualified = false; disqStep = null;
+            document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+            document.getElementById('existing-sockets').value = 0;
+            document.getElementById('new-sockets').value = 4;
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('grant-cards').classList.add('hidden');
+            document.getElementById('next-steps-wrap').classList.add('hidden');
+            document.getElementById('progress-wrap').classList.add('hidden');
+            document.getElementById('intro').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
