@@ -792,21 +792,21 @@
                             <td colspan="3" style="background: var(--bg-light); font-weight: 700; color: var(--primary); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 16px;">Subscription</td>
                         </tr>
                         <tr>
-                            <td class="row-label">Subscription amount (ex. VAT)</td>
-                            <td><div class="locked-value">£2.00</div></td>
+                            <td class="row-label">Subscription amount (per port, ex. VAT)</td>
+                            <td><div class="locked-value">£1.00</div></td>
                             <td><div class="input-prefix-wrapper"><span class="prefix">£</span><input type="number" id="c-subAmount" value="0" min="0" step="0.01"></div></td>
                         </tr>
                         <tr>
                             <td class="row-label">Billing period</td>
                             <td>
-                                <div class="locked-value">Monthly (per unit)</div>
+                                <div class="locked-value">Monthly (per port)</div>
                             </td>
                             <td>
                                 <select id="c-subPeriod">
                                     <option value="" selected>—</option>
-                                    <option value="monthly">Monthly (per unit)</option>
-                                    <option value="annually">Annually (per unit)</option>
-                                    <option value="once">One-off (per unit)</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="annually">Annually</option>
+                                    <option value="once">One-off</option>
                                 </select>
                             </td>
                         </tr>
@@ -968,7 +968,7 @@
         const STORAGE_KEY = 'voqa-unit-tco-v7';
 
         // Voqa One pricing is fixed
-        const VOQA = { unitPrice: 3400, ports: 2, subAmount: 2, subPeriod: 'monthly', commAmount: 0.06, commType: 'perkwh' };
+        const VOQA = { unitPrice: 3400, ports: 2, subAmount: 1, subPeriod: 'monthly', commAmount: 0.06, commType: 'perkwh' };
 
         const inputIds = [
             'usageLevel', 'revenuePerKwh', 'analysisYears',
@@ -998,13 +998,12 @@
         }
 
         function subPerPortPerMonth(amount, period, ports, totalMonths) {
-            // Convert subscription to a per-port per-month figure
-            const perUnit = {
+            // amount is already a per-port figure
+            return {
                 monthly:  amount,
                 annually: amount / 12,
                 once:     amount / totalMonths
             }[period] || 0;
-            return ports > 0 ? perUnit / ports : 0;
         }
 
         function commPerPortPerMonth(amount, type, kwhPerPortPerMonth, revenuePerKwh) {
