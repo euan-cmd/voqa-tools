@@ -1025,15 +1025,17 @@
                 <h3 class="section-subtitle">EV Charging Parameters</h3>
                 
                 <div class="form-group">
-                    <label for="pricePerKwh">Price per kWh (£)</label>
-                    <input type="number" id="pricePerKwh" value="0.40" min="0" step="0.01">
-                    <div class="helper-text">Price exclusive of VAT</div>
+                    <label for="pricePerKwh">Tariff charged to drivers <span class="slider-value" id="pricePerKwhVal">£0.40/kWh</span></label>
+                    <input type="range" id="pricePerKwh" class="usage-slider" min="0.00" max="0.80" step="0.01" value="0.40"
+                           oninput="document.getElementById('pricePerKwhVal').textContent='£'+parseFloat(this.value).toFixed(2)+'/kWh'">
+                    <div class="helper-text">Ex. VAT</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="electricityCostPerKwh">Electricity Cost per kWh (£)</label>
-                    <input type="number" id="electricityCostPerKwh" value="0.25" min="0" step="0.01">
-                    <div class="helper-text">Cost exclusive of VAT</div>
+                    <label for="electricityCostPerKwh">Your cost of electricity <span class="slider-value" id="electricityCostPerKwhVal">£0.25/kWh</span></label>
+                    <input type="range" id="electricityCostPerKwh" class="usage-slider" min="0.20" max="0.40" step="0.01" value="0.25"
+                           oninput="document.getElementById('electricityCostPerKwhVal').textContent='£'+parseFloat(this.value).toFixed(2)+'/kWh'">
+                    <div class="helper-text">Ex. VAT</div>
                 </div>
 
                 <div class="form-group">
@@ -1795,6 +1797,8 @@
                     var adr=document.getElementById('adr'); if(adr) document.getElementById('adrVal').textContent='£'+adr.value;
                     var occ=document.getElementById('baselineOccupancy'); if(occ) document.getElementById('baselineOccupancyVal').textContent=occ.value+'%';
                     var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('avgFBSpendVal').textContent='£'+fb.value;
+                    var price=document.getElementById('pricePerKwh'); if(price) document.getElementById('pricePerKwhVal').textContent='£'+parseFloat(price.value).toFixed(2)+'/kWh';
+                    var elec=document.getElementById('electricityCostPerKwh'); if(elec) document.getElementById('electricityCostPerKwhVal').textContent='£'+parseFloat(elec.value).toFixed(2)+'/kWh';
                     calculate();
                 }
             }catch(e){}
