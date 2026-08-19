@@ -1030,12 +1030,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="baselineOccupancy">Current Occupancy <span class="slider-value" id="baselineOccupancyVal">70%</span></label>
-                    <input type="range" id="baselineOccupancy" class="usage-slider" min="50" max="100" step="1" value="70"
-                           oninput="document.getElementById('baselineOccupancyVal').textContent=this.value+'%'">
-                </div>
-
-                <div class="form-group">
                     <label for="avgFBSpend">Average F&amp;B Spend per Room <span class="slider-value" id="avgFBSpendVal">£18</span></label>
                     <input type="range" id="avgFBSpend" class="usage-slider" min="0" max="50" step="1" value="18"
                            oninput="document.getElementById('avgFBSpendVal').textContent='£'+this.value">
@@ -1168,28 +1162,6 @@
                 </div>
             </div>
 
-            <div class="results-grid" style="margin-top: 40px;">
-                <div class="result-card">
-                    <span class="result-icon">📅</span>
-                    <div class="result-value" id="additionalBookingsPerWeek">-</div>
-                    <div class="result-label">Additional Bookings per Week</div>
-                    <div class="result-description">Weekly booking increase required</div>
-                </div>
-                
-                <div class="result-card">
-                    <span class="result-icon">📈</span>
-                    <div class="result-value" id="occupancyIncrease">-</div>
-                    <div class="result-label">Occupancy Increase</div>
-                    <div class="result-description">Required percentage point increase</div>
-                </div>
-                
-                <div class="result-card">
-                    <span class="result-icon">💰</span>
-                    <div class="result-value" id="marginPerBooking">-</div>
-                    <div class="result-label">Margin per Booking</div>
-                    <div class="result-description">Combined room and F&B margin</div>
-                </div>
-            </div>
 
             <div class="cta-container">
                 <a href="https://calendar.app.google/C919wsfwk71WB3Qo6" target="_blank" class="btn">
@@ -1749,7 +1721,7 @@
         function initializeApp() {
             try {
                 const inputIds = [
-                    'totalRooms', 'adr', 'baselineOccupancy', 'avgFBSpend',
+                    'totalRooms', 'adr', 'avgFBSpend',
                     'equipmentCost', 'installationType', 'chargingBays', 'subscriptionPerPort',
                     'pricePerKwh', 'electricityCostPerKwh', 'transactionFeePerKwh',
                     'usageLevel', 'desiredPaybackMonths',
@@ -1798,7 +1770,7 @@
         // Input persistence via localStorage
         document.addEventListener('DOMContentLoaded', function(){
             var KEY = 'voqa-hotel';
-            var ids = ['totalRooms','adr','baselineOccupancy','avgFBSpend',
+            var ids = ['totalRooms','adr','avgFBSpend',
                        'equipmentCost','installationType','chargingBays','subscriptionPerPort',
                        'pricePerKwh','electricityCostPerKwh','usageLevel','desiredPaybackMonths',
                        'evGuestsWithAncillarySpend','roomVariableCostPercent','fbMarginPercent'];
@@ -1817,8 +1789,7 @@
                     Object.keys(saved).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=saved[id]; });
                     // Sync slider value displays after restore
                     var adr=document.getElementById('adr'); if(adr) document.getElementById('adrVal').textContent='£'+adr.value;
-                    var occ=document.getElementById('baselineOccupancy'); if(occ) document.getElementById('baselineOccupancyVal').textContent=occ.value+'%';
-                    var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('avgFBSpendVal').textContent='£'+fb.value;
+var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('avgFBSpendVal').textContent='£'+fb.value;
                     var price=document.getElementById('pricePerKwh'); if(price){ var pv=parseFloat(price.value); document.getElementById('pricePerKwhVal').textContent='£'+pv.toFixed(2)+'/kWh'; document.getElementById('pricePerKwhVat').textContent='£'+(pv*1.2).toFixed(2)+'/kWh inc. 20% UK VAT'; }
                     var elec=document.getElementById('electricityCostPerKwh'); if(elec) document.getElementById('electricityCostPerKwhVal').textContent='£'+parseFloat(elec.value).toFixed(2)+'/kWh';
                     calculate();
