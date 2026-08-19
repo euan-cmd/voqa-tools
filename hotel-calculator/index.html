@@ -369,12 +369,23 @@
             color: #666;
         }
 
-        /* Usage slider */
+        /* Sliders */
         .usage-slider {
             width: 100%;
             accent-color: var(--primary);
             cursor: pointer;
             margin-top: 10px;
+        }
+        .slider-value {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
         }
         .usage-labels {
             display: flex;
@@ -956,18 +967,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="adr">Average Daily Rate (£)</label>
-                    <input type="number" id="adr" value="120" min="0" step="1">
+                    <label for="adr">Average Daily Rate <span class="slider-value" id="adrVal">£120</span></label>
+                    <input type="range" id="adr" class="usage-slider" min="80" max="300" step="1" value="120"
+                           oninput="document.getElementById('adrVal').textContent='£'+this.value">
                 </div>
 
                 <div class="form-group">
-                    <label for="baselineOccupancy">Current Occupancy (%)</label>
-                    <input type="number" id="baselineOccupancy" value="70" min="0" max="100" step="1">
+                    <label for="baselineOccupancy">Current Occupancy <span class="slider-value" id="baselineOccupancyVal">70%</span></label>
+                    <input type="range" id="baselineOccupancy" class="usage-slider" min="50" max="100" step="1" value="70"
+                           oninput="document.getElementById('baselineOccupancyVal').textContent=this.value+'%'">
                 </div>
 
                 <div class="form-group">
-                    <label for="avgFBSpend">Average F&B Spend per Room (£)</label>
-                    <input type="number" id="avgFBSpend" value="18" min="0" step="1">
+                    <label for="avgFBSpend">Average F&amp;B Spend per Room <span class="slider-value" id="avgFBSpendVal">£18</span></label>
+                    <input type="range" id="avgFBSpend" class="usage-slider" min="0" max="50" step="1" value="18"
+                           oninput="document.getElementById('avgFBSpendVal').textContent='£'+this.value">
                 </div>
             </div>
 
@@ -1783,6 +1797,10 @@
                 var saved=JSON.parse(localStorage.getItem(KEY)||'null');
                 if(saved){
                     Object.keys(saved).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=saved[id]; });
+                    // Sync slider value displays after restore
+                    var adr=document.getElementById('adr'); if(adr) document.getElementById('adrVal').textContent='£'+adr.value;
+                    var occ=document.getElementById('baselineOccupancy'); if(occ) document.getElementById('baselineOccupancyVal').textContent=occ.value+'%';
+                    var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('avgFBSpendVal').textContent='£'+fb.value;
                     calculate();
                 }
             }catch(e){}
