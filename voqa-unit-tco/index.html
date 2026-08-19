@@ -961,7 +961,7 @@
     </div>
 
     <footer>
-        &copy; 2026 <a href="https://www.voqa.com" target="_blank" rel="noopener">Voqa Ltd</a>. For commercial planning purposes only. All figures exclude VAT unless stated.
+        &copy; <span class="js-year">2026</span> <a href="https://www.voqa.com" target="_blank" rel="noopener">Voqa SAS</a>. For commercial planning purposes only. All figures exclude VAT unless stated.
     </footer>
 
     <script>
@@ -1104,5 +1104,11 @@
         calculate();
     </script>
 
+    <script>
+        // Keep the footer copyright year current without a rebuild.
+        document.querySelectorAll('.js-year').forEach(function (el) {
+            el.textContent = new Date().getFullYear();
+        });
+    </script>
 </body>
 </html>

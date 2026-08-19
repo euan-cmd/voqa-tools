@@ -1655,7 +1655,13 @@
         })();
     </script>
     <footer>
-        © 2026 Voqa Ltd. All rights reserved. · <a href="https://www.voqa.com" target="_blank" rel="noopener">voqa.com</a>
+        © <span class="js-year">2026</span> Voqa SAS. All rights reserved. · <a href="https://www.voqa.com" target="_blank" rel="noopener">voqa.com</a>
     </footer>
+    <script>
+        // Keep the footer copyright year current without a rebuild.
+        document.querySelectorAll('.js-year').forEach(function (el) {
+            el.textContent = new Date().getFullYear();
+        });
+    </script>
 </body>
 </html>

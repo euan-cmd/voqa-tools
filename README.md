@@ -35,4 +35,4 @@ Files are served statically. Push to `main` to deploy.
 
 ---
 
-© 2026 Voqa Ltd.
+© Voqa SAS.

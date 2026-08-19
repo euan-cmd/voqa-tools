@@ -653,7 +653,7 @@
         This tool provides indicative guidance only. Eligibility criteria are subject to change by OZEV.<br>
         Always verify at <a href="https://www.gov.uk/government/collections/workplace-charging-scheme" target="_blank">gov.uk</a> before applying.
         Grant figures reflect the scheme as updated April 2026.<br><br>
-        © 2026 Voqa Ltd. All rights reserved. · <a href="https://www.voqa.com" target="_blank" rel="noopener">voqa.com</a>
+        © <span class="js-year">2026</span> Voqa SAS. All rights reserved. · <a href="https://www.voqa.com" target="_blank" rel="noopener">voqa.com</a>
     </footer>
 
     <script>
@@ -897,6 +897,12 @@
             document.getElementById('intro').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    </script>
+    <script>
+        // Keep the footer copyright year current without a rebuild.
+        document.querySelectorAll('.js-year').forEach(function (el) {
+            el.textContent = new Date().getFullYear();
+        });
     </script>
 </body>
 </html>
