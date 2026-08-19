@@ -1138,7 +1138,7 @@
                         <span class="breakdown-value negative" id="combinedEnergyCosts">-</span>
                     </div>
                     <div class="breakdown-item">
-                        <span class="breakdown-label">Less: Annual Operating Costs:</span>
+                        <span class="breakdown-label">Less: Annual Subscription:</span>
                         <span class="breakdown-value negative" id="totalAnnualOpex">-</span>
                     </div>
                     <div class="breakdown-item breakdown-total">
@@ -1571,7 +1571,7 @@
                 // Calculate investment costs
                 const totalCapex = (inputs.equipmentCost + inputs.installationCost) * inputs.chargingBays;
                 const annualSubscription = inputs.subscriptionPerPort * inputs.chargingBays * 12;
-                const totalAnnualOpex = (150 * inputs.chargingBays) + annualSubscription;
+                const totalAnnualOpex = annualSubscription;
 
                 // EV Charging calculations
                 const chargingRevenuePerSession = inputs.avgKwhPerSession * inputs.pricePerKwh;
