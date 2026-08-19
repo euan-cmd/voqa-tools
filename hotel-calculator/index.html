@@ -362,6 +362,20 @@
             transform: translateY(-2px);
         }
 
+        input:disabled, select:disabled {
+            background: #e8f3f8;
+            border-color: #b8d4e0;
+            color: #4a7a8a;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        input:disabled:hover, select:disabled:hover {
+            border-color: #b8d4e0;
+            transform: none;
+            box-shadow: none;
+        }
+
         .helper-text {
             margin-top: 8px;
             font-size: 12px;
@@ -1042,7 +1056,7 @@
 
                 <div class="form-group">
                     <label for="equipmentCost">Voqa One cost per bay (£)</label>
-                    <input type="number" id="equipmentCost" value="1700" min="0" step="1">
+                    <input type="number" id="equipmentCost" value="1700" min="0" step="1" disabled>
                     <div class="helper-text">Voqa One unit (£3,400) covers 2 bays</div>
                 </div>
 
@@ -1070,8 +1084,8 @@
                 <div class="form-group">
                     <label for="pricePerKwh">Tariff charged to drivers <span class="slider-value" id="pricePerKwhVal">£0.40/kWh</span></label>
                     <input type="range" id="pricePerKwh" class="usage-slider" min="0.00" max="0.80" step="0.01" value="0.40"
-                           oninput="document.getElementById('pricePerKwhVal').textContent='£'+parseFloat(this.value).toFixed(2)+'/kWh'">
-                    <div class="helper-text">Ex. VAT</div>
+                           oninput="var v=parseFloat(this.value);document.getElementById('pricePerKwhVal').textContent='£'+v.toFixed(2)+'/kWh';document.getElementById('pricePerKwhVat').textContent='£'+(v*1.2).toFixed(2)+'/kWh inc. 20% UK VAT'">
+                    <div class="helper-text">Ex. VAT &nbsp;·&nbsp; <span id="pricePerKwhVat">£0.48/kWh inc. 20% UK VAT</span></div>
                 </div>
 
                 <div class="form-group">
@@ -1543,10 +1557,10 @@
 
         function getInstallationCostPerBay(type, bays) {
             const b = Math.max(bays, 1);
-            if (type === 'wall')       return 500;
-            if (type === 'post-close') return 1000;
-            // post-far: £3,000 shared civils + ducting, divided across bays, plus £1,100 per-bay cost
-            return Math.round(3000 / b) + 1100;
+            if (type === 'wall')       return 1000;
+            if (type === 'post-close') return 1500;
+            // post-far: £3,000 shared civils + ducting, divided across bays, plus £1,500 per-bay cost
+            return Math.round(3000 / b) + 1500;
         }
 
         function updateUsageDisplay() {
@@ -1824,7 +1838,7 @@
                     var adr=document.getElementById('adr'); if(adr) document.getElementById('adrVal').textContent='£'+adr.value;
                     var occ=document.getElementById('baselineOccupancy'); if(occ) document.getElementById('baselineOccupancyVal').textContent=occ.value+'%';
                     var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('avgFBSpendVal').textContent='£'+fb.value;
-                    var price=document.getElementById('pricePerKwh'); if(price) document.getElementById('pricePerKwhVal').textContent='£'+parseFloat(price.value).toFixed(2)+'/kWh';
+                    var price=document.getElementById('pricePerKwh'); if(price){ var pv=parseFloat(price.value); document.getElementById('pricePerKwhVal').textContent='£'+pv.toFixed(2)+'/kWh'; document.getElementById('pricePerKwhVat').textContent='£'+(pv*1.2).toFixed(2)+'/kWh inc. 20% UK VAT'; }
                     var elec=document.getElementById('electricityCostPerKwh'); if(elec) document.getElementById('electricityCostPerKwhVal').textContent='£'+parseFloat(elec.value).toFixed(2)+'/kWh';
                     calculate();
                 }
