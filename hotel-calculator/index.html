@@ -1138,6 +1138,18 @@
                         <span class="breakdown-label">Net Annual EV Contribution:</span>
                         <span class="breakdown-value positive" id="netEVChargingContribution">-</span>
                     </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Annual Room Booking Margin:</span>
+                        <span class="breakdown-value positive" id="annualRoomMargin">-</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Annual F&amp;B Margin:</span>
+                        <span class="breakdown-value positive" id="annualFBMargin">-</span>
+                    </div>
+                    <div class="breakdown-item breakdown-total">
+                        <span class="breakdown-label">Total Annual Contribution:</span>
+                        <span class="breakdown-value positive" id="totalAnnualContribution">-</span>
+                    </div>
                     <div class="breakdown-item breakdown-total">
                         <span class="breakdown-label">Estimated Payback Period:</span>
                         <span class="breakdown-value" id="calculatedPayback">-</span>
@@ -1248,7 +1260,7 @@
 
         // Chart generation function
         function generateCharts() {
-            const { totalCapex, netAdditionalMargin, baseEVContribution, annualUsageGrowth, totalAnnualOpex, desiredPaybackYears } = currentCalculationData;
+            const { totalCapex, netAdditionalMargin, baseEVContribution, baseRoomFBContribution, annualUsageGrowth, totalAnnualOpex, desiredPaybackYears } = currentCalculationData;
             
             // Use payback period + 2 years for chart visualization
             const yearsToShow = Math.max(5, Math.ceil(desiredPaybackYears) + 2);
@@ -1264,11 +1276,11 @@
                     annualCashFlow.push(-totalCapex);
                     cumulative.push(cumulativeTotal);
                 } else {
-                    const growthFactor = Math.pow(1 + annualUsageGrowth, year);
-                    const evContributionThisYear = baseEVContribution * growthFactor;
-                    const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
-                    const totalMarginThisYear = netEVContributionThisYear + (netAdditionalMargin - (baseEVContribution - totalAnnualOpex));
-                    
+                    const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
+                    const netEVContributionThisYear = (baseEVContribution * growthFactor) - totalAnnualOpex;
+                    const roomFBThisYear = baseRoomFBContribution * growthFactor;
+                    const totalMarginThisYear = netEVContributionThisYear + roomFBThisYear;
+
                     years.push(`Year ${year}`);
                     annualCashFlow.push(totalMarginThisYear);
                     cumulativeTotal += totalMarginThisYear;
@@ -1442,14 +1454,12 @@
             
             // Calculate cumulative profit with EV growth over display period
             let cumulativeProfitWithGrowth = -totalCapex; // Start with negative investment
-            const additionalRoomContributionPerYear = netAdditionalMargin - (baseEVContribution - totalAnnualOpex);
-            
+
             for (let year = 1; year <= profitDisplayYears; year++) {
                 const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
-                const evContributionThisYear = baseEVContribution * growthFactor;
-                const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
-                const totalContributionThisYear = netEVContributionThisYear + additionalRoomContributionPerYear;
-                cumulativeProfitWithGrowth += totalContributionThisYear;
+                const netEVContributionThisYear = (baseEVContribution * growthFactor) - totalAnnualOpex;
+                const roomFBThisYear = baseRoomFBContribution * growthFactor;
+                cumulativeProfitWithGrowth += netEVContributionThisYear + roomFBThisYear;
             }
             
             updateElement('chartInvestmentInsight', formatCurrency(totalCapex));
@@ -1560,21 +1570,30 @@
                 const baseEVContribution = annualChargingGrossMargin;
 
                 const netEVChargingContribution = annualChargingGrossMargin - totalAnnualOpex;
-                const netAdditionalMargin = netEVChargingContribution;
 
-                // Calculate payback from EV charging contribution
-                // Calculate payback iteratively using the same 5% growth model as the chart
+                // Incremental room & F&B from EV guests (each session = one additional EV guest night)
+                const annualSessions = inputs.sessionsPerBayPerDay * inputs.chargingBays * 365;
+                const baseRoomMargin = annualSessions * inputs.adr * (1 - inputs.roomVariableCostPercent);
+                const baseFBMargin = annualSessions * inputs.avgFBSpend * inputs.evGuestsWithAncillarySpend * inputs.fbMarginPercent;
+                const baseRoomFBContribution = baseRoomMargin + baseFBMargin;
+
+                const baseTotalContribution = netEVChargingContribution + baseRoomFBContribution;
+                const netAdditionalMargin = baseTotalContribution;
+
+                // Calculate payback iteratively using 5% growth on all revenue streams
                 let calculatedPaybackYears = Infinity;
-                if (netEVChargingContribution > 0) {
+                if (baseTotalContribution > 0) {
                     let accumulated = 0;
                     for (let year = 1; year <= 50; year++) {
                         const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
-                        const netContributionThisYear = (baseEVContribution * growthFactor) - totalAnnualOpex;
+                        const netEVThisYear = (baseEVContribution * growthFactor) - totalAnnualOpex;
+                        const roomFBThisYear = baseRoomFBContribution * growthFactor;
+                        const totalThisYear = netEVThisYear + roomFBThisYear;
                         const prevAccumulated = accumulated;
-                        accumulated += netContributionThisYear;
+                        accumulated += totalThisYear;
                         if (accumulated >= totalCapex) {
                             const remaining = totalCapex - prevAccumulated;
-                            calculatedPaybackYears = (year - 1) + (remaining / netContributionThisYear);
+                            calculatedPaybackYears = (year - 1) + (remaining / totalThisYear);
                             break;
                         }
                     }
@@ -1597,6 +1616,9 @@
                 updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
                 updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
+                updateElement('annualRoomMargin', formatCurrency(baseRoomMargin));
+                updateElement('annualFBMargin', formatCurrency(baseFBMargin));
+                updateElement('totalAnnualContribution', formatCurrency(baseTotalContribution));
                 updateElement('calculatedPayback', calculatedPaybackDisplay);
 
                 updateElement('growthRateDisplay', '5%');
@@ -1608,6 +1630,7 @@
                     netEVChargingContribution,
                     netAdditionalMargin,
                     baseEVContribution,
+                    baseRoomFBContribution,
                     annualUsageGrowth,
                     desiredPaybackYears: calculatedPaybackYears
                 };
