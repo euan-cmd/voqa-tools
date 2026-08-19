@@ -1080,7 +1080,19 @@
 
             <div class="input-section">
                 <h3 class="section-subtitle">EV Charging Parameters</h3>
-                
+
+                <div class="form-group">
+                    <label>Expected Charger Usage</label>
+                    <input type="range" id="usageLevel" class="usage-slider" min="0" max="3" step="1" value="1">
+                    <div class="usage-labels">
+                        <span>Quiet</span>
+                        <span>Moderate</span>
+                        <span>Busy</span>
+                        <span>High</span>
+                    </div>
+                    <div class="usage-level-display" id="usageLevelDisplay"></div>
+                </div>
+
                 <div class="form-group">
                     <label for="pricePerKwh">Tariff charged to drivers <span class="slider-value" id="pricePerKwhVal">£0.40/kWh</span></label>
                     <input type="range" id="pricePerKwh" class="usage-slider" min="0.00" max="0.80" step="0.01" value="0.40"
@@ -1099,18 +1111,6 @@
                     <label for="transactionFeePerKwh">Voqa Transaction Fee per kWh (£)</label>
                     <input type="number" id="transactionFeePerKwh" value="0.06" min="0" step="0.01" disabled>
                     <div class="helper-text">Fee exclusive of VAT</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Expected Charger Usage</label>
-                    <input type="range" id="usageLevel" class="usage-slider" min="0" max="3" step="1" value="1">
-                    <div class="usage-labels">
-                        <span>Quiet</span>
-                        <span>Moderate</span>
-                        <span>Busy</span>
-                        <span>High</span>
-                    </div>
-                    <div class="usage-level-display" id="usageLevelDisplay"></div>
                 </div>
             </div>
 
