@@ -799,7 +799,7 @@
                         <tr>
                             <td class="row-label">Billing period</td>
                             <td>
-                                <div class="locked-value">Monthly (per port)</div>
+                                <div class="locked-value">Annually (per port)</div>
                             </td>
                             <td>
                                 <select id="c-subPeriod">
@@ -968,7 +968,7 @@
         const STORAGE_KEY = 'voqa-unit-tco-v7';
 
         // Voqa One pricing is fixed
-        const VOQA = { unitPrice: 3400, ports: 2, subAmount: 1, subPeriod: 'monthly', commAmount: 0.06, commType: 'perkwh' };
+        const VOQA = { unitPrice: 3400, ports: 2, subAmount: 1, subPeriod: 'annually', commAmount: 0.06, commType: 'perkwh' };
 
         const inputIds = [
             'usageLevel', 'revenuePerKwh', 'analysisYears',
