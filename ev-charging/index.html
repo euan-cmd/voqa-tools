@@ -1839,13 +1839,8 @@
     <script>
         function dismissPrivacyNotice() {
             document.getElementById('privacy-notice').classList.add('hidden');
-            try { localStorage.setItem('voqa-privacy-ack', '1'); } catch(e) {}
         }
-        try {
-            if (!localStorage.getItem('voqa-privacy-ack')) {
-                document.getElementById('privacy-notice').classList.remove('hidden');
-            }
-        } catch(e) {}
+        document.getElementById('privacy-notice').classList.remove('hidden');
     </script>
 </body>
 </html>
