@@ -993,6 +993,11 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="chargingBays">Number of Charging Bays</label>
+                    <input type="number" id="chargingBays" value="4" min="1" step="1">
+                </div>
+
+                <div class="form-group">
                     <label for="equipmentCost">Equipment Cost per Bay (£)</label>
                     <input type="number" id="equipmentCost" value="1700" min="0" step="1">
                     <div class="helper-text">Voqa One unit (£3,400) covers 2 bays</div>
@@ -1007,16 +1012,6 @@
                     </select>
                     <div class="install-estimate" id="installEstimate"></div>
                     <div class="install-disclaimer">⚠️ Installation costs are indicative estimates based on typical UK commercial installations. Ground conditions, surface type, cable run distance, and DNO requirements will all affect the actual cost. A qualified EV installer must survey the site and provide a formal quote before any works are committed to.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="chargingBays">Number of Charging Bays</label>
-                    <input type="number" id="chargingBays" value="4" min="1" step="1">
-                </div>
-
-                <div class="form-group">
-                    <label for="annualMaintenance">Annual Maintenance per Bay (£)</label>
-                    <input type="number" id="annualMaintenance" value="150" min="0" step="1">
                 </div>
 
                 <div class="form-group">
@@ -1551,7 +1546,6 @@
                     avgFBSpend: getInputValue('avgFBSpend', 18),
                     equipmentCost: getInputValue('equipmentCost', 1700),
                     chargingBays: getInputValue('chargingBays', 4),
-                    annualMaintenance: getInputValue('annualMaintenance', 150),
                     subscriptionPerPort: getInputValue('subscriptionPerPort', 1.00),
                     pricePerKwh: getInputValue('pricePerKwh', 0.40),
                     electricityCostPerKwh: getInputValue('electricityCostPerKwh', 0.25),
@@ -1581,7 +1575,7 @@
                 // Calculate investment costs
                 const totalCapex = (inputs.equipmentCost + inputs.installationCost) * inputs.chargingBays;
                 const annualSubscription = inputs.subscriptionPerPort * inputs.chargingBays * 12;
-                const totalAnnualOpex = (inputs.annualMaintenance * inputs.chargingBays) + annualSubscription;
+                const totalAnnualOpex = (150 * inputs.chargingBays) + annualSubscription;
 
                 // EV Charging calculations
                 const chargingRevenuePerSession = inputs.avgKwhPerSession * inputs.pricePerKwh;
@@ -1732,7 +1726,7 @@
             try {
                 const inputIds = [
                     'totalRooms', 'adr', 'baselineOccupancy', 'avgFBSpend',
-                    'equipmentCost', 'installationType', 'chargingBays', 'annualMaintenance', 'subscriptionPerPort',
+                    'equipmentCost', 'installationType', 'chargingBays', 'subscriptionPerPort',
                     'pricePerKwh', 'electricityCostPerKwh', 'transactionFeePerKwh',
                     'usageLevel', 'evGuestsWithAncillarySpend',
                     'roomVariableCostPercent', 'fbMarginPercent', 'desiredPaybackMonths'
@@ -1781,7 +1775,7 @@
         document.addEventListener('DOMContentLoaded', function(){
             var KEY = 'voqa-hotel';
             var ids = ['totalRooms','adr','baselineOccupancy','avgFBSpend',
-                       'equipmentCost','installationType','chargingBays','annualMaintenance','subscriptionPerPort',
+                       'equipmentCost','installationType','chargingBays','subscriptionPerPort',
                        'pricePerKwh','electricityCostPerKwh','usageLevel','evGuestsWithAncillarySpend',
                        'roomVariableCostPercent','fbMarginPercent','desiredPaybackMonths'];
             function save(){
