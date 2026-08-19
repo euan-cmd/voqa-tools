@@ -369,6 +369,50 @@
             color: #666;
         }
 
+        /* Usage slider */
+        .usage-slider {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .usage-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #888;
+        }
+        .usage-level-display {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: #f0f7fb;
+            border-left: 3px solid var(--primary);
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Installation dropdown extras */
+        .install-estimate {
+            margin-top: 8px;
+            font-size: 12px;
+            font-style: italic;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .install-disclaimer {
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: #fff8e1;
+            border-left: 3px solid #e6a817;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.6;
+        }
+
         .calculation-display {
             background: var(--primary);
             padding: 24px;
@@ -941,8 +985,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="installationCost">Installation Cost per Bay (£)</label>
-                    <input type="number" id="installationCost" value="2000" min="0" step="1">
+                    <label for="installationType">Installation Type</label>
+                    <select id="installationType">
+                        <option value="wall">Wall mounted</option>
+                        <option value="post-close">Post mounted — close to building (&lt;10m cable run)</option>
+                        <option value="post-far" selected>Post mounted — far from building (civils &amp; ducting required)</option>
+                    </select>
+                    <div class="install-estimate" id="installEstimate"></div>
+                    <div class="install-disclaimer">⚠️ Installation costs are indicative estimates based on typical UK commercial installations. Ground conditions, surface type, cable run distance, and DNO requirements will all affect the actual cost. A qualified EV installer must survey the site and provide a formal quote before any works are committed to.</div>
                 </div>
 
                 <div class="form-group">
@@ -984,14 +1034,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="avgKwhPerSession">Average kWh per Session</label>
-                    <input type="number" id="avgKwhPerSession" value="30" min="0" step="1">
-                    <div class="helper-text" id="rangeEstimate">Typical range added: ~105 miles</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="sessionsPerBayPerDay">Sessions per Bay per Day</label>
-                    <input type="number" id="sessionsPerBayPerDay" value="0.5" min="0" step="0.1">
+                    <label>Expected Charger Usage</label>
+                    <input type="range" id="usageLevel" class="usage-slider" min="0" max="3" step="1" value="1">
+                    <div class="usage-labels">
+                        <span>Quiet</span>
+                        <span>Moderate</span>
+                        <span>Busy</span>
+                        <span>High</span>
+                    </div>
+                    <div class="usage-level-display" id="usageLevelDisplay"></div>
                 </div>
             </div>
 
@@ -1444,6 +1495,37 @@
             }
         }
 
+        // Usage level definitions
+        const USAGE_LEVELS = [
+            { label: 'Quiet',     desc: '1–2 charging sessions per bay per week — typical for hotels with occasional EV guests.',      sessionsPerBayPerDay: 0.25, avgKwhPerSession: 25 },
+            { label: 'Moderate',  desc: '3–5 sessions per bay per week — a mix of regular and occasional EV guests.',                  sessionsPerBayPerDay: 0.5,  avgKwhPerSession: 30 },
+            { label: 'Busy',      desc: 'Around 1 session per bay per day — EV charging is a noticeable draw for guests.',             sessionsPerBayPerDay: 1.0,  avgKwhPerSession: 35 },
+            { label: 'High demand', desc: 'Multiple sessions per bay per day — chargers are a key amenity and consistently in use.',   sessionsPerBayPerDay: 1.5,  avgKwhPerSession: 40 },
+        ];
+
+        function getInstallationCostPerBay(type, bays) {
+            const b = Math.max(bays, 1);
+            if (type === 'wall')       return 500;
+            if (type === 'post-close') return 1000;
+            // post-far: £3,000 shared civils + ducting, divided across bays, plus £1,100 per-bay cost
+            return Math.round(3000 / b) + 1100;
+        }
+
+        function updateUsageDisplay() {
+            const level = parseInt(document.getElementById('usageLevel').value) || 1;
+            const u = USAGE_LEVELS[level];
+            const el = document.getElementById('usageLevelDisplay');
+            if (el) el.innerHTML = '<strong>' + u.label + '</strong> — ' + u.desc;
+        }
+
+        function updateInstallEstimate() {
+            const type = document.getElementById('installationType').value;
+            const bays = parseInt(document.getElementById('chargingBays').value) || 4;
+            const perBay = getInstallationCostPerBay(type, bays);
+            const el = document.getElementById('installEstimate');
+            if (el) el.textContent = 'Estimated cost: ~£' + perBay.toLocaleString('en-GB') + ' per bay (£' + (perBay * bays).toLocaleString('en-GB') + ' total for ' + bays + ' bays)';
+        }
+
         // Main calculation function
         function calculate() {
             try {
@@ -1454,20 +1536,31 @@
                     baselineOccupancy: getInputValue('baselineOccupancy', 70) / 100,
                     avgFBSpend: getInputValue('avgFBSpend', 18),
                     equipmentCost: getInputValue('equipmentCost', 1700),
-                    installationCost: getInputValue('installationCost', 2000),
                     chargingBays: getInputValue('chargingBays', 4),
                     annualMaintenance: getInputValue('annualMaintenance', 150),
                     subscriptionPerPort: getInputValue('subscriptionPerPort', 1.00),
                     pricePerKwh: getInputValue('pricePerKwh', 0.40),
-                    avgKwhPerSession: getInputValue('avgKwhPerSession', 30),
                     electricityCostPerKwh: getInputValue('electricityCostPerKwh', 0.25),
                     transactionFeePerKwh: getInputValue('transactionFeePerKwh', 0.06),
                     roomVariableCostPercent: getInputValue('roomVariableCostPercent', 25) / 100,
                     fbMarginPercent: getInputValue('fbMarginPercent', 65) / 100,
                     evGuestsWithAncillarySpend: getInputValue('evGuestsWithAncillarySpend', 50) / 100,
-                    sessionsPerBayPerDay: getInputValue('sessionsPerBayPerDay', 0.5),
                     desiredPaybackYears: getInputValue('desiredPaybackMonths', 36) / 12
                 };
+
+                // Derive usage params from slider
+                const usageLevelIdx = parseInt(document.getElementById('usageLevel').value) || 1;
+                const usageParams = USAGE_LEVELS[usageLevelIdx];
+                inputs.sessionsPerBayPerDay = usageParams.sessionsPerBayPerDay;
+                inputs.avgKwhPerSession     = usageParams.avgKwhPerSession;
+
+                // Derive installation cost from dropdown
+                const installationType = document.getElementById('installationType').value;
+                inputs.installationCost = getInstallationCostPerBay(installationType, inputs.chargingBays);
+
+                // Update UI displays
+                updateUsageDisplay();
+                updateInstallEstimate();
 
                 const annualUsageGrowth = 0.05; // Fixed at 5%
 
@@ -1625,9 +1718,9 @@
             try {
                 const inputIds = [
                     'totalRooms', 'adr', 'baselineOccupancy', 'avgFBSpend',
-                    'equipmentCost', 'installationCost', 'chargingBays', 'annualMaintenance', 'subscriptionPerPort',
-                    'pricePerKwh', 'electricityCostPerKwh', 'transactionFeePerKwh', 
-                    'avgKwhPerSession', 'sessionsPerBayPerDay', 'evGuestsWithAncillarySpend',
+                    'equipmentCost', 'installationType', 'chargingBays', 'annualMaintenance', 'subscriptionPerPort',
+                    'pricePerKwh', 'electricityCostPerKwh', 'transactionFeePerKwh',
+                    'usageLevel', 'evGuestsWithAncillarySpend',
                     'roomVariableCostPercent', 'fbMarginPercent', 'desiredPaybackMonths'
                 ];
 
@@ -1636,16 +1729,10 @@
                     if (element) {
                         element.addEventListener('input', () => {
                             console.log(`Input changed: ${id} = ${element.value}`);
-                            if (id === 'avgKwhPerSession') {
-                                updateRangeEstimate();
-                            }
                             calculate();
                         });
                         element.addEventListener('change', () => {
                             console.log(`Change event: ${id} = ${element.value}`);
-                            if (id === 'avgKwhPerSession') {
-                                updateRangeEstimate();
-                            }
                             calculate();
                         });
                         console.log('Added event listeners to:', id, 'Current value:', element.value);
@@ -1680,9 +1767,8 @@
         document.addEventListener('DOMContentLoaded', function(){
             var KEY = 'voqa-hotel';
             var ids = ['totalRooms','adr','baselineOccupancy','avgFBSpend',
-                       'equipmentCost','installationCost','chargingBays','annualMaintenance','subscriptionPerPort',
-                       'pricePerKwh','electricityCostPerKwh','avgKwhPerSession',
-                       'sessionsPerBayPerDay','evGuestsWithAncillarySpend',
+                       'equipmentCost','installationType','chargingBays','annualMaintenance','subscriptionPerPort',
+                       'pricePerKwh','electricityCostPerKwh','usageLevel','evGuestsWithAncillarySpend',
                        'roomVariableCostPercent','fbMarginPercent','desiredPaybackMonths'];
             function save(){
                 var d={};
