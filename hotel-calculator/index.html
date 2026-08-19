@@ -1105,13 +1105,6 @@
             </div>
 
             <div class="input-section">
-                <h3 class="section-subtitle">Payback Target</h3>
-
-                <div class="form-group">
-                    <label for="desiredPaybackMonths">Desired Payback Period (Months)</label>
-                    <input type="number" id="desiredPaybackMonths" value="36" min="6" max="120" step="1">
-                    <div class="helper-text">Target timeframe to recover initial investment</div>
-                </div>
             </div>
         </div>
 
@@ -1144,6 +1137,10 @@
                     <div class="breakdown-item breakdown-total">
                         <span class="breakdown-label">Net Annual EV Contribution:</span>
                         <span class="breakdown-value positive" id="netEVChargingContribution">-</span>
+                    </div>
+                    <div class="breakdown-item breakdown-total">
+                        <span class="breakdown-label">Estimated Payback Period:</span>
+                        <span class="breakdown-value" id="calculatedPayback">-</span>
                     </div>
                 </div>
             </div>
@@ -1193,8 +1190,8 @@
                 <div class="result-card">
                     <span class="result-icon">⏱️</span>
                     <div class="result-value" id="chartBreakEvenInsight">-</div>
-                    <div class="result-label">Target Payback Time</div>
-                    <div class="result-description">Your chosen payback period</div>
+                    <div class="result-label">Estimated Payback</div>
+                    <div class="result-description">Based on EV charging contribution</div>
                 </div>
                 <div class="result-card">
                     <span class="result-icon">📈</span>
@@ -1521,8 +1518,7 @@
                     transactionFeePerKwh: getInputValue('transactionFeePerKwh', 0.06),
                     roomVariableCostPercent: getInputValue('roomVariableCostPercent', 25) / 100,
                     fbMarginPercent: getInputValue('fbMarginPercent', 65) / 100,
-                    evGuestsWithAncillarySpend: getInputValue('evGuestsWithAncillarySpend', 50) / 100,
-                    desiredPaybackYears: getInputValue('desiredPaybackMonths', 36) / 12
+                    evGuestsWithAncillarySpend: getInputValue('evGuestsWithAncillarySpend', 50) / 100
                 };
 
                 // Derive usage params from slider
@@ -1564,91 +1560,29 @@
                 const baseEVContribution = annualChargingGrossMargin;
 
                 const netEVChargingContribution = annualChargingGrossMargin - totalAnnualOpex;
+                const netAdditionalMargin = netEVChargingContribution;
 
-                // Room booking calculations
-                const roomGrossMargin = inputs.adr * (1 - inputs.roomVariableCostPercent);
-                const fbGrossMargin = inputs.avgFBSpend * inputs.evGuestsWithAncillarySpend * inputs.fbMarginPercent;
-                const totalMarginPerAdditionalBooking = roomGrossMargin + fbGrossMargin;
-
-                // Calculate cumulative EV contribution over payback period
-                let cumulativeEVContribution = 0;
-                const paybackYears = inputs.desiredPaybackYears;
-                const fullYears = Math.floor(paybackYears);
-                const partialYear = paybackYears - fullYears;
-                
-                // Calculate full years
-                for (let year = 1; year <= fullYears; year++) {
-                    const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1); // Start with no growth in year 1
-                    const evContributionThisYear = baseEVContribution * growthFactor;
-                    const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
-                    cumulativeEVContribution += netEVContributionThisYear;
+                // Calculate payback from EV charging contribution
+                const calculatedPaybackYears = netEVChargingContribution > 0 ? totalCapex / netEVChargingContribution : Infinity;
+                const paybackMonthsCalc = calculatedPaybackYears * 12;
+                let calculatedPaybackDisplay;
+                if (!isFinite(calculatedPaybackYears) || netEVChargingContribution <= 0) {
+                    calculatedPaybackDisplay = 'N/A (negative contribution)';
+                } else if (paybackMonthsCalc < 12) {
+                    calculatedPaybackDisplay = `${Math.round(paybackMonthsCalc)} months`;
+                } else if (paybackMonthsCalc % 12 < 1) {
+                    calculatedPaybackDisplay = `${Math.round(calculatedPaybackYears)} years`;
+                } else {
+                    calculatedPaybackDisplay = `${Math.floor(calculatedPaybackYears)} years ${Math.round(paybackMonthsCalc % 12)} months`;
                 }
-                
-                // Add partial year if needed
-                if (partialYear > 0) {
-                    const growthFactor = Math.pow(1 + annualUsageGrowth, fullYears); // Growth for the partial year
-                    const evContributionThisYear = baseEVContribution * growthFactor;
-                    const netEVContributionThisYear = evContributionThisYear - totalAnnualOpex;
-                    cumulativeEVContribution += netEVContributionThisYear * partialYear;
-                }
-
-                // Calculate additional bookings needed
-                const remainingToRecoverFromBookings = Math.max(0, totalCapex - cumulativeEVContribution);
-                const additionalBookingsNeededPerYear = remainingToRecoverFromBookings > 0 ? 
-                    Math.ceil(remainingToRecoverFromBookings / (totalMarginPerAdditionalBooking * inputs.desiredPaybackYears)) : 0;
-                
-                const totalAdditionalBookingsNeeded = additionalBookingsNeededPerYear * inputs.desiredPaybackYears;
-                const additionalBookingsPerWeek = additionalBookingsNeededPerYear / 52;
-                const additionalBookingsPerDay = additionalBookingsNeededPerYear / 365;
-
-                // Calculate occupancy impact
-                const occupancyIncreasePercent = additionalBookingsPerDay / inputs.totalRooms;
-                const newOccupancyRate = inputs.baselineOccupancy + occupancyIncreasePercent;
-
-                // Additional revenue calculations
-                const additionalRoomRevenue = additionalBookingsNeededPerYear * inputs.adr;
-                const additionalFBRevenue = additionalBookingsNeededPerYear * inputs.avgFBSpend * inputs.evGuestsWithAncillarySpend;
-                const additionalRoomGrossMargin = additionalRoomRevenue * (1 - inputs.roomVariableCostPercent);
-                const additionalFBGrossMargin = additionalFBRevenue * inputs.fbMarginPercent;
-
-                const totalAdditionalGrossMargin = additionalRoomGrossMargin + additionalFBGrossMargin + annualChargingGrossMargin;
-                const netAdditionalMargin = totalAdditionalGrossMargin - totalAnnualOpex;
 
                 // Update UI elements
-                updateElement('additionalBookingsPerWeek', formatNumber(additionalBookingsPerWeek, 1));
-                updateElement('occupancyIncrease', (occupancyIncreasePercent * 100).toFixed(1) + '%');
-                updateElement('marginPerBooking', formatCurrency(Math.round(totalMarginPerAdditionalBooking)));
-
                 updateElement('totalCapex', formatCurrency(totalCapex));
                 updateElement('annualChargingRevenue', formatCurrency(annualChargingRevenue));
                 updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
                 updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
-
-                // Update insights
-                updateElement('insightBookingsNeeded', Math.round(totalAdditionalBookingsNeeded).toLocaleString() + ` total additional bookings over ${Math.round(inputs.desiredPaybackYears)} year${Math.round(inputs.desiredPaybackYears) !== 1 ? 's' : ''}`);
-                updateElement('insightInvestmentAmount', formatCurrency(totalCapex));
-                updateElement('insightBookingsPerWeek', formatNumber(additionalBookingsPerWeek, 1) + ' extra bookings per week');
-                updateElement('insightOccupancyIncrease', (occupancyIncreasePercent * 100).toFixed(1) + '% occupancy increase');
-                
-                // Format payback period properly
-                const paybackMonths = Math.round(inputs.desiredPaybackYears * 12);
-                let paybackDisplay;
-                if (paybackMonths === 12) {
-                    paybackDisplay = "1 year";
-                } else if (paybackMonths < 12) {
-                    paybackDisplay = `${paybackMonths} months`;
-                } else if (paybackMonths % 12 === 0) {
-                    paybackDisplay = `${paybackMonths / 12} years`;
-                } else {
-                    paybackDisplay = `${Math.floor(paybackMonths / 12)} years ${paybackMonths % 12} months`;
-                }
-                
-                updateElement('insightEVContribution', formatCurrency(cumulativeEVContribution) + ` over ${paybackDisplay}`);
-                updateElement('insightRemainingAmount', formatCurrency(remainingToRecoverFromBookings));
-                updateElement('insightMarginPerBooking', formatCurrency(Math.round(totalMarginPerAdditionalBooking)) + ' margin');
-                updateElement('insightNewOccupancy', (newOccupancyRate * 100).toFixed(1) + '%');
-                updateElement('insightCurrentOccupancy', (inputs.baselineOccupancy * 100).toFixed(0) + '%');
+                updateElement('calculatedPayback', calculatedPaybackDisplay);
 
                 updateElement('growthRateDisplay', '5%');
 
@@ -1660,7 +1594,7 @@
                     netAdditionalMargin,
                     baseEVContribution,
                     annualUsageGrowth,
-                    desiredPaybackYears: inputs.desiredPaybackYears
+                    desiredPaybackYears: calculatedPaybackYears
                 };
 
                 generateCharts();
@@ -1697,7 +1631,7 @@
                     'totalRooms', 'adr', 'avgFBSpend',
                     'equipmentCost', 'installationType', 'chargingBays', 'subscriptionPerPort',
                     'pricePerKwh', 'electricityCostPerKwh', 'transactionFeePerKwh',
-                    'usageLevel', 'desiredPaybackMonths',
+                    'usageLevel',
                     'evGuestsWithAncillarySpend', 'roomVariableCostPercent', 'fbMarginPercent'
                 ];
 
@@ -1745,7 +1679,7 @@
             var KEY = 'voqa-hotel';
             var ids = ['totalRooms','adr','avgFBSpend',
                        'equipmentCost','installationType','chargingBays','subscriptionPerPort',
-                       'pricePerKwh','electricityCostPerKwh','usageLevel','desiredPaybackMonths',
+                       'pricePerKwh','electricityCostPerKwh','usageLevel',
                        'evGuestsWithAncillarySpend','roomVariableCostPercent','fbMarginPercent'];
             function save(){
                 var d={};
