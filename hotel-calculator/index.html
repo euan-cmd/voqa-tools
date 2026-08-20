@@ -1876,7 +1876,8 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(255, 255, 255);
-            doc.text('© ' + new Date().getFullYear() + ' Voqa SAS · voqa.com · tools.voqa.com', pw / 2, 292, { align: 'center' });
+            doc.text('© ' + new Date().getFullYear() + ' Voqa SAS · voqa.com', margin, 292);
+            doc.text('euan@voqa.com', pw - margin, 292, { align: 'right' });
 
             doc.save('Voqa-Hotel-EV-RoI-Summary.pdf');
         }
