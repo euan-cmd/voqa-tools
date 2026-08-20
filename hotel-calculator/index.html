@@ -999,7 +999,7 @@
         </div>
     </div>
 
-    <div class="container animate-fade-in-up">
+    <div class="container animate-fade-in-up" style="padding-bottom: 0;">
         <div class="card" style="grid-column: 1 / -1;">
             <h2 class="section-title animate-slide-right">⚙️ Configure Your Setup</h2>
             
@@ -1173,7 +1173,7 @@
     </div>
 
     <!-- Cash Flow Charts Section -->
-    <div class="container">
+    <div class="container" style="padding-top: 0;">
         <div class="card" style="grid-column: 1 / -1;">
             <h3 class="section-subtitle">📈 Cash Flow Analysis</h3>
             
@@ -1467,10 +1467,10 @@
 
         // Usage level definitions
         const USAGE_LEVELS = [
-            { label: 'Quiet',     desc: '1–2 charging sessions per bay per week — typical for hotels with occasional EV guests.',      sessionsPerBayPerDay: 0.25, avgKwhPerSession: 50 },
-            { label: 'Moderate',  desc: '3–5 sessions per bay per week — a mix of regular and occasional EV guests.',                  sessionsPerBayPerDay: 0.5,  avgKwhPerSession: 50 },
-            { label: 'Busy',      desc: 'Around 1 session per bay per day — EV charging is a noticeable draw for guests.',             sessionsPerBayPerDay: 1.0,  avgKwhPerSession: 50 },
-            { label: 'High demand', desc: 'Multiple sessions per bay per day — chargers are a key amenity and consistently in use.',   sessionsPerBayPerDay: 1.5,  avgKwhPerSession: 50 },
+            { label: 'Quiet',       desc: 'Less than 1 session per bay per week — chargers are rarely used, EV guests are very occasional.',  sessionsPerBayPerDay: 0.25, avgKwhPerSession: 30 },
+            { label: 'Moderate',    desc: '3–5 sessions per bay per week — a mix of regular and occasional EV guests.',                       sessionsPerBayPerDay: 0.5,  avgKwhPerSession: 30 },
+            { label: 'Busy',        desc: 'Around 1 session per bay per day — EV charging is a noticeable draw for guests.',                  sessionsPerBayPerDay: 1.0,  avgKwhPerSession: 30 },
+            { label: 'High demand', desc: 'Multiple sessions per bay per day — chargers are a key amenity and consistently in use.',           sessionsPerBayPerDay: 1.5,  avgKwhPerSession: 30 },
         ];
 
         function getInstallationCostPerBay(type, bays) {
@@ -1482,7 +1482,7 @@
         }
 
         function updateUsageDisplay() {
-            const level = parseInt(document.getElementById('usageLevel').value) || 1;
+            const level = parseInt(document.getElementById('usageLevel').value) || 0;
             const u = USAGE_LEVELS[level];
             const el = document.getElementById('usageLevelDisplay');
             if (el) el.innerHTML = '<strong>' + u.label + '</strong> — ' + u.desc;
@@ -1516,7 +1516,7 @@
                 };
 
                 // Derive usage params from slider
-                const usageLevelIdx = parseInt(document.getElementById('usageLevel').value) || 1;
+                const usageLevelIdx = parseInt(document.getElementById('usageLevel').value) || 0;
                 const usageParams = USAGE_LEVELS[usageLevelIdx];
                 inputs.sessionsPerBayPerDay = usageParams.sessionsPerBayPerDay;
                 inputs.avgKwhPerSession     = usageParams.avgKwhPerSession;
@@ -1578,7 +1578,7 @@
                 updateElement('evChargingCoverage', formatCurrency(evChargingCoverage));
                 updateElement('remainingFromRooms', formatCurrency(remainingFromRooms));
                 updateElement('marginPerNight', formatCurrency(Math.round(marginPerNight)));
-                updateElement('roomNightsPerMonth', Math.ceil(roomNightsPerMonth).toLocaleString('en-GB'));
+                updateElement('roomNightsPerMonth', roomNightsPerMonth < 1 && roomNightsPerMonth > 0 ? '<1' : Math.ceil(roomNightsPerMonth).toLocaleString('en-GB'));
 
                 // Store calculation data for charts
                 currentCalculationData = {
