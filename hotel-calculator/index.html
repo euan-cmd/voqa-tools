@@ -1775,7 +1775,9 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
             const installLabel = installType.options[installType.selectedIndex].text;
             const adr = '£' + document.getElementById('adr').value;
             const fb = '£' + document.getElementById('avgFBSpend').value;
-            const tariff = '£' + parseFloat(document.getElementById('pricePerKwh').value).toFixed(2) + '/kWh ex. VAT';
+            const tariffVal = parseFloat(document.getElementById('pricePerKwh').value);
+            const tariff = '£' + tariffVal.toFixed(2) + '/kWh ex. VAT';
+            const tariffIncVat = '£' + (tariffVal * 1.2).toFixed(2) + '/kWh inc. VAT (what the driver pays)';
             const elec = '£' + parseFloat(document.getElementById('electricityCostPerKwh').value).toFixed(2) + '/kWh';
             const usageLevelEl = document.getElementById('usageLevel');
             const usageLabels = ['Quiet', 'Moderate', 'Busy', 'High demand'];
@@ -1784,9 +1786,12 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
 
             row('Charging bays', bays);
             row('Installation type', installLabel.split('—')[0].trim());
+            note('All prices shown are exclusive of VAT unless otherwise stated.');
+            gap(1);
             row('Average daily rate (ADR)', adr);
             row('Average F&B spend per room', fb);
             row('Driver tariff', tariff);
+            note('  ' + tariffIncVat);
             row('Electricity cost', elec);
             row('Expected charger usage', usage);
             row('Target payback period', payback);
