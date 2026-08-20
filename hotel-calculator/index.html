@@ -441,25 +441,28 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
         }
+        .assumption-item {
+            margin-bottom: 12px;
+        }
         .assumption-item label {
             display: block;
             font-size: 12px;
-            color: rgba(255,255,255,0.55);
+            color: var(--text-dark);
             margin-bottom: 4px;
         }
         .assumption-item input {
             width: 100%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: #f0f7fb;
+            border: 1px solid #b8d4e0;
             border-radius: 6px;
             padding: 6px 10px;
             font-size: 13px;
-            color: #fff;
+            color: var(--text-dark);
             font-family: inherit;
         }
         .assumption-item input:focus {
             outline: none;
-            border-color: rgba(255,255,255,0.5);
+            border-color: var(--primary);
         }
 
         /* Installation dropdown extras */
