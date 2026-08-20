@@ -1122,7 +1122,7 @@
 
         <div class="card" style="grid-column: 1 / -1;">
             <h2 class="section-title">📊 Investment Analysis</h2>
-            
+
             <div class="breakdown-grid">
                 <div class="breakdown-section">
                     <div class="breakdown-title">Investment Costs</div>
@@ -1152,24 +1152,11 @@
                     </div>
                 </div>
 
-                <div class="breakdown-section">
-                    <div class="breakdown-title">Room Bookings Needed</div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">EV charging covers over target period:</span>
-                        <span class="breakdown-value positive" id="evChargingCoverage">-</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">Remaining to recover from room bookings:</span>
-                        <span class="breakdown-value negative" id="remainingFromRooms">-</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <span class="breakdown-label">Margin per EV guest room night:</span>
-                        <span class="breakdown-value" id="marginPerNight">-</span>
-                    </div>
-                    <div class="breakdown-item breakdown-total">
-                        <span class="breakdown-label">EV guest room nights needed per month:</span>
-                        <span class="breakdown-value positive" id="roomNightsPerMonth">-</span>
-                    </div>
+                <div class="result-card">
+                    <span class="result-icon">🏨</span>
+                    <div class="result-value" id="roomNightsPerMonthHero">-</div>
+                    <div class="result-label">EV Guest Room Nights per Month</div>
+                    <div class="result-description" style="color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 8px;">New bookings + retained guests needed to recover your investment within your target payback period</div>
                 </div>
 
                 <div class="breakdown-section">
@@ -1595,10 +1582,8 @@
                 updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
                 updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
-                updateElement('evChargingCoverage', formatCurrency(evChargingCoverage));
-                updateElement('remainingFromRooms', formatCurrency(remainingFromRooms));
-                updateElement('marginPerNight', formatCurrency(Math.round(marginPerNight)));
-                updateElement('roomNightsPerMonth', roomNightsPerMonth < 1 && roomNightsPerMonth > 0 ? '<1' : Math.ceil(roomNightsPerMonth).toLocaleString('en-GB'));
+                const roomNightsDisplay = roomNightsPerMonth < 1 && roomNightsPerMonth > 0 ? '<1' : Math.ceil(roomNightsPerMonth).toLocaleString('en-GB');
+                updateElement('roomNightsPerMonthHero', roomNightsDisplay);
 
                 // Store calculation data for charts
                 currentCalculationData = {
