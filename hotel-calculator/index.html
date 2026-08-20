@@ -1194,9 +1194,8 @@
                     <canvas id="cashFlowChart" width="800" height="300"></canvas>
                 </div>
                 <div class="calc-explainer" style="margin-top: 15px; color: var(--text-dark); text-align: center;">
-                    This chart shows your yearly cash flow. The red bar represents the initial investment, 
-                    while the green bars show annual profits from combined EV charging and additional room bookings.
-                    <strong>Note:</strong> EV charging revenue grows by <span id="growthRateDisplay">5%</span> annually to reflect increased utilization.
+                    This chart shows your yearly cash flow. The red bar represents the initial investment,
+                    while the green bars show annual profits from EV charging (growing at 5% per year) plus the room booking contribution needed to hit your payback target.
                 </div>
             </div>
 
@@ -1279,7 +1278,7 @@
 
         // Chart generation function
         function generateCharts() {
-            const { totalCapex, netEVChargingContribution, annualRoomContribution, totalAnnualContribution, targetPaybackYears } = currentCalculationData;
+            const { totalCapex, annualChargingGrossMargin, totalAnnualOpex, annualRoomContribution, annualUsageGrowth, targetPaybackYears } = currentCalculationData;
 
             // Show target period + 2 years
             const yearsToShow = targetPaybackYears + 2;
@@ -1295,10 +1294,13 @@
                     annualCashFlow.push(-totalCapex);
                     cumulative.push(cumulativeTotal);
                 } else {
-                    // Straight-line: EV charging + room nights required to hit target
+                    // EV charging grows at 5% per year; room contribution is constant
+                    const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
+                    const evThisYear = (annualChargingGrossMargin * growthFactor) - totalAnnualOpex;
+                    const totalThisYear = evThisYear + annualRoomContribution;
                     years.push(`Year ${year}`);
-                    annualCashFlow.push(totalAnnualContribution);
-                    cumulativeTotal += totalAnnualContribution;
+                    annualCashFlow.push(totalThisYear);
+                    cumulativeTotal += totalThisYear;
                     cumulative.push(cumulativeTotal);
                 }
             }
@@ -1558,9 +1560,14 @@
                 const annualTransactionFees = dailyTransactionFees * 365;
 
                 const netEVChargingContribution = annualChargingGrossMargin - totalAnnualOpex;
+                const annualUsageGrowth = 0.05;
 
-                // How much the EV charging itself covers over the target period
-                const evChargingCoverage = netEVChargingContribution * inputs.targetPaybackYears;
+                // How much EV charging covers over the target period, with 5% annual growth
+                let evChargingCoverage = 0;
+                for (let year = 1; year <= inputs.targetPaybackYears; year++) {
+                    const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
+                    evChargingCoverage += (annualChargingGrossMargin * growthFactor) - totalAnnualOpex;
+                }
                 const remainingFromRooms = Math.max(0, totalCapex - evChargingCoverage);
 
                 // Margin per EV guest room night (room contribution + F&B uplift)
@@ -1589,8 +1596,10 @@
                 currentCalculationData = {
                     totalCapex,
                     netEVChargingContribution,
+                    annualChargingGrossMargin,
+                    totalAnnualOpex,
                     annualRoomContribution,
-                    totalAnnualContribution,
+                    annualUsageGrowth,
                     targetPaybackYears: inputs.targetPaybackYears
                 };
 
