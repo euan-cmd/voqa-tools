@@ -1841,9 +1841,17 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
 
             row('Total Investment', getText('totalCapex'), true);
             const fmtCcy = n => '£' + Math.round(n).toLocaleString('en-GB');
-            note('  Voqa hardware: ' + fmtCcy(currentCalculationData.hardwareCost));
-            y -= 1;
-            note('  Installation: ' + fmtCcy(currentCalculationData.installCost));
+            // sub-row: indented label, right-aligned value, smaller italic font
+            function subRow(label, value) {
+                doc.setFont('helvetica', 'italic');
+                doc.setFontSize(8.5);
+                doc.setTextColor(120, 120, 120);
+                doc.text('  ' + label, margin + 4, y);
+                doc.text(value, margin + contentW, y, { align: 'right' });
+                y += 5;
+            }
+            subRow('Voqa hardware', fmtCcy(currentCalculationData.hardwareCost));
+            subRow('Installation', fmtCcy(currentCalculationData.installCost));
             gap(2);
             row('Annual Charging Revenue', getText('annualChargingRevenue'));
             row('Less: Annual Energy & Transaction Costs', getText('combinedEnergyCosts'));
