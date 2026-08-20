@@ -1821,7 +1821,7 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
             const usageData = USAGE_LEVELS[usageLevelIdx];
             const sessionsPerBayPerDay = usageData.sessionsPerBayPerDay;
             const sessionsPerBayPerWeek = sessionsPerBayPerDay * 7;
-            const usageStr = usageData.label + ' — ' + sessionsPerBayPerWeek.toLocaleString('en-GB', {maximumFractionDigits: 1}) + ' sessions/bay/week (' + usageData.avgKwhPerSession + ' kWh avg)';
+            const usageStr = sessionsPerBayPerWeek.toLocaleString('en-GB', {maximumFractionDigits: 1}) + ' sessions/bay/week';
             const payback = document.getElementById('targetPaybackYears').value + ' years';
 
             row('Charging bays', bays);
