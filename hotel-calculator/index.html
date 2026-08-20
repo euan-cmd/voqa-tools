@@ -1901,7 +1901,10 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
             doc.text('© ' + new Date().getFullYear() + ' Voqa SAS · voqa.com', margin, 292);
             doc.text('euan@voqa.com', pw - margin, 292, { align: 'right' });
 
-            doc.save('Voqa-Hotel-EV-RoI-Summary.pdf');
+            const now = new Date();
+            const dateStamp = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+            const timeStamp = String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+            doc.save('Voqa-Hotel-EV-RoI-Summary-' + dateStamp + '-' + timeStamp + '.pdf');
         }
     </script>
     <script>
