@@ -1150,6 +1150,14 @@
                         <span class="breakdown-label">Net Annual EV Charging Contribution:</span>
                         <span class="breakdown-value positive" id="netEVChargingContribution">-</span>
                     </div>
+                    <div class="breakdown-item" style="margin-top: 12px;">
+                        <span class="breakdown-label">Investment covered by EV charging (over target period):</span>
+                        <span class="breakdown-value positive" id="evChargingCoverage">-</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Remaining to recover from room bookings &amp; F&amp;B:</span>
+                        <span class="breakdown-value negative" id="remainingFromRooms">-</span>
+                    </div>
                 </div>
 
                 <div class="result-card">
@@ -1563,6 +1571,8 @@
                 updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
                 updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
                 updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
+                updateElement('evChargingCoverage', formatCurrency(evChargingCoverage));
+                updateElement('remainingFromRooms', formatCurrency(remainingFromRooms));
                 const roomNightsDisplay = roomNightsPerMonth < 1 && roomNightsPerMonth > 0 ? '<1' : Math.ceil(roomNightsPerMonth).toLocaleString('en-GB');
                 updateElement('roomNightsPerMonthHero', roomNightsDisplay);
 
