@@ -1584,6 +1584,8 @@
                 // Store calculation data for charts
                 currentCalculationData = {
                     totalCapex,
+                    hardwareCost: inputs.equipmentCost * inputs.chargingBays,
+                    installCost: inputs.installationCost * inputs.chargingBays,
                     netEVChargingContribution,
                     annualChargingGrossMargin,
                     totalAnnualOpex,
@@ -1837,7 +1839,11 @@ var fb=document.getElementById('avgFBSpend'); if(fb) document.getElementById('av
             sectionTitle('Investment Analysis');
             const getText = id => { const el = document.getElementById(id); return el ? el.textContent.trim() : '—'; };
 
-            row('Total Investment', getText('totalCapex'));
+            row('Total Investment', getText('totalCapex'), true);
+            const fmtCcy = n => '£' + Math.round(n).toLocaleString('en-GB');
+            note('  Voqa hardware: ' + fmtCcy(currentCalculationData.hardwareCost));
+            y -= 1;
+            note('  Installation: ' + fmtCcy(currentCalculationData.installCost));
             gap(2);
             row('Annual Charging Revenue', getText('annualChargingRevenue'));
             row('Less: Annual Energy & Transaction Costs', getText('combinedEnergyCosts'));
