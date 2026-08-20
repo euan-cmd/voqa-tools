@@ -1033,6 +1033,16 @@
             </div>
 
             <div class="input-section">
+                <h3 class="section-subtitle">Payback Target</h3>
+                <div class="form-group">
+                    <label for="targetPaybackYears">Target Payback Period <span class="slider-value" id="targetPaybackVal">5 years</span></label>
+                    <input type="range" id="targetPaybackYears" class="usage-slider" min="2" max="10" step="1" value="5"
+                           oninput="document.getElementById('targetPaybackVal').textContent=this.value+' year'+(this.value==1?'':'s')">
+                    <div class="helper-text">How many years do you want to recover the investment?</div>
+                </div>
+            </div>
+
+            <div class="input-section">
                 <h3 class="section-subtitle">Investment Costs</h3>
                 
                 <div class="form-group">
@@ -1108,15 +1118,6 @@
                 </div>
             </div>
 
-            <div class="input-section">
-                <h3 class="section-subtitle">Payback Target</h3>
-                <div class="form-group">
-                    <label for="targetPaybackYears">Target Payback Period <span class="slider-value" id="targetPaybackVal">5 years</span></label>
-                    <input type="range" id="targetPaybackYears" class="usage-slider" min="2" max="10" step="1" value="5"
-                           oninput="document.getElementById('targetPaybackVal').textContent=this.value+' year'+(this.value==1?'':'s')">
-                    <div class="helper-text">How many years do you want to recover the investment?</div>
-                </div>
-            </div>
         </div>
 
         <div class="card" style="grid-column: 1 / -1;">
@@ -1194,7 +1195,7 @@
     <!-- Cash Flow Charts Section -->
     <div class="container" style="padding-top: 15px; margin-top: 0;">
         <div class="card" style="grid-column: 1 / -1;">
-            <h3 class="section-subtitle">📈 Cash Flow Analysis</h3>
+            <h2 class="section-title">📈 Cash Flow Analysis</h2>
             
             <div class="mobile-landscape-notice">
                 For the best chart viewing experience on mobile, rotate your device to landscape mode
