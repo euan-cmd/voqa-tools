@@ -1210,25 +1210,6 @@
                 </div>
             </div>
 
-            <div class="results-grid" style="margin-top: 30px;">
-                <div class="result-card">
-                    <span class="result-icon">💰</span>
-                    <div class="result-value" id="chartInvestmentInsight">-</div>
-                    <div class="result-label">Initial Investment</div>
-                    <div class="result-description">Total upfront cost for EV charging infrastructure</div>
-                </div>
-                <div class="result-card">
-                    <span class="result-icon">⏱️</span>
-                    <div class="result-value" id="chartBreakEvenInsight">-</div>
-                    <div class="result-label">Estimated Payback</div>
-                    <div class="result-description">Based on EV charging contribution</div>
-                </div>
-                <div class="result-card">
-                    <span class="result-icon">📈</span>
-                    <div class="result-value" id="chartFiveYearProfitInsight">-</div>
-                    <div class="result-label">Long-term Profit</div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1465,13 +1446,6 @@
                 }
             });
 
-            // Chart tile updates
-            updateElement('chartInvestmentInsight', formatCurrency(totalCapex));
-            updateElement('chartBreakEvenInsight', `${targetPaybackYears} year${targetPaybackYears !== 1 ? 's' : ''}`);
-            const profitAtEnd = cumulativeTotal; // cumulative after all yearsToShow
-            updateElement('chartFiveYearProfitInsight', formatCurrency(profitAtEnd));
-            const profitLabel = document.querySelector('#chartFiveYearProfitInsight')?.parentElement?.querySelector('.result-label');
-            if (profitLabel) profitLabel.textContent = `${yearsToShow}-Year Position`;
         }
 
         // Usage level definitions
