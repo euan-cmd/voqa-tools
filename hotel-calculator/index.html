@@ -1034,7 +1034,15 @@
                 
                 <div class="form-group">
                     <label for="chargingBays">Number of Charging Bays</label>
-                    <input type="number" id="chargingBays" value="4" min="1" step="1">
+                    <select id="chargingBays">
+                        <option value="2">2 bays (1 Voqa One unit)</option>
+                        <option value="4" selected>4 bays (2 Voqa One units)</option>
+                        <option value="6">6 bays (3 Voqa One units)</option>
+                        <option value="8">8 bays (4 Voqa One units)</option>
+                        <option value="10">10 bays (5 Voqa One units)</option>
+                        <option value="12">12 bays (6 Voqa One units)</option>
+                    </select>
+                    <div class="helper-text">Voqa One is a dual-port unit — bays are always in multiples of 2</div>
                 </div>
 
                 <div class="form-group">
