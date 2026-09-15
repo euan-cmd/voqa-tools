@@ -240,7 +240,7 @@
 <div class="wrap">
 
     <div class="masthead">
-        <a href="https://www.voqa.com" aria-label="Visit Voqa" class="voqa-logo-link" target="_blank" rel="noopener"><svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
+        <a href="https://www.voqa.com" aria-label="Visit Voqa" class="voqa-logo-link" target="_blank" rel="noopener" style="display:none;"><svg class="voqa-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4656.95 1978.79">
             <defs>
                 <style>.voqa-logo .cls-1{fill:#005C80;stroke-width:0px;}</style>
             </defs>
@@ -414,22 +414,9 @@
     </div>
 
     <!-- ============ ASSUMPTIONS ============ -->
-    <details class="assump">
-        <summary>Underlying assumptions</summary>
-        <div class="assump-grid">
-            <div class="assump-item"><label for="evGuestsWithAncillarySpend">EV guests who spend on F&amp;B (%)</label><input type="number" id="evGuestsWithAncillarySpend" value="50" min="0" max="100" step="1"></div>
-            <div class="assump-item"><label for="roomVariableCostPercent">Room variable cost (% of room revenue)</label><input type="number" id="roomVariableCostPercent" value="25" min="0" max="100" step="1"></div>
-            <div class="assump-item"><label for="fbMarginPercent">F&amp;B gross margin (%)</label><input type="number" id="fbMarginPercent" value="65" min="0" max="100" step="1"></div>
-            <div class="assump-item"><label>Low usage</label><span class="assump-static">1 session per port per week</span></div>
-            <div class="assump-item"><label>Medium usage</label><span class="assump-static">3 sessions per port per week</span></div>
-            <div class="assump-item"><label>High usage</label><span class="assump-static">5 sessions per port per week</span></div>
-            <div class="assump-item"><label>Avg. kWh per session</label><span class="assump-static">30 kWh</span></div>
-        </div>
-    </details>
-
     <!-- ============ CHARTS ============ -->
     <details class="assump">
-        <summary>Cash flow analysis</summary>
+        <summary>Charts</summary>
         <div class="charts" style="padding-bottom:18px;">
             <div class="chart-card">
                 <div class="chart-title">Annual Cash Flow Analysis</div>
@@ -441,6 +428,19 @@
                 <div class="chart-wrapper"><canvas id="cumulativeChart"></canvas></div>
                 <div class="chart-caption">This chart tracks your total accumulated cash position year by year. The payback point occurs when your total cash position returns to zero, indicating full recovery of your initial investment.</div>
             </div>
+        </div>
+    </details>
+
+    <details class="assump">
+        <summary>Underlying assumptions</summary>
+        <div class="assump-grid">
+            <div class="assump-item"><label for="evGuestsWithAncillarySpend">EV guests who spend on F&amp;B (%)</label><input type="number" id="evGuestsWithAncillarySpend" value="50" min="0" max="100" step="1"></div>
+            <div class="assump-item"><label for="roomVariableCostPercent">Room variable cost (% of room revenue)</label><input type="number" id="roomVariableCostPercent" value="25" min="0" max="100" step="1"></div>
+            <div class="assump-item"><label for="fbMarginPercent">F&amp;B gross margin (%)</label><input type="number" id="fbMarginPercent" value="65" min="0" max="100" step="1"></div>
+            <div class="assump-item"><label>Low usage</label><span class="assump-static">1 session per port per week</span></div>
+            <div class="assump-item"><label>Medium usage</label><span class="assump-static">3 sessions per port per week</span></div>
+            <div class="assump-item"><label>High usage</label><span class="assump-static">5 sessions per port per week</span></div>
+            <div class="assump-item"><label>Avg. kWh per session</label><span class="assump-static">30 kWh</span></div>
         </div>
     </details>
 
