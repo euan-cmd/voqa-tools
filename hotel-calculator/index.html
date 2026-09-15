@@ -46,10 +46,6 @@
                     flex-wrap:wrap; margin-bottom:22px; }
         .voqa-logo { height:34px; width:auto; display:block; }
         .voqa-logo-link { display:inline-block; line-height:0; }
-        .header-cta { display:inline-block; background:var(--primary); color:#fff; text-decoration:none;
-                      font-weight:600; font-size:14px; padding:10px 20px; border-radius:999px;
-                      transition:background .18s ease; }
-        .header-cta:hover { background:var(--primary-dark); }
 
         /* ---------- top band: intro + results ---------- */
         .top-band { display:grid; grid-template-columns:minmax(320px,0.92fr) minmax(420px,1.08fr);
@@ -72,14 +68,12 @@
         .rrow .val { font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }
         .rrow.total { border-top:1px solid var(--hairline); margin-top:7px; padding-top:9px; }
         .rrow.total .lab { font-weight:600; }
-        .val.pos { color:var(--success); } .val.neg { color:var(--danger); } .val.key { color:var(--primary); }
+        .val.pos { color:var(--success); } .val.neg { color:var(--danger); }
         .rnote { font-size:11.5px; font-style:italic; color:var(--muted); margin:2px 0 8px; }
 
         .hero-num { font-size:clamp(48px,5vw,72px); font-weight:800; color:var(--primary);
                     line-height:1; font-variant-numeric:tabular-nums; text-align:center; }
         .hero-cap { font-size:13px; color:var(--muted); margin-top:6px; text-align:center; }
-        .split { margin-top:10px; padding-top:9px; border-top:1px solid var(--hairline); }
-
         .btn { display:inline-block; background:var(--primary); color:#fff; border:none; cursor:pointer;
                font-family:var(--font-family); font-weight:600; font-size:15px; padding:12px 26px;
                border-radius:999px; margin-top:16px; transition:background .18s ease; }
@@ -105,9 +99,6 @@
 
         /* ---------- radios ---------- */
         .opts { display:flex; flex-direction:column; gap:9px; }
-        /* fill down the first column, then the second (1-5 | 6-10), as drawn */
-        .opts.two-col { display:grid; grid-template-columns:1fr 1fr; gap:9px 18px;
-                        grid-auto-flow:column; grid-template-rows:repeat(5,auto); }
         .opt { display:flex; align-items:center; gap:9px; cursor:pointer; font-size:15px; color:var(--ink); }
         .opt input { position:absolute; opacity:0; width:0; height:0; }
         .dot { flex:0 0 auto; width:17px; height:17px; border:2px solid var(--primary); border-radius:50%;
@@ -117,9 +108,6 @@
         .opt input:focus-visible + .dot { box-shadow:0 0 0 3px rgba(0,92,128,.28); }
         .opt:hover .dot { box-shadow:0 0 0 3px rgba(0,92,128,.12); }
         .opt .tiny { font-size:11px; color:var(--muted); }
-
-        .opts.inline { display:flex; flex-direction:row; flex-wrap:wrap; gap:6px 16px; }
-        .opts.inline .opt { font-size:14px; gap:6px; }
 
         /* ---------- custom "enter your own" revealed input ---------- */
         .opt-custom-box { display:none; align-items:center; margin-top:8px;
@@ -146,7 +134,6 @@
         .slider-val { font-size:14px; font-weight:700; color:var(--primary); white-space:nowrap;
                       font-variant-numeric:tabular-nums; }
         .helper-text { font-size:11.5px; color:var(--muted); margin-top:5px; }
-        .usage-desc { font-size:12px; color:var(--muted); margin-top:8px; min-height:2.6em; }
         .install-estimate { font-size:12.5px; font-weight:600; color:var(--primary); margin-top:10px;
                             display:flex; align-items:center; gap:6px; }
         .install-info-btn { display:inline-flex; align-items:center; justify-content:center;
@@ -219,7 +206,6 @@
             .inputs > div:nth-child(3) { grid-column:auto; }
             .c2, .c3 { grid-template-columns:1fr; }
             .vrule { display:none; }
-            .opts.two-col { grid-template-columns:1fr 1fr; }
             .chart-wrapper { height:260px; }
         }
 
@@ -490,15 +476,6 @@
         };
 
         // Update range estimate based on kWh input
-        const updateRangeEstimate = () => {
-            const kWh = getInputValue('avgKwhPerSession', 30);
-            const milesPerKWh = 3.5; // Average EV efficiency
-            const rangeAdded = Math.round(kWh * milesPerKWh);
-            const rangeElement = document.getElementById('rangeEstimate');
-            if (rangeElement) {
-                rangeElement.textContent = `Typical range added: ~${rangeAdded} miles`;
-            }
-        };
 
         // Chart generation function
         function generateCharts() {
@@ -840,25 +817,6 @@
         }
 
         // Setup interactive effects
-        function setupInteractiveEffects() {
-            try {
-                const formGroups = document.querySelectorAll('.form-group');
-                formGroups.forEach(group => {
-                    const input = group.querySelector('input, select');
-                    if (input) {
-                        input.addEventListener('focus', function() {
-                            group.style.transform = 'translateX(5px)';
-                        });
-                        input.addEventListener('blur', function() {
-                            group.style.transform = 'translateX(0)';
-                        });
-                    }
-                });
-            } catch (error) {
-                console.error('Error setting up interactive effects:', error);
-            }
-        }
-
         // Initialize application
         function initializeApp() {
             try {
@@ -886,9 +844,6 @@
                         console.warn('Element not found:', id);
                     }
                 });
-
-                // Initialize range estimate
-                updateRangeEstimate();
 
                 // Force immediate calculation
                 console.log('Running initial calculation...');
