@@ -75,9 +75,9 @@
         .val.pos { color:var(--success); } .val.neg { color:var(--danger); } .val.key { color:var(--primary); }
         .rnote { font-size:11.5px; font-style:italic; color:var(--muted); margin:2px 0 8px; }
 
-        .hero-num { font-size:clamp(30px,3vw,42px); font-weight:800; color:var(--primary);
-                    line-height:1; font-variant-numeric:tabular-nums; }
-        .hero-cap { font-size:13px; color:var(--muted); margin-top:2px; }
+        .hero-num { font-size:clamp(48px,5vw,72px); font-weight:800; color:var(--primary);
+                    line-height:1; font-variant-numeric:tabular-nums; text-align:center; }
+        .hero-cap { font-size:13px; color:var(--muted); margin-top:6px; text-align:center; }
         .split { margin-top:10px; padding-top:9px; border-top:1px solid var(--hairline); }
 
         .btn { display:inline-block; background:var(--primary); color:#fff; border:none; cursor:pointer;
@@ -86,13 +86,14 @@
         .btn:hover { background:var(--primary-dark); }
 
         /* ---------- input columns ---------- */
-        .inputs { display:grid; grid-template-columns:0.82fr 1.45fr 1fr; gap:clamp(18px,2vw,34px);
-                  align-items:start; margin-bottom:30px; }
+        .inputs { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,2vw,34px);
+                  align-items:stretch; margin-bottom:30px; }
+        .inputs > div { display:flex; flex-direction:column; }
         .col-head { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
         .col-head h2 { font-size:clamp(20px,1.7vw,27px); font-weight:700; color:var(--primary); letter-spacing:-.01em; }
         .col-note { font-size:12.5px; color:var(--muted); max-width:46ch; }
 
-        .card { border:2px solid var(--border); border-radius:18px; padding:20px clamp(16px,1.6vw,26px); height:100%; }
+        .card { border:2px solid var(--border); border-radius:18px; padding:20px clamp(16px,1.6vw,26px); flex:1; }
         .card-cols { display:grid; gap:clamp(16px,1.6vw,26px); }
         .c2 { grid-template-columns:1fr 1px 1fr; }
         .c3 { grid-template-columns:0.85fr 1px 1.15fr 1px 1fr; }
@@ -120,18 +121,17 @@
         .opts.inline { display:flex; flex-direction:row; flex-wrap:wrap; gap:6px 16px; }
         .opts.inline .opt { font-size:14px; gap:6px; }
 
-        /* ---------- override + sliders ---------- */
-        .override { margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-        .override label { font-size:12.5px; color:var(--muted); }
-        .override .money { display:inline-flex; align-items:center; border:1.5px solid var(--hairline);
-                           border-radius:9px; overflow:hidden; background:#fff; }
-        .override .money span { padding:0 2px 0 9px; font-size:14px; color:var(--muted); }
-        .override input { width:74px; border:none; outline:none; padding:7px 9px 7px 2px;
-                          font-size:14px; font-weight:600; color:var(--primary);
-                          font-family:var(--font-family); background:transparent; }
-        .override input::-webkit-outer-spin-button, .override input::-webkit-inner-spin-button {
-                          -webkit-appearance:none; margin:0; }
-        .override input[type=number] { -moz-appearance:textfield; }
+        /* ---------- custom "enter your own" revealed input ---------- */
+        .opt-custom-box { display:none; align-items:center; margin-top:8px;
+                          border:1.5px solid var(--primary); border-radius:9px;
+                          overflow:hidden; background:#fff; width:fit-content; }
+        .opt-custom-box span { padding:0 2px 0 10px; font-size:14px; color:var(--muted); }
+        .opt-custom-box input { width:80px; border:none; outline:none; padding:7px 10px 7px 2px;
+                                font-size:14px; font-weight:600; color:var(--primary);
+                                font-family:var(--font-family); background:transparent; }
+        .opt-custom-box input::-webkit-outer-spin-button,
+        .opt-custom-box input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+        .opt-custom-box input[type=number] { -moz-appearance:textfield; }
 
         .slider-row { margin-top:16px; }
         .slider-row:first-child { margin-top:0; }
@@ -147,8 +147,21 @@
                       font-variant-numeric:tabular-nums; }
         .helper-text { font-size:11.5px; color:var(--muted); margin-top:5px; }
         .usage-desc { font-size:12px; color:var(--muted); margin-top:8px; min-height:2.6em; }
-        .install-estimate { font-size:12.5px; font-weight:600; color:var(--primary); margin-top:10px; }
-        .install-disclaimer { font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.4; }
+        .install-estimate { font-size:12.5px; font-weight:600; color:var(--primary); margin-top:10px;
+                            display:flex; align-items:center; gap:6px; }
+        .install-info-btn { display:inline-flex; align-items:center; justify-content:center;
+                            width:16px; height:16px; border-radius:50%; border:1.5px solid var(--primary);
+                            font-size:10px; font-weight:700; color:var(--primary); cursor:pointer;
+                            background:transparent; font-family:var(--font-family); flex:0 0 auto;
+                            line-height:1; padding:0; }
+        .install-info-btn:hover { background:var(--primary); color:#fff; }
+        .install-popout { display:none; position:absolute; z-index:50; background:#fff;
+                          border:1.5px solid var(--hairline); border-radius:12px;
+                          padding:14px 16px; width:260px; font-size:11.5px; color:var(--ink);
+                          line-height:1.5; box-shadow:0 4px 18px rgba(0,0,0,.12);
+                          bottom:calc(100% + 8px); left:0; }
+        .install-popout.open { display:block; }
+        .install-popout-wrap { position:relative; display:inline-block; }
 
         /* ---------- assumptions ---------- */
         details.assump { margin-bottom:30px; border:1.5px solid var(--hairline); border-radius:14px; padding:0 18px; }
@@ -163,6 +176,8 @@
         .assump-item input { width:90px; border:1.5px solid var(--hairline); border-radius:9px;
                              padding:7px 9px; font-size:14px; font-weight:600; color:var(--primary);
                              font-family:var(--font-family); }
+        .assump-static { display:inline-block; font-size:14px; font-weight:600; color:var(--primary);
+                         padding:7px 9px; background:var(--panel); border-radius:9px; }
         .assump-note { font-size:11.5px; font-style:italic; color:var(--muted); padding-bottom:16px; }
 
         /* ---------- charts ---------- */
@@ -280,39 +295,35 @@
         <div>
             <h1>Hotel EV Charging RoI Calculator</h1>
             <div class="how-title">How to Use This Calculator</div>
+            <p class="how-text">EVs now account for over 27% of UK new car sales (SMMT, 2026), and EV drivers actively filter for charging when booking accommodation. SMS plc found that 48% of UK EV drivers will simply not stay at a hotel without on-site charging. Zapmap reports hotel charging usage grew 36% in 2025 &mdash; yet the majority of UK hotels still don&rsquo;t offer it, making early investment a clear competitive advantage.</p>
             <p class="how-text">EV charging helps hotels in two ways: attracting new guests who won't stay without charging, and retaining existing guests who might otherwise switch to a competitor that has it.</p>
-            <p class="how-text">Set your target payback period and the calculator will tell you how many EV guest room nights per month you need &mdash; from new bookings and retained guests combined &mdash; to justify your investment.</p>
+            <p class="how-text">Set your target payback period and the calculator will tell you how many EV guest room nights per month you need &mdash; whether from new bookings or retention of loyal EV-driving customers &mdash; to justify your investment.</p>
         </div>
 
         <div class="results">
             <div>
-                <h2>Total Estimated Costs</h2>
-                <div class="rrow"><span class="lab">Total Investment:</span><span class="val neg" id="totalCapex">&mdash;</span></div>
+                <h2>Additional room bookings to payback investment</h2>
 
-                <div style="margin-top:16px;">
+                <div style="margin-top:8px;">
                     <div class="hero-num" id="roomNightsPerMonthHero">&mdash;</div>
-                    <div class="hero-cap">EV Guest Room Nights per Month</div>
+                    <div class="hero-cap">EV guest room nights per month — new bookings or retention of loyal EV-driving customers</div>
                 </div>
 
-                <div class="split">
-                    <div class="rrow"><span class="lab">&mdash; from new bookings:</span><span class="val key" id="roomNightsNew">&mdash;</span></div>
-                    <div class="rrow"><span class="lab">&mdash; from retained guests:</span><span class="val key" id="roomNightsRetained">&mdash;</span></div>
-                </div>
-
-                <button onclick="generatePDF()" class="btn">Download Summary PDF</button>
+                <div style="text-align:center;"><button onclick="generatePDF()" class="btn">Download Summary PDF</button></div>
             </div>
 
             <div class="results-divider"></div>
 
             <div>
-                <h2>Annual EV Charging Contribution</h2>
-                <div class="rrow"><span class="lab">Annual Charging Revenue:</span><span class="val pos" id="annualChargingRevenue">&mdash;</span></div>
-                <div class="rrow"><span class="lab">Less: Annual Energy &amp; Transaction Costs:</span><span class="val neg" id="combinedEnergyCosts">&mdash;</span></div>
-                <div class="rrow"><span class="lab">Less: Annual Subscription:</span><span class="val neg" id="totalAnnualOpex">&mdash;</span></div>
-                <div class="rrow total"><span class="lab">Net Annual EV Charging Contribution:</span><span class="val pos" id="netEVChargingContribution">&mdash;</span></div>
-                <div class="rrow" style="margin-top:12px;"><span class="lab">Investment covered by EV charging (over target period):</span><span class="val pos" id="evChargingCoverage">&mdash;</span></div>
+                <h2>EV Charging over <span id="periodYearsLabel">—</span> years</h2>
+                <div class="rrow"><span class="lab">Charging revenue:</span><span class="val pos" id="periodChargingRevenue">&mdash;</span></div>
+                <div class="rrow"><span class="lab">Less: Energy &amp; transaction costs:</span><span class="val neg" id="periodEnergyCosts">&mdash;</span></div>
+                <div class="rrow"><span class="lab">Less: Subscription costs:</span><span class="val neg" id="periodSubscription">&mdash;</span></div>
                 <div class="rnote">Assumes 5% annual growth in charger utilisation as EV adoption increases</div>
-                <div class="rrow"><span class="lab">Remaining to recover from room bookings &amp; F&amp;B:</span><span class="val neg" id="remainingFromRooms">&mdash;</span></div>
+                <div class="rrow total"><span class="lab">Net contribution to cover investment:</span><span class="val pos" id="evChargingCoverage">&mdash;</span></div>
+                <div class="rrow" style="margin-top:12px;"><span class="lab">Less: Voqa EV charger cost:</span><span class="val neg" id="hardwareCostDisplay">&mdash;</span></div>
+                <div class="rrow"><span class="lab">Less: Installation cost:</span><span class="val neg" id="installCostDisplay">&mdash;</span></div>
+                <div class="rrow total"><span class="lab">To cover with additional bookings &amp; F&amp;B:</span><span class="val neg" id="remainingFromRooms">&mdash;</span></div>
             </div>
         </div>
     </div>
@@ -322,25 +333,22 @@
 
         <!-- Hotel Details -->
         <div>
-            <div class="col-head"><h2>Hotel Details</h2></div>
+            <div class="col-head"><h2>Financials</h2></div>
             <div class="card">
-                <div class="card-cols c2">
+                <div class="card-cols c3">
                     <div>
                         <div class="field-label">Average<br>Daily Rate</div>
                         <div class="opts" id="opts-adr"></div>
-                        <div class="override">
-                            <label for="adrCustom">or enter your own</label>
-                            <span class="money"><span>&pound;</span><input type="number" id="adrCustom" min="0" step="1" placeholder="120"></span>
-                        </div>
                     </div>
                     <div class="vrule"></div>
                     <div>
                         <div class="field-label">Average<br>F&amp;B Spend<br><span class="sub">per Room</span></div>
                         <div class="opts" id="opts-avgFBSpend"></div>
-                        <div class="override">
-                            <label for="avgFBSpendCustom">or enter your own</label>
-                            <span class="money"><span>&pound;</span><input type="number" id="avgFBSpendCustom" min="0" step="1" placeholder="18"></span>
-                        </div>
+                    </div>
+                    <div class="vrule"></div>
+                    <div>
+                        <div class="field-label">Payback Target <span class="sub">(years)</span></div>
+                        <div class="opts" id="opts-targetPaybackYears"></div>
                     </div>
                 </div>
             </div>
@@ -349,16 +357,11 @@
         <!-- Investment Costs -->
         <div>
             <div class="col-head">
-                <h2>Investment Costs</h2>
-                <div class="col-note">Voqa One is a dual-port unit &mdash; bays are always in multiples of 2 &middot; &pound;1,700 per bay</div>
+                <h2>Your EV Charger Needs</h2>
             </div>
             <div class="card">
-                <div class="card-cols c3">
-                    <div>
-                        <div class="field-label">Payback Target <span class="sub">(years)</span></div>
-                        <div class="opts two-col" id="opts-targetPaybackYears"></div>
-                    </div>
-                    <div class="vrule"></div>
+                <div class="col-note" style="margin-bottom:14px;">Voqa One is a dual-port unit &mdash; bays are always in multiples of 2 &middot; &pound;1,700 per bay</div>
+                <div class="card-cols c2">
                     <div>
                         <div class="field-label">No. of Charging Bays</div>
                         <div class="opts" id="opts-chargingBays"></div>
@@ -367,8 +370,13 @@
                     <div>
                         <div class="field-label">Installation Type</div>
                         <div class="opts" id="opts-installationType"></div>
-                        <div class="install-estimate" id="installEstimate"></div>
-                        <div class="install-disclaimer">Installation costs are indicative estimates based on typical UK commercial installations. Ground conditions, surface type, cable run distance and DNO requirements all affect the actual cost. A qualified EV installer must survey the site and provide a formal quote before any works are committed to.</div>
+                        <div class="install-estimate" id="installEstimate">
+                            <span id="installEstimateText"></span>
+                            <span class="install-popout-wrap">
+                                <button class="install-info-btn" onclick="toggleInstallPopout(event)" aria-label="Installation cost information">i</button>
+                                <div class="install-popout" id="installPopout">Installation costs are indicative estimates based on typical UK commercial installations. Ground conditions, surface type, cable run distance and DNO requirements all affect the actual cost. A qualified EV installer must survey the site and provide a formal quote before any works are committed to.</div>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -376,28 +384,30 @@
 
         <!-- Charging Usage & Pricing -->
         <div>
-            <div class="col-head"><h2>Charging Usage &amp; Pricing</h2></div>
+            <div class="col-head"><h2>Charger Usage and Driver Fees</h2></div>
             <div class="card">
                 <div class="field-label">Expected Charger Usage</div>
-                <div class="opts inline" id="opts-usageLevel"></div>
-                <div class="usage-desc" id="usageLevelDisplay"></div>
-
-                <div class="slider-row">
-                    <div class="field-label" style="margin-bottom:8px;">Tariff charged to drivers</div>
-                    <div class="slider-shell">
-                        <input type="range" id="pricePerKwh" min="0" max="0.80" step="0.01" value="0.40">
-                        <span class="slider-val" id="pricePerKwhVal">&pound;0.40/kWh</span>
-                    </div>
-                    <div class="helper-text">Ex. VAT &nbsp;&middot;&nbsp; <span id="pricePerKwhVat">&pound;0.48/kWh inc. 20% UK VAT</span></div>
+                <div style="display:flex; align-items:center; gap:24px;">
+                    <div class="opts" id="opts-usageLevel"></div>
+                    <div id="usageLevelDisplay" style="color:var(--primary); font-weight:600; font-size:15px;"></div>
                 </div>
 
                 <div class="slider-row">
-                    <div class="field-label" style="margin-bottom:8px;">Your cost of electricity</div>
+                    <div class="field-label" style="margin-bottom:8px;">Tariff charged to drivers inc. VAT</div>
                     <div class="slider-shell">
-                        <input type="range" id="electricityCostPerKwh" min="0.20" max="0.40" step="0.01" value="0.25">
-                        <span class="slider-val" id="electricityCostPerKwhVal">&pound;0.25/kWh</span>
+                        <input type="range" id="pricePerKwh" min="0" max="0.96" step="0.01" value="0.48">
+                        <span class="slider-val" id="pricePerKwhVal">&pound;0.48/kWh</span>
                     </div>
-                    <div class="helper-text">Ex. VAT &nbsp;&middot;&nbsp; Voqa transaction fee &pound;0.06/kWh ex. VAT &middot; subscription &pound;1.00 per bay per month ex. VAT</div>
+                    <div class="helper-text"><span id="pricePerKwhVat">&pound;0.40/kWh ex. VAT</span></div>
+                </div>
+
+                <div class="slider-row">
+                    <div class="field-label" style="margin-bottom:8px;">Your cost of electricity inc. VAT</div>
+                    <div class="slider-shell">
+                        <input type="range" id="electricityCostPerKwh" min="0.24" max="0.48" step="0.01" value="0.30">
+                        <span class="slider-val" id="electricityCostPerKwhVal">&pound;0.30/kWh</span>
+                    </div>
+                    <div class="helper-text"><span id="electricityCostPerKwhVat">&pound;0.25/kWh ex. VAT</span> &nbsp;&middot;&nbsp; Voqa transaction fee &pound;0.06/kWh ex. VAT &middot; subscription &pound;1.00 per bay per month ex. VAT</div>
                 </div>
             </div>
         </div>
@@ -410,24 +420,29 @@
             <div class="assump-item"><label for="evGuestsWithAncillarySpend">EV guests who spend on F&amp;B (%)</label><input type="number" id="evGuestsWithAncillarySpend" value="50" min="0" max="100" step="1"></div>
             <div class="assump-item"><label for="roomVariableCostPercent">Room variable cost (% of room revenue)</label><input type="number" id="roomVariableCostPercent" value="25" min="0" max="100" step="1"></div>
             <div class="assump-item"><label for="fbMarginPercent">F&amp;B gross margin (%)</label><input type="number" id="fbMarginPercent" value="65" min="0" max="100" step="1"></div>
-            <div class="assump-item"><label for="newGuestSharePercent">Share from new bookings (%)</label><input type="number" id="newGuestSharePercent" value="50" min="0" max="100" step="1"></div>
+            <div class="assump-item"><label>Low usage</label><span class="assump-static">1 session per port per week</span></div>
+            <div class="assump-item"><label>Medium usage</label><span class="assump-static">3 sessions per port per week</span></div>
+            <div class="assump-item"><label>High usage</label><span class="assump-static">5 sessions per port per week</span></div>
+            <div class="assump-item"><label>Avg. kWh per session</label><span class="assump-static">30 kWh</span></div>
         </div>
-        <div class="assump-note">The new / retained split is a presentational assumption only &mdash; it divides the same room-nights figure and does not change any other number on this page. There is no Voqa data behind the 50/50 default; set it to whatever your own booking data supports.</div>
     </details>
 
     <!-- ============ CHARTS ============ -->
-    <div class="charts">
-        <div class="chart-card">
-            <div class="chart-title">Annual Cash Flow Analysis</div>
-            <div class="chart-wrapper"><canvas id="cashFlowChart"></canvas></div>
-            <div class="chart-caption">This chart shows your yearly cash flow. The red bar represents the initial investment, while the green bars show annual profits from EV charging (growing at 5% per year) plus the room booking contribution needed to hit your payback target.</div>
+    <details class="assump">
+        <summary>Cash flow analysis</summary>
+        <div class="charts" style="padding-bottom:18px;">
+            <div class="chart-card">
+                <div class="chart-title">Annual Cash Flow Analysis</div>
+                <div class="chart-wrapper"><canvas id="cashFlowChart"></canvas></div>
+                <div class="chart-caption">This chart shows your yearly cash flow. The red bar represents the initial investment, while the green bars show annual profits from EV charging (growing at 5% per year) plus the room booking contribution needed to hit your payback target.</div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">Cumulative Cash Flow Analysis</div>
+                <div class="chart-wrapper"><canvas id="cumulativeChart"></canvas></div>
+                <div class="chart-caption">This chart tracks your total accumulated cash position year by year. The payback point occurs when your total cash position returns to zero, indicating full recovery of your initial investment.</div>
+            </div>
         </div>
-        <div class="chart-card">
-            <div class="chart-title">Cumulative Cash Flow Analysis</div>
-            <div class="chart-wrapper"><canvas id="cumulativeChart"></canvas></div>
-            <div class="chart-caption">This chart tracks your total accumulated cash position year by year. The payback point occurs when your total cash position returns to zero, indicating full recovery of your initial investment.</div>
-        </div>
-    </div>
+    </details>
 
     <!-- hidden inputs: the existing calculation engine reads these -->
     <input type="hidden" id="adr" value="100">
@@ -679,10 +694,9 @@
 
         // Usage level definitions
         const USAGE_LEVELS = [
-            { label: 'Quiet',       desc: 'Less than 1 session per bay per week — chargers are rarely used, EV guests are very occasional.',  sessionsPerBayPerDay: 0.25, avgKwhPerSession: 30 },
-            { label: 'Moderate',    desc: '3–5 sessions per bay per week — a mix of regular and occasional EV guests.',                       sessionsPerBayPerDay: 0.5,  avgKwhPerSession: 30 },
-            { label: 'Busy',        desc: 'Around 1 session per bay per day — EV charging is a noticeable draw for guests.',                  sessionsPerBayPerDay: 1.0,  avgKwhPerSession: 30 },
-            { label: 'High demand', desc: 'Multiple sessions per bay per day — chargers are a key amenity and consistently in use.',           sessionsPerBayPerDay: 1.5,  avgKwhPerSession: 30 },
+            { label: 'Low',    sessionsPerPortPerWeek: 1, sessionsPerBayPerDay: 1/7, avgKwhPerSession: 30 },
+            { label: 'Medium', sessionsPerPortPerWeek: 3, sessionsPerBayPerDay: 3/7, avgKwhPerSession: 30 },
+            { label: 'High',   sessionsPerPortPerWeek: 5, sessionsPerBayPerDay: 5/7, avgKwhPerSession: 30 },
         ];
 
         function getInstallationCostPerBay(type, bays) {
@@ -697,14 +711,14 @@
             const level = parseInt(document.getElementById('usageLevel').value) || 0;
             const u = USAGE_LEVELS[level];
             const el = document.getElementById('usageLevelDisplay');
-            if (el) el.innerHTML = '<strong>' + u.label + '</strong> — ' + u.desc;
+            if (el) el.textContent = u.sessionsPerPortPerWeek + ' session' + (u.sessionsPerPortPerWeek > 1 ? 's' : '') + ' per port per week';
         }
 
         function updateInstallEstimate() {
             const type = document.getElementById('installationType').value;
             const bays = parseInt(document.getElementById('chargingBays').value) || 4;
             const perBay = getInstallationCostPerBay(type, bays);
-            const el = document.getElementById('installEstimate');
+            const el = document.getElementById('installEstimateText');
             if (el) el.textContent = 'Estimated cost: ~£' + perBay.toLocaleString('en-GB') + ' per bay (£' + (perBay * bays).toLocaleString('en-GB') + ' total for ' + bays + ' bays)';
         }
 
@@ -718,8 +732,8 @@
                     equipmentCost: getInputValue('equipmentCost', 1700),
                     chargingBays: getInputValue('chargingBays', 4),
                     subscriptionPerPort: getInputValue('subscriptionPerPort', 1.00),
-                    pricePerKwh: getInputValue('pricePerKwh', 0.40),
-                    electricityCostPerKwh: getInputValue('electricityCostPerKwh', 0.25),
+                    pricePerKwh: getInputValue('pricePerKwh', 0.48) / 1.2,
+                    electricityCostPerKwh: getInputValue('electricityCostPerKwh', 0.30) / 1.2,
                     transactionFeePerKwh: getInputValue('transactionFeePerKwh', 0.06),
                     roomVariableCostPercent: getInputValue('roomVariableCostPercent', 25) / 100,
                     fbMarginPercent: getInputValue('fbMarginPercent', 65) / 100,
@@ -762,16 +776,23 @@
                 const annualElectricityCosts = dailyElectricityCosts * 365;
                 const annualTransactionFees = dailyTransactionFees * 365;
 
-                const netEVChargingContribution = annualChargingGrossMargin - totalAnnualOpex;
                 const annualUsageGrowth = 0.05;
 
-                // How much EV charging covers over the target period, with 5% annual growth
+                // Cumulative period totals with 5% annual growth on usage-linked figures
+                let periodChargingRevenue = 0;
+                let periodEnergyCosts = 0;
                 let evChargingCoverage = 0;
                 for (let year = 1; year <= inputs.targetPaybackYears; year++) {
                     const growthFactor = Math.pow(1 + annualUsageGrowth, year - 1);
-                    evChargingCoverage += (annualChargingGrossMargin * growthFactor) - totalAnnualOpex;
+                    periodChargingRevenue += annualChargingRevenue * growthFactor;
+                    periodEnergyCosts     += (annualElectricityCosts + annualTransactionFees) * growthFactor;
+                    evChargingCoverage    += (annualChargingGrossMargin * growthFactor) - totalAnnualOpex;
                 }
+                const periodSubscription = totalAnnualOpex * inputs.targetPaybackYears;
+                const hardwareCost = inputs.equipmentCost * inputs.chargingBays;
+                const installCost  = inputs.installationCost * inputs.chargingBays;
                 const remainingFromRooms = Math.max(0, totalCapex - evChargingCoverage);
+                const netEVChargingContribution = annualChargingGrossMargin - totalAnnualOpex;
 
                 // Margin per EV guest room night (room contribution + F&B uplift)
                 const marginPerNight = (inputs.adr * (1 - inputs.roomVariableCostPercent))
@@ -787,30 +808,23 @@
                 const totalAnnualContribution = netEVChargingContribution + annualRoomContribution;
 
                 // Update UI elements
-                updateElement('totalCapex', formatCurrency(totalCapex));
-                updateElement('annualChargingRevenue', formatCurrency(annualChargingRevenue));
-                updateElement('combinedEnergyCosts', formatCurrency(annualElectricityCosts + annualTransactionFees));
-                updateElement('totalAnnualOpex', formatCurrency(totalAnnualOpex));
-                updateElement('netEVChargingContribution', formatCurrency(netEVChargingContribution));
-                updateElement('evChargingCoverage', formatCurrency(evChargingCoverage));
+                updateElement('periodYearsLabel', inputs.targetPaybackYears);
+                updateElement('periodChargingRevenue', formatCurrency(periodChargingRevenue));
+                updateElement('periodEnergyCosts', formatCurrency(periodEnergyCosts));
+                updateElement('periodSubscription', formatCurrency(periodSubscription));
+                updateElement('evChargingCoverage', formatCurrency(Math.max(0, evChargingCoverage)));
+                updateElement('hardwareCostDisplay', formatCurrency(hardwareCost));
+                updateElement('installCostDisplay', formatCurrency(installCost));
                 updateElement('remainingFromRooms', formatCurrency(remainingFromRooms));
                 const roomNightsDisplay = roomNightsPerMonth < 1 && roomNightsPerMonth > 0 ? '<1' : Math.ceil(roomNightsPerMonth).toLocaleString('en-GB');
                 updateElement('roomNightsPerMonthHero', roomNightsDisplay);
 
-                // Presentational split of the same room-nights figure (see assumptions panel).
-                // Split the DISPLAYED total so the two parts always add back to the headline.
-                const newShare = getInputValue('newGuestSharePercent', 50) / 100;
-                const shownTotal = Math.ceil(roomNightsPerMonth);
-                const nightsNew = Math.round(shownTotal * newShare);
-                const nightsRetained = shownTotal - nightsNew;
-                updateElement('roomNightsNew', nightsNew.toLocaleString('en-GB'));
-                updateElement('roomNightsRetained', nightsRetained.toLocaleString('en-GB'));
 
                 // Store calculation data for charts
                 currentCalculationData = {
                     totalCapex,
-                    hardwareCost: inputs.equipmentCost * inputs.chargingBays,
-                    installCost: inputs.installationCost * inputs.chargingBays,
+                    hardwareCost,
+                    installCost,
                     netEVChargingContribution,
                     annualChargingGrossMargin,
                     totalAnnualOpex,
@@ -854,8 +868,7 @@
                     'equipmentCost', 'installationType', 'chargingBays', 'subscriptionPerPort',
                     'pricePerKwh', 'electricityCostPerKwh', 'transactionFeePerKwh',
                     'usageLevel', 'targetPaybackYears',
-                    'evGuestsWithAncillarySpend', 'roomVariableCostPercent', 'fbMarginPercent',
-                    'newGuestSharePercent'
+                    'evGuestsWithAncillarySpend', 'roomVariableCostPercent', 'fbMarginPercent'
                 ];
 
                 inputIds.forEach(id => {
@@ -903,8 +916,7 @@
             var ids = ['adr','avgFBSpend',
                        'equipmentCost','installationType','chargingBays','subscriptionPerPort',
                        'pricePerKwh','electricityCostPerKwh','usageLevel','targetPaybackYears',
-                       'evGuestsWithAncillarySpend','roomVariableCostPercent','fbMarginPercent',
-                       'newGuestSharePercent'];
+                       'evGuestsWithAncillarySpend','roomVariableCostPercent','fbMarginPercent'];
             function save(){
                 var d={};
                 ids.forEach(function(id){ var el=document.getElementById(id); if(el) d[id]=el.value; });
@@ -936,7 +948,7 @@
         var OPTION_SETS = {
             adr:                [100, 200, 300, 400, 500].map(function (v) { return { v: v, t: '£' + v }; }),
             avgFBSpend:         [20, 40, 60, 80, 100].map(function (v) { return { v: v, t: '£' + v }; }),
-            targetPaybackYears: [1,2,3,4,5,6,7,8,9,10].map(function (v) { return { v: v, t: String(v) }; }),
+            targetPaybackYears: [1,2,3,4,5].map(function (v) { return { v: v, t: String(v) }; }),
             chargingBays: [
                 { v: 2,  t: '2 (1 Voqa One unit)' },
                 { v: 4,  t: '4 (2 Voqa One units)' },
@@ -950,10 +962,9 @@
                 { v: 'post-far',   t: 'Post mounted — far from main building' }
             ],
             usageLevel: [
-                { v: 0, t: '&lt;1', tiny: 'pw' },
-                { v: 1, t: '3–5', tiny: 'pw' },
-                { v: 2, t: '1', tiny: 'per day' },
-                { v: 3, t: '2+', tiny: 'per day' }
+                { v: 0, t: 'Low' },
+                { v: 1, t: 'Medium' },
+                { v: 2, t: 'High' }
             ]
         };
 
@@ -967,19 +978,57 @@
             var host = document.getElementById('opts-' + id);
             var hidden = document.getElementById(id);
             if (!host || !hidden) return;
+            var isOverride = OVERRIDES.indexOf(id) > -1;
+
             host.innerHTML = OPTION_SETS[id].map(function (o) {
                 return '<label class="opt"><input type="radio" name="r-' + id + '" value="' + o.v + '">' +
                        '<span class="dot"></span><span>' + o.t +
                        (o.tiny ? ' <span class="tiny">' + o.tiny + '</span>' : '') + '</span></label>';
             }).join('');
-            host.querySelectorAll('input').forEach(function (el) {
-                el.addEventListener('change', function () {
-                    hidden.value = el.value;
-                    if (OVERRIDES.indexOf(id) > -1) {
-                        var c = document.getElementById(id + 'Custom');
-                        if (c) c.value = '';
-                    }
+
+            /* Append "Enter your own" radio + separate revealed input for override fields */
+            if (isOverride) {
+                var customLabel = document.createElement('label');
+                customLabel.className = 'opt';
+                customLabel.innerHTML = '<input type="radio" name="r-' + id + '" value="__custom__">' +
+                    '<span class="dot"></span><span>Enter your own</span>';
+                host.appendChild(customLabel);
+
+                /* Input box shown below the list when custom is selected */
+                var customBox = document.createElement('div');
+                customBox.className = 'opt-custom-box';
+                customBox.style.display = 'none';
+                customBox.innerHTML = '<span>&pound;</span><input type="number" id="' + id + 'Custom" min="0" step="1" placeholder="0">';
+                host.parentNode.insertBefore(customBox, host.nextSibling);
+
+                var customInput = customBox.querySelector('input');
+
+                customInput.addEventListener('input', function () {
+                    var n = parseFloat(customInput.value);
+                    if (isNaN(n) || n < 0) return;
+                    hidden.value = n;
                     fire(hidden);
+                });
+            }
+
+            host.querySelectorAll('input[type=radio]').forEach(function (el) {
+                el.addEventListener('change', function () {
+                    if (isOverride) {
+                        var customBox = host.nextSibling;
+                        var customInput = document.getElementById(id + 'Custom');
+                        if (el.value === '__custom__') {
+                            customBox.style.display = 'flex';
+                            customInput.focus();
+                        } else {
+                            customBox.style.display = 'none';
+                            if (customInput) customInput.value = '';
+                            hidden.value = el.value;
+                            fire(hidden);
+                        }
+                    } else {
+                        hidden.value = el.value;
+                        fire(hidden);
+                    }
                 });
             });
         }
@@ -989,39 +1038,29 @@
             el.dispatchEvent(new Event('input', { bubbles: true }));
         }
 
-        /* Typed override: clears the radio selection and drives the hidden input. */
-        OVERRIDES.forEach(function (id) {
-            document.addEventListener('DOMContentLoaded', function () {
-                var box = document.getElementById(id + 'Custom');
-                var hidden = document.getElementById(id);
-                if (!box || !hidden) return;
-                box.addEventListener('input', function () {
-                    if (box.value === '') { syncRadios(id); return; }
-                    var n = parseFloat(box.value);
-                    if (isNaN(n) || n < 0) return;
-                    hidden.value = n;
-                    document.querySelectorAll('input[name="r-' + id + '"]').forEach(function (r) { r.checked = false; });
-                    fire(hidden);
-                });
-            });
-        });
-
-        /* Point the radios (or the override box) at whatever the hidden input holds. */
+        /* Point the radios (or the custom input) at whatever the hidden input holds. */
         function syncRadios(id) {
             var hidden = document.getElementById(id);
             if (!hidden) return;
             var matched = false;
-            document.querySelectorAll('input[name="r-' + id + '"]').forEach(function (r) {
+            document.querySelectorAll('input[type=radio][name="r-' + id + '"]').forEach(function (r) {
+                if (r.value === '__custom__') return;
                 r.checked = (String(r.value) === String(hidden.value));
                 if (r.checked) matched = true;
             });
-            if (!matched && OVERRIDES.indexOf(id) > -1) {
-                var c = document.getElementById(id + 'Custom');
-                if (c && c.value === '') c.value = hidden.value;
-            }
-            if (matched && OVERRIDES.indexOf(id) > -1) {
-                var cc = document.getElementById(id + 'Custom');
-                if (cc) cc.value = '';
+            if (OVERRIDES.indexOf(id) > -1) {
+                var customRadio = document.querySelector('input[type=radio][name="r-' + id + '"][value="__custom__"]');
+                var customInput = document.getElementById(id + 'Custom');
+                var host = document.getElementById('opts-' + id);
+                var customBox = host ? host.nextSibling : null;
+                if (!matched && customRadio) {
+                    customRadio.checked = true;
+                    if (customBox) customBox.style.display = 'flex';
+                    if (customInput && customInput.value === '') customInput.value = hidden.value;
+                } else {
+                    if (customBox) customBox.style.display = 'none';
+                    if (customInput) customInput.value = '';
+                }
             }
         }
 
@@ -1031,11 +1070,14 @@
             if (p) {
                 var pv = parseFloat(p.value);
                 document.getElementById('pricePerKwhVal').textContent = '£' + pv.toFixed(2) + '/kWh';
-                document.getElementById('pricePerKwhVat').textContent = '£' + (pv * 1.2).toFixed(2) + '/kWh inc. 20% UK VAT';
+                document.getElementById('pricePerKwhVat').textContent = '£' + (pv / 1.2).toFixed(2) + '/kWh ex. VAT';
             }
             var e = document.getElementById('electricityCostPerKwh');
-            if (e) document.getElementById('electricityCostPerKwhVal').textContent =
-                '£' + parseFloat(e.value).toFixed(2) + '/kWh';
+            if (e) {
+                var ev = parseFloat(e.value);
+                document.getElementById('electricityCostPerKwhVal').textContent = '£' + ev.toFixed(2) + '/kWh';
+                document.getElementById('electricityCostPerKwhVat').textContent = '£' + (ev / 1.2).toFixed(2) + '/kWh ex. VAT';
+            }
         };
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -1047,8 +1089,6 @@
             var e = document.getElementById('electricityCostPerKwh');
             if (e) e.addEventListener('input', window.syncRadioUI);
 
-            var share = document.getElementById('newGuestSharePercent');
-            if (share) share.addEventListener('input', function () { if (window.calculate) calculate(); });
         });
     })();
     </script>
@@ -1162,24 +1202,23 @@
             const installLabel = (window.INSTALL_LABELS || {})[document.getElementById('installationType').value] || '\u2014';
             const adr = '£' + document.getElementById('adr').value;
             const fb = '£' + document.getElementById('avgFBSpend').value;
-            const tariffVal = parseFloat(document.getElementById('pricePerKwh').value);
-            const tariff = '£' + tariffVal.toFixed(2) + '/kWh';
-            const tariffIncVat = '£' + (tariffVal * 1.2).toFixed(2) + '/kWh';
-            const elec = '£' + parseFloat(document.getElementById('electricityCostPerKwh').value).toFixed(2) + '/kWh';
+            const tariffIncVat = parseFloat(document.getElementById('pricePerKwh').value);
+            const tariff = '£' + (tariffIncVat / 1.2).toFixed(2) + '/kWh ex. VAT';
+            const tariffIncVatStr = '£' + tariffIncVat.toFixed(2) + '/kWh inc. VAT';
+            const elecIncVat = parseFloat(document.getElementById('electricityCostPerKwh').value);
+            const elec = '£' + (elecIncVat / 1.2).toFixed(2) + '/kWh ex. VAT  (£' + elecIncVat.toFixed(2) + '/kWh inc. VAT)';
             const usageLevelEl = document.getElementById('usageLevel');
             const usageLevelIdx = parseInt(usageLevelEl.value) || 0;
             const usageData = USAGE_LEVELS[usageLevelIdx];
-            const sessionsPerBayPerDay = usageData.sessionsPerBayPerDay;
-            const sessionsPerBayPerWeek = sessionsPerBayPerDay * 7;
-            const usageStr = sessionsPerBayPerWeek.toLocaleString('en-GB', {maximumFractionDigits: 1}) + ' sessions/bay/week';
+            const usageStr = usageData.label + ' — ' + usageData.sessionsPerPortPerWeek + ' session' + (usageData.sessionsPerPortPerWeek > 1 ? 's' : '') + ' per port per week';
             const payback = document.getElementById('targetPaybackYears').value + ' years';
 
             row('Charging bays', bays);
             row('Installation type', installLabel.split('—')[0].trim());
             row('Average daily rate (ADR)', adr);
             row('Average F&B spend per room', fb);
+            row('Driver tariff (inc. VAT — what the driver pays)', tariffIncVatStr);
             row('Driver tariff (ex. VAT)', tariff);
-            row('Driver tariff (inc. VAT — what the driver pays)', tariffIncVat);
             row('Electricity cost', elec);
             row('Expected charger usage', usageStr);
             row('Target payback period', payback);
@@ -1188,33 +1227,23 @@
             // ── Investment Analysis ──────────────────────────────────
             sectionTitle('Investment Analysis');
             const getText = id => { const el = document.getElementById(id); return el ? el.textContent.trim() : '—'; };
-
-            row('Total Investment', getText('totalCapex'), true);
             const fmtCcy = n => '£' + Math.round(n).toLocaleString('en-GB');
-            // sub-row: indented label, right-aligned value, smaller italic font
-            function subRow(label, value) {
-                doc.setFont('helvetica', 'italic');
-                doc.setFontSize(8.5);
-                doc.setTextColor(120, 120, 120);
-                doc.text('  ' + label, margin + 4, y);
-                doc.text(value, margin + contentW, y, { align: 'right' });
-                y += 5;
-            }
-            subRow('Voqa hardware', fmtCcy(currentCalculationData.hardwareCost));
-            subRow('Installation', fmtCcy(currentCalculationData.installCost));
+            row('Total Investment', fmtCcy(currentCalculationData.totalCapex), true);
             gap(2);
-            row('Annual Charging Revenue', getText('annualChargingRevenue'));
-            row('Less: Annual Energy & Transaction Costs', getText('combinedEnergyCosts'));
-            row('Less: Annual Subscription', getText('totalAnnualOpex'));
-            row('Net Annual EV Charging Contribution', getText('netEVChargingContribution'), true);
-            gap(2);
-            row('Investment covered by EV charging (over target period)', getText('evChargingCoverage'));
+            const pyrs = document.getElementById('targetPaybackYears').value;
+            sectionTitle('EV Charging over ' + pyrs + ' years');
+            row('Charging revenue', getText('periodChargingRevenue'));
+            row('Less: Energy & transaction costs', getText('periodEnergyCosts'));
+            row('Less: Subscription costs', getText('periodSubscription'));
             y -= 2;
             note('  Assumes 5% annual growth in charger utilisation as EV adoption increases');
-            row('Remaining to recover from room bookings & F&B', getText('remainingFromRooms'));
+            row('Net contribution to cover investment', getText('evChargingCoverage'), true);
             gap(2);
-            row('EV guest room nights per month - from new bookings', getText('roomNightsNew'));
-            row('EV guest room nights per month - from retained guests', getText('roomNightsRetained'));
+            row('Less: Voqa EV charger cost', getText('hardwareCostDisplay'));
+            row('Less: Installation cost', getText('installCostDisplay'));
+            row('To cover with additional bookings & F&B', getText('remainingFromRooms'), true);
+            gap(2);
+            row('EV guest room nights per month (new or retention)', getText('roomNightsPerMonthHero'));
             gap();
 
             // ── Assumptions ──────────────────────────────────────────
@@ -1222,9 +1251,7 @@
             row('EV guests who spend on F&B', document.getElementById('evGuestsWithAncillarySpend').value + '%');
             row('Room variable cost', document.getElementById('roomVariableCostPercent').value + '%');
             row('F&B gross margin', document.getElementById('fbMarginPercent').value + '%');
-            row('Share of room nights from new bookings', document.getElementById('newGuestSharePercent').value + '%');
             y -= 2;
-            note('  Presentational split only - no Voqa data behind the default');
             gap();
 
             // ── Headline result ──────────────────────────────────────
@@ -1268,6 +1295,14 @@
             document.getElementById('privacy-notice').classList.add('hidden');
         }
         document.getElementById('privacy-notice').classList.remove('hidden');
+
+        function toggleInstallPopout(e) {
+            e.stopPropagation();
+            document.getElementById('installPopout').classList.toggle('open');
+        }
+        document.addEventListener('click', function() {
+            document.getElementById('installPopout').classList.remove('open');
+        });
     </script>
 </body>
 </html>
