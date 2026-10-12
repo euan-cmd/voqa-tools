@@ -670,9 +670,10 @@
 
         // Usage level definitions
         const USAGE_LEVELS = [
-            { label: 'Low',    sessionsPerPortPerWeek: 1, sessionsPerBayPerDay: 1/7, avgKwhPerSession: 30 },
-            { label: 'Medium', sessionsPerPortPerWeek: 3, sessionsPerBayPerDay: 3/7, avgKwhPerSession: 30 },
-            { label: 'High',   sessionsPerPortPerWeek: 5, sessionsPerBayPerDay: 5/7, avgKwhPerSession: 30 },
+            { label: '<1 per week',  sessionsPerPortPerWeek: 0.5, sessionsPerBayPerDay: 0.5/7, avgKwhPerSession: 30 },
+            { label: '3–5 per week', sessionsPerPortPerWeek: 4,   sessionsPerBayPerDay: 4/7,   avgKwhPerSession: 30 },
+            { label: '1 per day',    sessionsPerPortPerWeek: 7,   sessionsPerBayPerDay: 1,     avgKwhPerSession: 30 },
+            { label: '2+ per day',   sessionsPerPortPerWeek: 14,  sessionsPerBayPerDay: 2,     avgKwhPerSession: 30 },
         ];
 
         function getInstallationCostPerBay(type, bays) {
@@ -916,9 +917,10 @@
                 { v: 'post-far',   t: 'Post mounted — far from main building' }
             ],
             usageLevel: [
-                { v: 0, t: 'Low' },
-                { v: 1, t: 'Medium' },
-                { v: 2, t: 'High' }
+                { v: 0, t: '<1 pw' },
+                { v: 1, t: '3–5 pw' },
+                { v: 2, t: '1 per day' },
+                { v: 3, t: '2+ per day' }
             ]
         };
 
