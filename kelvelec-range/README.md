@@ -19,7 +19,7 @@ Last updated 18/11/2026.
 - Custom vehicle takes efficiency, battery, max AC and max DC
 - Car-specific notes, e.g. when a car can't use the charger's full power, or uses CHAdeMO
 - Joint header: Voqa logo left, Kelvelec logo right, split by a red diagonal at the midpoint
-- Removed: header title and CTA, privacy pop-up, "How to use" section, charging rate and efficiency tiles
+- Removed: header title and CTA, bottom booking CTA, privacy pop-up, "How to use" section, charging rate and efficiency tiles
 
 ## How the figures work
 
