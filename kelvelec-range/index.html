@@ -1062,6 +1062,54 @@
         footer a { color: rgba(255,255,255,0.65); text-decoration: underline; }
         .custom-dwell-note a, .guidance-text a { color: var(--primary); font-weight: 600; text-decoration: underline; }
 
+
+        /* Joint header: Kelvelec logo on a white panel with a Kelvelec-red diagonal edge */
+        .header { overflow: hidden; }
+        .kel-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 445px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 40px;
+            box-sizing: border-box;
+        }
+        .kel-panel::before,
+        .kel-panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+        }
+        .kel-panel::before {
+            background: #D03136;
+            clip-path: polygon(100px 0, 110px 0, 10px 100%, 0 100%);
+        }
+        .kel-panel::after {
+            background: #fff;
+            clip-path: polygon(110px 0, 100% 0, 100% 100%, 10px 100%);
+        }
+        .kel-logo-link { position: relative; z-index: 1; line-height: 0; }
+        .kel-logo { height: 48px; width: auto; display: block; }
+
+        @media (max-width: 768px) {
+            .voqa-logo { height: 68px; }
+            .kel-panel { width: 340px; padding-right: 24px; }
+            .kel-logo { height: 36px; }
+            .kel-panel::before { clip-path: polygon(80px 0, 88px 0, 8px 100%, 0 100%); }
+            .kel-panel::after { clip-path: polygon(88px 0, 100% 0, 100% 100%, 8px 100%); }
+        }
+
+        @media (max-width: 520px) {
+            .header { flex-direction: row; justify-content: flex-start; min-height: 90px; }
+            .voqa-logo { height: 44px; }
+            .kel-panel { width: 215px; padding-right: 20px; }
+            .kel-logo { height: 24px; }
+            .kel-panel::before { clip-path: polygon(50px 0, 56px 0, 6px 100%, 0 100%); }
+            .kel-panel::after { clip-path: polygon(56px 0, 100% 0, 100% 100%, 6px 100%); }
+        }
     </style>
 </head>
 <body>
@@ -1117,6 +1165,11 @@
         </svg>
 
         </a>
+        <div class="kel-panel">
+            <a href="https://www.kelvelec.co.uk" class="kel-logo-link" target="_blank" rel="noopener" aria-label="Visit Kelvelec">
+                <img class="kel-logo" src="assets/kelvelec-logo.png" alt="Kelvelec" width="265" height="48">
+            </a>
+        </div>
     </div>
 
     <div class="container">
