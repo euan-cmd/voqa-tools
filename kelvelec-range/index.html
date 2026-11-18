@@ -1225,13 +1225,6 @@
                 </div>
 
                 <div class="result-card">
-                    <span class="result-icon">🕒</span>
-                    <div class="result-value" id="chargingRate">-</div>
-                    <div class="result-label">Charging Rate (mi/hr)</div>
-                    <div class="result-description">Average miles added per hour while the car is charging</div>
-                </div>
-
-                <div class="result-card">
                     <span class="result-icon">🚗</span>
                     <div class="result-value" id="vehicleEfficiency">-</div>
                     <div class="result-label">Vehicle Efficiency</div>
@@ -1246,9 +1239,6 @@
                 </div>
                 <div class="guidance-text">
                     <strong>Energy Delivered:</strong> The actual electrical energy consumed, which determines your electricity costs and grid impact.
-                </div>
-                <div class="guidance-text">
-                    <strong>Charging Rate:</strong> This helps you communicate the speed benefit to customers - "Get X miles of range per hour of charging."
                 </div>
                 <div class="guidance-text">
                     <strong>Business Impact:</strong> Understanding these metrics helps you choose the right charger power rating for your customer dwell times and communicate the value proposition effectively.
@@ -1573,7 +1563,7 @@
                 updatePowerNote(v, power);
 
                 if (!v || power <= 0 || minutes <= 0) {
-                    ['rangeAdded', 'energyDelivered', 'chargingRate', 'vehicleEfficiency'].forEach((id) => {
+                    ['rangeAdded', 'energyDelivered', 'vehicleEfficiency'].forEach((id) => {
                         const el = document.getElementById(id);
                         if (el) el.textContent = '-';
                     });
@@ -1582,12 +1572,10 @@
 
                 const r = simulateSession(v, power, minutes, getArrivalSoC());
                 const rangeAdded = r.energy * v.eff;
-                const chargingRate = r.hours > 0 ? rangeAdded / r.hours : 0;
                 const [rangeLabel, energyLabel] = sessionLabels(r);
 
                 animateValue('rangeAdded', rangeAdded, 1, rangeLabel);
                 animateValue('energyDelivered', r.energy, 1, energyLabel);
-                animateValue('chargingRate', chargingRate, 1);
 
                 const efficiencyElement = document.getElementById('vehicleEfficiency');
                 if (efficiencyElement) efficiencyElement.textContent = `${formatNumber(v.eff, 1)} mi/kWh`;
