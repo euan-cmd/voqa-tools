@@ -1060,6 +1060,7 @@
             z-index: 2;
         }
         footer a { color: rgba(255,255,255,0.65); text-decoration: underline; }
+        .custom-dwell-note a, .guidance-text a { color: var(--primary); font-weight: 600; text-decoration: underline; }
 
     </style>
 </head>
@@ -1129,7 +1130,7 @@
                     <option value="custom">Custom Vehicle</option>
                 </select>
                 <div class="custom-dwell-note">
-                    Max AC is the car's on-board charger limit; max DC is its peak rapid-charging rate. Battery, efficiency and charging figures are from EV Database UK (November 2026). Real-world figures vary with weather, driving style and vehicle version.
+                    Max AC is the car's on-board charger limit; max DC is its peak rapid-charging rate. Battery, efficiency and charging figures are from <a href="https://ev-database.org/uk/" target="_blank" rel="noopener">EV Database UK</a> (November 2026). Real-world figures vary with weather, driving style and vehicle version.
                 </div>
             </div>
 
@@ -1317,7 +1318,7 @@
                     <strong>⚠️ AC Charging Limitation:</strong> Most EVs have onboard chargers that limit AC charging to 11kW, regardless of the charger's capacity. Always verify your vehicle's AC charging specifications before expecting 22kW charging speeds.
                 </div>
                 <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(13, 110, 253, 0.1); border-radius: 8px; border: 1px solid rgba(13, 110, 253, 0.3);">
-                    <strong>📐 How these figures are worked out:</strong> On AC, each car charges at the lower of the charger's rating and its own on-board charger limit, up to 100%. On DC, charging stops at 80% and speed follows a standard curve: full power up to 50%, easing to half power by 80%. That curve is scaled for each car so its 10-80% time matches the published figure from EV Database UK (November 2026), and capped at the car's maximum DC rate. Real charging curves differ by model, and speeds drop in cold weather, with a cold battery or when a charger shares power between cars. Figures show energy into the battery and exclude charging losses, so treat them as estimates.
+                    <strong>📐 How these figures are worked out:</strong> On AC, each car charges at the lower of the charger's rating and its own on-board charger limit, up to 100%. On DC, charging stops at 80% and speed follows a standard curve: full power up to 50%, easing to half power by 80%. That curve is scaled for each car so its 10-80% time matches the published figure from <a href="https://ev-database.org/uk/" target="_blank" rel="noopener">EV Database UK</a> (November 2026), and capped at the car's maximum DC rate. Real charging curves differ by model, and speeds drop in cold weather, with a cold battery or when a charger shares power between cars. Figures show energy into the battery and exclude charging losses, so treat them as estimates.
                 </div>
             </div>
         </div>
