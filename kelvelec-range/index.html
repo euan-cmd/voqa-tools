@@ -1070,7 +1070,7 @@
             top: 0;
             right: 0;
             bottom: 0;
-            width: 445px;
+            width: calc(50% + 55px); /* diagonal crosses the middle of the header */
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -1096,7 +1096,7 @@
 
         @media (max-width: 768px) {
             .voqa-logo { height: 68px; }
-            .kel-panel { width: 340px; padding-right: 24px; }
+            .kel-panel { width: calc(50% + 44px); padding-right: 24px; }
             .kel-logo { height: 36px; }
             .kel-panel::before { clip-path: polygon(80px 0, 88px 0, 8px 100%, 0 100%); }
             .kel-panel::after { clip-path: polygon(88px 0, 100% 0, 100% 100%, 8px 100%); }
@@ -1105,7 +1105,7 @@
         @media (max-width: 520px) {
             .header { flex-direction: row; justify-content: flex-start; min-height: 90px; }
             .voqa-logo { height: 44px; }
-            .kel-panel { width: 215px; padding-right: 20px; }
+            .kel-panel { width: calc(50% + 28px); padding-right: 20px; }
             .kel-logo { height: 24px; }
             .kel-panel::before { clip-path: polygon(50px 0, 56px 0, 6px 100%, 0 100%); }
             .kel-panel::after { clip-path: polygon(56px 0, 100% 0, 100% 100%, 6px 100%); }
