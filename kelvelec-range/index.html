@@ -1129,7 +1129,7 @@
                     <option value="custom">Custom Vehicle</option>
                 </select>
                 <div class="custom-dwell-note">
-                    Battery, efficiency and charging figures are from EV Database UK (November 2026). Real-world figures vary with weather, driving style and vehicle version.
+                    Max AC is the car's on-board charger limit; max DC is its peak rapid-charging rate. Battery, efficiency and charging figures are from EV Database UK (November 2026). Real-world figures vary with weather, driving style and vehicle version.
                 </div>
             </div>
 
@@ -1434,7 +1434,7 @@
                 const v = VEHICLES[id];
                 const opt = document.createElement('option');
                 opt.value = id;
-                opt.textContent = `${v.name} (${v.eff.toFixed(1)} mi/kWh)`;
+                opt.textContent = `${v.name} (${v.eff.toFixed(1)} mi/kWh · max AC ${v.ac} kW · max DC ${v.dc} kW${v.chademo ? ' CHAdeMO' : ''})`;
                 select.insertBefore(opt, customOption);
             });
         })();
