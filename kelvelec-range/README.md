@@ -24,7 +24,7 @@ Last updated 18/11/2026.
 - Arrival state of charge selector (10–90%)
 - Custom vehicle takes efficiency, battery, max AC and max DC
 - Car-specific notes, e.g. when a car can't use the charger's full power, or uses CHAdeMO
-- Joint header: Voqa logo left, Kelvelec logo right, split by a red diagonal at the midpoint
+- Joint header: Voqa logo left on teal, Kelvelec white logo right on Kelvelec olive, split by a gold diagonal at the midpoint
 - Removed: header title and CTA, bottom booking CTA, privacy pop-up, "How to use" section, charging rate and efficiency tiles
 
 ## How the figures work
@@ -35,8 +35,9 @@ Last updated 18/11/2026.
 
 ## Before go-live
 
-- [ ] Kelvelec sign-off on logo use, colours (red `#D03136`, white panel) and wording
-- [ ] SVG logo from Kelvelec (current file is a 265 × 48 px PNG from their website)
+- [ ] Kelvelec sign-off on logo use, colours and wording
+- [ ] Confirm Kelvelec olive and gold hex codes (currently `#545837` and `#CFB06F`, sampled from their emails)
+- [ ] SVG logo from Kelvelec (current file is a PNG made from the white logo Olivia sent on 18/11/2026)
 - [ ] Remove the draft label (`.draft-label` in `index.html`) and the `robots` noindex meta tag
 - [ ] Add the tool to the table in the root `README.md` and, if wanted, the tools.voqa.com homepage
 

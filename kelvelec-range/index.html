@@ -1071,14 +1071,16 @@
             margin-bottom: 16px;
             padding: 4px 12px;
             border-radius: 999px;
-            border: 1px solid #D03136;
-            color: #D03136;
+            border: 1px solid var(--kel-olive);
+            color: var(--kel-olive);
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.02em;
         }
 
-        /* Joint header: Kelvelec logo on a white panel with a Kelvelec-red diagonal edge */
+        /* Joint header: Kelvelec white logo on a Kelvelec olive panel with a gold diagonal edge.
+           Olive and gold are sampled from Kelvelec emails; confirm hex codes with Kelvelec. */
+        :root { --kel-olive: #545837; --kel-gold: #CFB06F; }
         .header { overflow: hidden; }
         .kel-panel {
             position: absolute;
@@ -1099,11 +1101,11 @@
             inset: 0;
         }
         .kel-panel::before {
-            background: #D03136;
+            background: var(--kel-gold);
             clip-path: polygon(100px 0, 110px 0, 10px 100%, 0 100%);
         }
         .kel-panel::after {
-            background: #fff;
+            background: var(--kel-olive);
             clip-path: polygon(110px 0, 100% 0, 100% 100%, 10px 100%);
         }
         .kel-logo-link { position: relative; z-index: 1; line-height: 0; }
@@ -1182,7 +1184,7 @@
         </a>
         <div class="kel-panel">
             <a href="https://www.kelvelec.co.uk" class="kel-logo-link" target="_blank" rel="noopener" aria-label="Visit Kelvelec">
-                <img class="kel-logo" src="assets/kelvelec-logo.png" alt="Kelvelec" width="265" height="48">
+                <img class="kel-logo" src="assets/kelvelec-logo-white.png" alt="Kelvelec" width="250" height="48">
             </a>
         </div>
     </div>
