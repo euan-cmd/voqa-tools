@@ -1707,7 +1707,7 @@
                         const r = simulateSession(v, power, dwellTime, startSoC);
                         const range = r.energy * v.eff;
                         let suffix = '';
-                                                else if (r.reachedTarget) suffix = r.isDC ? ' (80%)' : ' (Full)';
+                        if (r.reachedTarget) suffix = r.isDC ? ' (80%)' : ' (Full)';
 
                         const mainText = r.alreadyAtTarget ? '–' : `${formatNumber(range, 1)} mi`;
                         const subText = r.alreadyAtTarget ? 'Already at or above 80%' : `${formatNumber(r.energy, 1)} kWh${suffix}`;
