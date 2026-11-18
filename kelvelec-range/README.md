@@ -4,9 +4,15 @@ Jointly branded calculator showing how many miles of range different AC and DC c
 
 ## Status
 
-**Not for release. Do not merge to `main`.**
+**Draft, live but unlisted, awaiting Kelvelec sign-off.**
 
-Kelvelec have not yet signed off the branding or wording. Merging this branch into `main` publishes the page at `https://tools.voqa.com/kelvelec-range/`, so all work stays on the `kelvelec-range` branch until they approve it.
+Published at `https://tools.voqa.com/kelvelec-range/` so Kelvelec can review it on a Voqa address. While in draft it:
+
+- has `<meta name="robots" content="noindex, nofollow">` so search engines don't list it
+- shows a "Draft for review · not yet published" label above the first heading
+- is not linked from the tools.voqa.com homepage or the root `README.md`
+
+The code is public on GitHub, so treat "unlisted" as low-profile, not private.
 
 Last updated 18/11/2026.
 
@@ -31,8 +37,8 @@ Last updated 18/11/2026.
 
 - [ ] Kelvelec sign-off on logo use, colours (red `#D03136`, white panel) and wording
 - [ ] SVG logo from Kelvelec (current file is a 265 × 48 px PNG from their website)
+- [ ] Remove the draft label (`.draft-label` in `index.html`) and the `robots` noindex meta tag
 - [ ] Add the tool to the table in the root `README.md` and, if wanted, the tools.voqa.com homepage
-- [ ] Merge `kelvelec-range` into `main`
 
 ## Known approximations
 

@@ -8,6 +8,8 @@
     <meta name="description" content="See how many miles of range AC and DC chargers add to popular EVs in a given dwell time, from 7.4 kW to 200 kW. A joint tool from Voqa and Kelvelec.">
     <meta name="keywords" content="EV charging, electric vehicle, range calculator, AC charging, DC rapid charging, charging infrastructure, kWh, Voqa, Kelvelec">
     <meta name="author" content="Voqa and Kelvelec">
+    <!-- Draft for Kelvelec review: keep out of search engines until sign-off -->
+    <meta name="robots" content="noindex, nofollow">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
@@ -1063,6 +1065,19 @@
         .custom-dwell-note a, .guidance-text a { color: var(--primary); font-weight: 600; text-decoration: underline; }
 
 
+        /* Draft label: remove at launch */
+        .draft-label {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid #D03136;
+            color: #D03136;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
         /* Joint header: Kelvelec logo on a white panel with a Kelvelec-red diagonal edge */
         .header { overflow: hidden; }
         .kel-panel {
@@ -1174,6 +1189,7 @@
 
     <div class="container">
         <div class="card">
+            <div class="draft-label">Draft for review · not yet published</div>
             <h2 class="section-title">Choose your EV and charging scenario</h2>
             
             <div class="form-group" style="margin-top: 24px;">
