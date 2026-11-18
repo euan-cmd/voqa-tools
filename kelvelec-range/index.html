@@ -1373,7 +1373,9 @@
             'audi-q4':              { name: 'Audi Q4 e-tron (77 kWh)', kwh: 77.0, eff: 3.4, ac: 11, dc: 175, t1080: 28, avgDc: 120 },
             'vauxhall-frontera':    { name: 'Vauxhall Frontera Electric (54 kWh)', kwh: 52.8, eff: 3.3, ac: 11, dc: 100, t1080: 33, avgDc: 70 },
             'byd-sealion7':         { name: 'BYD Sealion 7 RWD', kwh: 82.5, eff: 3.2, ac: 11, dc: 150, t1080: 32, avgDc: 115 },
-            'audi-q6':              { name: 'Audi Q6 e-tron quattro', kwh: 94.9, eff: 3.1, ac: 11, dc: 269, t1080: 23, avgDc: 186 }
+            'audi-q6':              { name: 'Audi Q6 e-tron quattro', kwh: 94.9, eff: 3.1, ac: 11, dc: 269, t1080: 23, avgDc: 186 },
+            'renault-5':            { name: 'Renault 5 E-Tech (52 kWh)', kwh: 52.0, eff: 3.8, ac: 11, dc: 100, t1080: 33, avgDc: 70 },
+            'renault-4':            { name: 'Renault 4 E-Tech (52 kWh)', kwh: 52.0, eff: 3.7, ac: 11, dc: 101, t1080: 31, avgDc: 75 }
         };
 
         // Assumptions for a custom vehicle (no published charging figures)
@@ -1436,7 +1438,10 @@
             const select = document.getElementById('vehicleSelect');
             if (!select) return;
             const customOption = select.querySelector('option[value="custom"]');
-            Object.keys(VEHICLES).forEach((id) => {
+            // Alphabetical by name; Custom Vehicle stays at the bottom
+            Object.keys(VEHICLES)
+                .sort((x, y) => VEHICLES[x].name.localeCompare(VEHICLES[y].name, 'en-GB'))
+                .forEach((id) => {
                 const v = VEHICLES[id];
                 const opt = document.createElement('option');
                 opt.value = id;
