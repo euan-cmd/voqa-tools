@@ -1223,13 +1223,6 @@
                     <div class="result-label">Energy Delivered (kWh)</div>
                     <div class="result-description">Total electrical energy transferred to the vehicle</div>
                 </div>
-
-                <div class="result-card">
-                    <span class="result-icon">🚗</span>
-                    <div class="result-value" id="vehicleEfficiency">-</div>
-                    <div class="result-label">Vehicle Efficiency</div>
-                    <div class="result-description">Miles per kWh for the selected vehicle</div>
-                </div>
             </div>
 
             <div class="guidance-section">
@@ -1560,7 +1553,7 @@
                 updatePowerNote(v, power);
 
                 if (!v || power <= 0 || minutes <= 0) {
-                    ['rangeAdded', 'energyDelivered', 'vehicleEfficiency'].forEach((id) => {
+                    ['rangeAdded', 'energyDelivered'].forEach((id) => {
                         const el = document.getElementById(id);
                         if (el) el.textContent = '-';
                     });
@@ -1574,8 +1567,6 @@
                 animateValue('rangeAdded', rangeAdded, 1, rangeLabel);
                 animateValue('energyDelivered', r.energy, 1, energyLabel);
 
-                const efficiencyElement = document.getElementById('vehicleEfficiency');
-                if (efficiencyElement) efficiencyElement.textContent = `${formatNumber(v.eff, 1)} mi/kWh`;
 
                 updateComparisonTable(v);
             } catch (error) {
