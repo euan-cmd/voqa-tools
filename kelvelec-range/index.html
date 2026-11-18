@@ -1180,11 +1180,11 @@
                 <h4 class="guidance-title">How to Use This Calculator</h4>
                 <div class="guidance-text">
                     This EV range calculator helps you understand the real-world driver experience at your charging location. 
-                    For example: "If I plug my Polestar 2 into your charger for 60 minutes, how many miles of range will be added to my battery?"
+                    For example: "If I plug my Kia EV6 into your charger for 60 minutes, how many miles of range will be added to my battery?"
                 </div>
                 <div class="guidance-text">
-                    Choose the <strong>state of charge</strong> the car arrives with (20% by default) and the tool calculates charging up to 100%. 
-                    For high-power chargers and longer dwell times, the battery may reach full capacity before the session ends.
+                    Choose the <strong>state of charge</strong> the car arrives with (20% by default). AC charging is calculated up to 100%; DC charging stops at 80%, where most drivers unplug. 
+                    For high-power chargers and longer dwell times, the car may reach that point before the session ends.
                 </div>
                 <div class="guidance-text">
                     This tool will help you understand the driver experience and the impact of choices you'll need to make when planning your EV charging infrastructure.
@@ -1195,20 +1195,10 @@
                 <label for="vehicleSelect">Select EV Model</label>
                 <select id="vehicleSelect">
                     <option value="">Choose a vehicle...</option>
-                    <option value="4.5">Tesla Model 3 (4.5 mi/kWh)</option>
-                    <option value="4.2">Tesla Model Y (4.2 mi/kWh)</option>
-                    <option value="4.0">Volkswagen ID.3 (4.0 mi/kWh)</option>
-                    <option value="3.9">Polestar 2 (3.9 mi/kWh)</option>
-                    <option value="3.8">Kia EV6 (3.8 mi/kWh)</option>
-                    <option value="3.8">MG ZS EV (3.8 mi/kWh)</option>
-                    <option value="3.7">Hyundai Ioniq 5 (3.7 mi/kWh)</option>
-                    <option value="3.6">BMW i4 (3.6 mi/kWh)</option>
-                    <option value="3.5">Nissan Leaf (3.5 mi/kWh)</option>
-                    <option value="3.4">Audi Q4 e-tron (3.4 mi/kWh)</option>
                     <option value="custom">Custom Vehicle</option>
                 </select>
                 <div class="custom-dwell-note">
-                    Efficiency ratings (mi/kWh) are taken from OEM factsheets and may vary based on driving conditions, weather, and vehicle configuration.
+                    Battery, efficiency and charging figures are from EV Database UK (November 2026). Real-world figures vary with weather, driving style and vehicle version.
                 </div>
             </div>
 
@@ -1242,17 +1232,19 @@
                     <option value="90">90%</option>
                 </select>
                 <div class="custom-dwell-note">
-                    How full the battery is when the car plugs in. Charging is calculated up to 100%.
+                    How full the battery is when the car plugs in. AC charging is calculated up to 100%, DC up to 80%.
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="powerRating">Charger Power Rating (kW)</label>
                 <select id="powerRating">
-                    <option value="7.4">7.4kW</option>
-                    <option value="11">11kW</option>
-                    <option value="22">22kW</option>
-                    <option value="50">50kW</option>
+                    <option value="7.4">7.4kW (AC)</option>
+                    <option value="11">11kW (AC)</option>
+                    <option value="22">22kW (AC)</option>
+                    <option value="50">50kW (DC)</option>
+                    <option value="150">150kW (DC)</option>
+                    <option value="200">200kW (DC)</option>
                 </select>
                 <div class="custom-dwell-note" id="powerRatingNote" style="display: none; margin-top: 8px;">
                     Many EVs can only charge at 11kW maximum on AC chargers, even when connected to a 22kW charger. Always check your vehicle's AC charging capabilities.
@@ -1262,7 +1254,11 @@
             <div class="form-group">
                 <label for="dwellTime">Dwell Time (minutes)</label>
                 <select id="dwellTime">
-                    <option value="60">60 minutes (1 hour)</option>
+                    <option value="10">10 minutes</option>
+                    <option value="20">20 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60" selected>60 minutes (1 hour)</option>
                     <option value="120">120 minutes (2 hours)</option>
                     <option value="240">240 minutes (4 hours)</option>
                     <option value="480">480 minutes (8 hours)</option>
@@ -1301,7 +1297,7 @@
                     <span class="result-icon">🕒</span>
                     <div class="result-value" id="chargingRate">-</div>
                     <div class="result-label">Charging Rate (mi/hr)</div>
-                    <div class="result-description">Miles of range added per hour of charging</div>
+                    <div class="result-description">Average miles added per hour while the car is charging</div>
                 </div>
 
                 <div class="result-card">
@@ -1348,16 +1344,20 @@
                             <th>11kW (AC)</th>
                             <th>22kW (AC)</th>
                             <th>50kW (DC)</th>
+                            <th>150kW (DC)</th>
+                            <th>200kW (DC)</th>
                         </tr>
                         <tr>
                             <td style="border: none; background: transparent;"></td>
                             <td colspan="3" style="border: none; background: transparent; padding: 4px;">
                                 <div class="voqa-brand">⚡ Voqa EV Charger Range</div>
                             </td>
-                            <td style="border: none; background: transparent;"></td>
+                            <td colspan="3" style="border: none; background: transparent;"></td>
                         </tr>
                         <tr>
                             <th class="dwell-time-header">Dwell Time</th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -1375,7 +1375,7 @@
                     <strong>7.4kW:</strong> Ideal for overnight parking, employee charging, or locations with 6+ hour dwell times. Lower installation costs.
                 </div>
                 <div class="guidance-text">
-                    <strong>11kW:</strong> Good balance for 2-4 hour stays like shopping centers, restaurants, or workplace charging. Most EVs can utilize this power level.
+                    <strong>11kW:</strong> Good balance for 2-4 hour stays like shopping centres, restaurants, or workplace charging. Most EVs can use this power level.
                 </div>
                 <div class="guidance-text">
                     <strong>22kW:</strong> Best for 1-2 hour visits, providing meaningful range for shorter stops. <strong>Important:</strong> Many EVs can only charge at 11kW maximum on AC chargers, so the actual charging speed may be limited by the vehicle, not the charger.
@@ -1383,8 +1383,14 @@
                 <div class="guidance-text">
                     <strong>50kW:</strong> Rapid DC charging for quick stops (30-60 minutes). Requires significant electrical infrastructure investment.
                 </div>
+                <div class="guidance-text">
+                    <strong>150kW and 200kW:</strong> Ultra-rapid DC charging for short stops (10-30 minutes), such as motorway services and forecourts. Many cars can't take the full 200kW, so the car often sets the speed, not the charger. Needs a high-capacity grid connection.
+                </div>
                 <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 1px solid rgba(255, 193, 7, 0.3);">
                     <strong>⚠️ AC Charging Limitation:</strong> Most EVs have onboard chargers that limit AC charging to 11kW, regardless of the charger's capacity. Always verify your vehicle's AC charging specifications before expecting 22kW charging speeds.
+                </div>
+                <div class="guidance-text" style="margin-top: 15px; padding: 12px; background: rgba(13, 110, 253, 0.1); border-radius: 8px; border: 1px solid rgba(13, 110, 253, 0.3);">
+                    <strong>📐 How these figures are worked out:</strong> On AC, each car charges at the lower of the charger's rating and its own on-board charger limit, up to 100%. On DC, charging stops at 80% and speed follows a standard curve: full power up to 50%, easing to half power by 80%. That curve is scaled for each car so its 10-80% time matches the published figure from EV Database UK (November 2026), and capped at the car's maximum DC rate. Real charging curves differ by model, and speeds drop in cold weather, with a cold battery or when a charger shares power between cars. Figures show energy into the battery and exclude charging losses, so treat them as estimates.
                 </div>
             </div>
         </div>
@@ -1401,25 +1407,115 @@
          * EV Range Calculator - Professional Tool
          * Calculate EV charging range and energy delivery
          * 
-         * Formula: Range (miles) = (Dwell Time ÷ 60) × Power (kW) × Efficiency (mi/kWh)
-         * Battery capacity limits: arrival SoC (user selected, default 20%), charging to 100%
+         * Range (miles) = energy into the battery (kWh) × efficiency (mi/kWh)
+         * AC: power = lower of charger and car's on-board charger; charges to 100%
+         * DC: power = lower of charger and car's standard DC curve; stops at 80%
+         * Starts from the arrival state of charge (user selected, default 20%)
          * 
          * @author Voqa
-         * @version 1.1.0
+         * @version 1.2.0
          */
 
-        // Vehicle efficiency data (miles per kWh)
-        const vehicles = {
-            '4.5': 'Tesla Model 3',
-            '4.2': 'Tesla Model Y', 
-            '4.0': 'Volkswagen ID.3',
-            '3.9': 'Polestar 2',
-            '3.8': 'Kia EV6 / MG ZS EV',
-            '3.7': 'Hyundai Ioniq 5',
-            '3.6': 'BMW i4',
-            '3.5': 'Nissan Leaf',
-            '3.4': 'Audi Q4 e-tron'
+        // Vehicle data: EV Database UK (ev-database.org/uk), pulled 18/11/2026.
+        // kwh = usable battery (kWh); eff = real-world efficiency (mi/kWh, battery side);
+        // ac = max AC charge rate (on-board charger, kW); dc = max DC charge rate (kW);
+        // t1080 = DC 10-80% time (minutes) on a charger that can deliver the car's full rate.
+        const VEHICLES = {
+            'tesla-model-3':        { name: 'Tesla Model 3 RWD', kwh: 60.0, eff: 4.6, ac: 11, dc: 175, t1080: 24 },
+            'mercedes-cla':         { name: 'Mercedes-Benz CLA 250+', kwh: 85.0, eff: 4.2, ac: 11, dc: 353, t1080: 18 },
+            'bmw-i4':               { name: 'BMW i4 eDrive40', kwh: 81.3, eff: 4.0, ac: 11, dc: 205, t1080: 28 },
+            'ford-puma':            { name: 'Ford Puma Gen-E', kwh: 46.8, eff: 4.0, ac: 11, dc: 100, t1080: 24 },
+            'vw-id3':               { name: 'Volkswagen ID.3 (58 kWh)', kwh: 58.0, eff: 3.9, ac: 11, dc: 165, t1080: 24 },
+            'tesla-model-y':        { name: 'Tesla Model Y Premium RWD', kwh: 74.0, eff: 3.8, ac: 11, dc: 250, t1080: 36 },
+            'bmw-ix3':              { name: 'BMW iX3 40', kwh: 82.6, eff: 3.8, ac: 11, dc: 300, t1080: 21 },
+            'mini-countryman':      { name: 'Mini Countryman E', kwh: 65.2, eff: 3.8, ac: 11, dc: 128, t1080: 31 },
+            'nissan-leaf-75':       { name: 'Nissan Leaf (2025, 75 kWh)', kwh: 75.1, eff: 3.7, ac: 11, dc: 150, t1080: 32 },
+            'nissan-leaf-40':       { name: 'Nissan Leaf 40 kWh (2018–24)', kwh: 39.0, eff: 3.7, ac: 7, dc: 46, t1080: 43, chademo: true },
+            'skoda-enyaq':          { name: 'Škoda Enyaq 85', kwh: 79.0, eff: 3.7, ac: 11, dc: 165, t1080: 30 },
+            'skoda-elroq':          { name: 'Škoda Elroq 85', kwh: 79.0, eff: 3.6, ac: 11, dc: 165, t1080: 30 },
+            'kia-ev3':              { name: 'Kia EV3 Long Range', kwh: 78.0, eff: 3.6, ac: 11, dc: 135, t1080: 33 },
+            'byd-seal':             { name: 'BYD Seal RWD (82.5 kWh)', kwh: 82.5, eff: 3.6, ac: 11, dc: 150, t1080: 36 },
+            'mg4':                  { name: 'MG4 Long Range', kwh: 61.7, eff: 3.6, ac: 7, dc: 154, t1080: 25 },
+            'kia-ev6':              { name: 'Kia EV6 RWD', kwh: 80.0, eff: 3.5, ac: 11, dc: 263, t1080: 17 },
+            'ford-explorer':        { name: 'Ford Explorer Extended Range RWD', kwh: 79.0, eff: 3.5, ac: 11, dc: 183, t1080: 30 },
+            'volvo-ex30':           { name: 'Volvo EX30 Long Range', kwh: 65.0, eff: 3.5, ac: 11, dc: 158, t1080: 28 },
+            'hyundai-ioniq5':       { name: 'Hyundai Ioniq 5 84 kWh RWD', kwh: 80.0, eff: 3.4, ac: 11, dc: 263, t1080: 18 },
+            'leapmotor-b10':        { name: 'Leapmotor B10', kwh: 65.0, eff: 3.4, ac: 11, dc: 168, t1080: 26 },
+            'jaecoo-e5':            { name: 'Jaecoo E5', kwh: 58.9, eff: 3.4, ac: 11, dc: 130, t1080: 33 },
+            'audi-q4':              { name: 'Audi Q4 e-tron (77 kWh)', kwh: 77.0, eff: 3.4, ac: 11, dc: 175, t1080: 28 },
+            'vauxhall-frontera':    { name: 'Vauxhall Frontera Electric (54 kWh)', kwh: 52.8, eff: 3.3, ac: 11, dc: 100, t1080: 33 },
+            'byd-sealion7':         { name: 'BYD Sealion 7 RWD', kwh: 82.5, eff: 3.2, ac: 11, dc: 150, t1080: 32 },
+            'audi-q6':              { name: 'Audi Q6 e-tron quattro', kwh: 94.9, eff: 3.1, ac: 11, dc: 269, t1080: 23 }
         };
+
+        // Assumptions for a custom vehicle (no published charging figures)
+        const CUSTOM_DEFAULTS = { ac: 11, dc: 150 };
+
+        // Chargers at or above this rating are DC
+        const DC_MIN_KW = 50;
+        // AC sessions charge to 100%; DC sessions stop at 80%, where most drivers unplug
+        const AC_TARGET_SOC = 1.0;
+        const DC_TARGET_SOC = 0.8;
+
+        /**
+         * Standard DC charging curve: share of the car's peak DC power at a given state of charge.
+         * Full power up to 50%, tapering to half power at 80% and 10% at 100%.
+         * Each car's peak is then scaled so its 10-80% time matches its published figure.
+         */
+        function dcCurveShape(soc) {
+            if (soc <= 0.5) return 1;
+            if (soc <= 0.8) return 1 - 0.5 * (soc - 0.5) / 0.3;
+            return Math.max(0.1, 0.5 - 0.4 * (soc - 0.8) / 0.2);
+        }
+
+        // Power the car will accept on DC at a given state of charge (kW)
+        function carDcPower(v, soc) {
+            return Math.min(v.dc, v.dcPeak * dcCurveShape(soc));
+        }
+
+        // Hours to charge between two states of charge on DC
+        function dcHours(v, fromSoC, toSoC, chargerKW) {
+            const ds = 0.001;
+            let hours = 0;
+            for (let s = fromSoC; s < toSoC - 1e-9; s += ds) {
+                const step = Math.min(ds, toSoC - s);
+                const p = Math.min(chargerKW, carDcPower(v, s + step / 2));
+                hours += v.kwh * step / p;
+            }
+            return hours;
+        }
+
+        // Scale the standard curve so the car's 10-80% time matches its published figure
+        function calibrateDcPeak(v) {
+            v.dcPeak = v.dc;
+            if (!v.t1080) return;
+            const target = v.t1080 / 60;
+            const timeAt = (peak) => { v.dcPeak = peak; return dcHours(v, 0.1, 0.8, Infinity); };
+            let lo = v.dc * 0.2;
+            let hi = v.dc * 10;
+            if (timeAt(hi) > target) { v.dcPeak = hi; return; }
+            for (let i = 0; i < 50; i++) {
+                const mid = (lo + hi) / 2;
+                if (timeAt(mid) > target) lo = mid; else hi = mid;
+            }
+            v.dcPeak = hi;
+        }
+
+        Object.values(VEHICLES).forEach(calibrateDcPeak);
+
+        // Fill the vehicle dropdown from the data above
+        (function populateVehicleSelect() {
+            const select = document.getElementById('vehicleSelect');
+            if (!select) return;
+            const customOption = select.querySelector('option[value="custom"]');
+            Object.keys(VEHICLES).forEach((id) => {
+                const v = VEHICLES[id];
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = `${v.name} (${v.eff.toFixed(1)} mi/kWh)`;
+                select.insertBefore(opt, customOption);
+            });
+        })();
 
         /**
          * Format number with specified decimal places
@@ -1432,128 +1528,125 @@
             });
         }
 
-        /**
-         * Get battery capacity for a vehicle based on efficiency
-         */
         function getArrivalSoC() {
             const socSelect = document.getElementById('arrivalSoC');
             const soc = parseFloat(socSelect?.value);
             return (soc >= 0 && soc < 100) ? soc / 100 : 0.20;
         }
 
-        function getBatteryCapacity(efficiency, isCustom = false) {
-            if (isCustom) {
-                const customBattery = document.getElementById('customBattery');
-                const customCapacity = parseFloat(customBattery?.value || 0);
-                if (customCapacity > 0) {
-                    return customCapacity;
-                }
-                return 80;
+        function getSelectedVehicle() {
+            const select = document.getElementById('vehicleSelect');
+            if (!select || !select.value) return null;
+            if (select.value === 'custom') {
+                const eff = parseFloat(document.getElementById('customEfficiency')?.value || 0);
+                const kwh = parseFloat(document.getElementById('customBattery')?.value || 0) || 80;
+                if (!(eff > 0)) return null;
+                return { name: 'custom vehicle', kwh, eff, ac: CUSTOM_DEFAULTS.ac, dc: CUSTOM_DEFAULTS.dc, dcPeak: CUSTOM_DEFAULTS.dc, custom: true };
             }
-            
-            // Estimates based on typical EVs
-            if (efficiency >= 4.5) return 75; // Tesla Model 3
-            if (efficiency >= 4.0) return 82; // Tesla Model Y, VW ID.3
-            if (efficiency >= 3.8) return 78; // Polestar 2, Kia EV6
-            if (efficiency >= 3.6) return 77; // Hyundai Ioniq 5, BMW i4
-            if (efficiency >= 3.4) return 82; // Nissan Leaf, Audi Q4 e-tron
-            return 80; // Default
+            return VEHICLES[select.value] || null;
+        }
+
+        function getDwellMinutes() {
+            const dwellTimeSelect = document.getElementById('dwellTime');
+            if (!dwellTimeSelect) return 0;
+            if (dwellTimeSelect.value === 'custom') {
+                return parseFloat(document.getElementById('customDwellTime')?.value || 0);
+            }
+            return parseFloat(dwellTimeSelect.value) || 0;
         }
 
         /**
-         * Calculate EV range and energy delivery with battery capacity limits
+         * Simulate one charging session.
+         * AC: the lower of the charger and the car's on-board charger, up to 100%.
+         * DC: the lower of the charger and the car's standard curve, up to 80%.
+         */
+        function simulateSession(v, chargerKW, minutes, startSoC) {
+            const isDC = chargerKW >= DC_MIN_KW;
+            const target = isDC ? DC_TARGET_SOC : AC_TARGET_SOC;
+            const result = { isDC, energy: 0, hours: 0, reachedTarget: false, alreadyAtTarget: false };
+            if (startSoC >= target) {
+                result.alreadyAtTarget = true;
+                return result;
+            }
+            const limitHours = minutes / 60;
+            const ds = 0.001;
+            let soc = startSoC;
+            let t = 0;
+            while (soc < target - 1e-9) {
+                const step = Math.min(ds, target - soc);
+                const p = isDC ? Math.min(chargerKW, carDcPower(v, soc + step / 2)) : Math.min(chargerKW, v.ac);
+                const dt = v.kwh * step / p;
+                if (t + dt > limitHours) {
+                    soc += step * (limitHours - t) / dt;
+                    t = limitHours;
+                    break;
+                }
+                t += dt;
+                soc += step;
+            }
+            result.reachedTarget = soc >= target - 1e-6;
+            result.energy = (soc - startSoC) * v.kwh;
+            result.hours = t;
+            return result;
+        }
+
+        // Notes under the charger dropdown, specific to the selected car and charger
+        function updatePowerNote(v, power) {
+            const el = document.getElementById('powerRatingNote');
+            if (!el) return;
+            const notes = [];
+            if (power >= DC_MIN_KW) {
+                notes.push('DC sessions are calculated to 80%, where most drivers unplug. Charging speed follows a standard curve for each car (see the note under the comparison table).');
+                if (v && power > v.dc) notes.push(`The ${v.name} peaks at ${v.dc} kW on DC, so it can't use the full ${power} kW.`);
+                if (v && v.chademo) notes.push(`The ${v.name} uses a CHAdeMO connector. Many newer rapid chargers only have CCS cables.`);
+            } else if (v && power > v.ac) {
+                notes.push(`The ${v.name} takes up to ${v.ac} kW on AC, so it charges at ${v.ac} kW on this charger.`);
+            } else if (!v && power === 22) {
+                notes.push('Most EVs take 11 kW at most on AC, even on a 22 kW charger. Pick a vehicle to see its limit.');
+            }
+            if (v && v.custom) notes.push(`Custom vehicles assume ${CUSTOM_DEFAULTS.ac} kW max on AC and ${CUSTOM_DEFAULTS.dc} kW max on DC.`);
+            el.innerHTML = notes.join('<br>');
+            el.style.display = notes.length ? 'block' : 'none';
+        }
+
+        function sessionLabels(r) {
+            if (r.alreadyAtTarget) return ['Already at or above 80%', 'Nothing to add on DC'];
+            if (!r.reachedTarget) return [null, null];
+            return r.isDC ? ['Reached 80%', 'Stopped at 80%'] : ['Battery Full', 'Capped at 100%'];
+        }
+
+        /**
+         * Calculate EV range and energy delivery for the selected scenario
          */
         function calculateRange() {
             try {
-                const vehicleSelect = document.getElementById('vehicleSelect');
-                const customEfficiency = document.getElementById('customEfficiency');
-                const powerRatingSelect = document.getElementById('powerRating');
-                const dwellTimeSelect = document.getElementById('dwellTime');
-                const customDwellTime = document.getElementById('customDwellTime');
+                const v = getSelectedVehicle();
+                const power = parseFloat(document.getElementById('powerRating')?.value) || 0;
+                const minutes = getDwellMinutes();
 
-                if (!vehicleSelect || !powerRatingSelect || !dwellTimeSelect) {
+                updatePowerNote(v, power);
+
+                if (!v || power <= 0 || minutes <= 0) {
+                    ['rangeAdded', 'energyDelivered', 'chargingRate', 'vehicleEfficiency'].forEach((id) => {
+                        const el = document.getElementById(id);
+                        if (el) el.textContent = '-';
+                    });
                     return;
                 }
 
-                const powerRating = parseFloat(powerRatingSelect.value) || 0;
+                const r = simulateSession(v, power, minutes, getArrivalSoC());
+                const rangeAdded = r.energy * v.eff;
+                const chargingRate = r.hours > 0 ? rangeAdded / r.hours : 0;
+                const [rangeLabel, energyLabel] = sessionLabels(r);
 
-                // Determine efficiency and check if custom vehicle
-                let efficiency = 0;
-                let isCustomVehicle = false;
-                if (vehicleSelect.value === 'custom') {
-                    efficiency = parseFloat(customEfficiency?.value || 0);
-                    isCustomVehicle = true;
-                } else {
-                    efficiency = parseFloat(vehicleSelect.value) || 0;
-                }
+                animateValue('rangeAdded', rangeAdded, 1, rangeLabel);
+                animateValue('energyDelivered', r.energy, 1, energyLabel);
+                animateValue('chargingRate', chargingRate, 1);
 
-                // Determine dwell time
-                let dwellTimeMinutes = 0;
-                if (dwellTimeSelect.value === 'custom') {
-                    dwellTimeMinutes = parseFloat(customDwellTime?.value || 0);
-                } else {
-                    dwellTimeMinutes = parseFloat(dwellTimeSelect.value) || 0;
-                }
-
-                // Validate inputs
-                if (efficiency <= 0 || powerRating <= 0 || dwellTimeMinutes <= 0) {
-                    document.getElementById('rangeAdded').textContent = '-';
-                    document.getElementById('energyDelivered').textContent = '-';
-                    document.getElementById('chargingRate').textContent = '-';
-                    document.getElementById('vehicleEfficiency').textContent = '-';
-                    return;
-                }
-
-                // Battery capacity and charging calculations
-                const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
-                const initialSoC = getArrivalSoC(); // arrival state of charge
-                const targetSoC = 1.00; // 100% target charge
-                const availableCapacity = batteryCapacity * (targetSoC - initialSoC);
-                
-                const dwellTimeHours = dwellTimeMinutes / 60;
-                const maxEnergyFromTime = dwellTimeHours * powerRating;
-                
-                const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
-                const rangeAdded = energyDelivered * efficiency;
-                const chargingRatePerHour = powerRating * efficiency;
-                
-                const timeToFullCharge = availableCapacity / powerRating;
-                const batteryFull = timeToFullCharge < dwellTimeHours;
-
-                // Update displays
-                const rangeElement = document.getElementById('rangeAdded');
-                const energyElement = document.getElementById('energyDelivered');
-                const rateElement = document.getElementById('chargingRate');
                 const efficiencyElement = document.getElementById('vehicleEfficiency');
+                if (efficiencyElement) efficiencyElement.textContent = `${formatNumber(v.eff, 1)} mi/kWh`;
 
-                if (rangeElement) {
-                    if (batteryFull) {
-                        rangeElement.innerHTML = `${formatNumber(rangeAdded, 1)}<br><small style="font-size: 12px; color: var(--accent-light);">Battery Full</small>`;
-                    } else {
-                        rangeElement.textContent = formatNumber(rangeAdded, 1);
-                    }
-                }
-                
-                if (energyElement) {
-                    if (batteryFull) {
-                        energyElement.innerHTML = `${formatNumber(energyDelivered, 1)}<br><small style="font-size: 12px; color: var(--accent-light);">Capped at 100%</small>`;
-                    } else {
-                        energyElement.textContent = formatNumber(energyDelivered, 1);
-                    }
-                }
-                
-                if (rateElement) rateElement.textContent = formatNumber(chargingRatePerHour, 1);
-                if (efficiencyElement) efficiencyElement.textContent = `${formatNumber(efficiency, 1)} mi/kWh`;
-
-                // Update comparison table
-                updateComparisonTable(efficiency);
-
-                // Add animations if values are valid
-                if (rangeAdded > 0) {
-                    animateValue('rangeAdded', rangeAdded, 1, batteryFull);
-                    animateValue('energyDelivered', energyDelivered, 1, batteryFull);
-                    animateValue('chargingRate', chargingRatePerHour, 1);
-                }
+                updateComparisonTable(v);
             } catch (error) {
                 console.error('Error in calculateRange:', error);
             }
@@ -1562,102 +1655,71 @@
         /**
          * Update the scenario comparison table
          */
-        function updateComparisonTable(efficiency) {
-            if (efficiency <= 0) return;
+        function updateComparisonTable(v) {
+            if (!v) return;
 
             try {
                 const tableBody = document.getElementById('comparisonTableBody');
                 if (!tableBody) return;
 
-                const baseDwellTimes = [60, 120, 240, 480];
-                const powerRatings = [7.4, 11, 22, 50];
-                const vehicleSelect = document.getElementById('vehicleSelect');
-                const isCustomVehicle = vehicleSelect && vehicleSelect.value === 'custom';
-                const batteryCapacity = getBatteryCapacity(efficiency, isCustomVehicle);
-                const availableCapacity = batteryCapacity * (1 - getArrivalSoC());
+                const baseDwellTimes = [10, 20, 30, 45, 60, 120, 240, 480];
+                const powerRatings = [7.4, 11, 22, 50, 150, 200];
+                const startSoC = getArrivalSoC();
 
-                // Get current user selections
-                const powerRatingSelect = document.getElementById('powerRating');
+                const selectedPower = parseFloat(document.getElementById('powerRating')?.value);
                 const dwellTimeSelect = document.getElementById('dwellTime');
-                const customDwellTime = document.getElementById('customDwellTime');
-                
-                const selectedPower = powerRatingSelect ? parseFloat(powerRatingSelect.value) : null;
-                let selectedDwellTime = null;
-                let customDwellTimeValue = null;
-                
-                if (dwellTimeSelect) {
-                    if (dwellTimeSelect.value === 'custom' && customDwellTime && customDwellTime.value) {
-                        customDwellTimeValue = parseFloat(customDwellTime.value);
-                        selectedDwellTime = customDwellTimeValue;
-                    } else {
-                        selectedDwellTime = parseFloat(dwellTimeSelect.value);
-                    }
-                }
+                const selectedDwellTime = getDwellMinutes();
+                const customDwellTimeValue = (dwellTimeSelect && dwellTimeSelect.value === 'custom' && selectedDwellTime > 0) ? selectedDwellTime : null;
 
-                // Create ordered list of dwell times including custom time
                 let allDwellTimes = [...baseDwellTimes];
-                if (customDwellTimeValue && customDwellTimeValue > 0) {
+                if (customDwellTimeValue && !allDwellTimes.includes(customDwellTimeValue)) {
                     allDwellTimes.push(customDwellTimeValue);
                     allDwellTimes.sort((a, b) => a - b);
                 }
 
                 tableBody.innerHTML = '';
 
-                // Create table rows in chronological order
                 allDwellTimes.forEach(dwellTime => {
-                    const isCustomTime = customDwellTimeValue && dwellTime === customDwellTimeValue;
+                    const isCustomTime = customDwellTimeValue === dwellTime;
                     const row = document.createElement('tr');
-                    
-                    if (isCustomTime) {
-                        row.className = 'custom-row';
-                    }
-                    
-                    // Dwell time cell
+                    if (isCustomTime) row.className = 'custom-row';
+
                     const dwellCell = document.createElement('td');
                     if (isCustomTime) {
                         dwellCell.className = 'custom-time';
                         dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; text-align: left;';
-                        dwellCell.textContent = `${dwellTime} min`;
                     } else {
                         dwellCell.style.cssText = 'padding: 12px; border: 1px solid var(--border); font-weight: 600; background: var(--bg-light); text-align: left;';
-                        dwellCell.textContent = `${dwellTime} min`;
                     }
+                    dwellCell.textContent = `${dwellTime} min`;
                     row.appendChild(dwellCell);
 
-                    // Range cells for each power rating
                     powerRatings.forEach((power) => {
                         const cell = document.createElement('td');
-                        
-                        // Check if this cell matches current selections
                         const isSelectedCell = (selectedPower === power && selectedDwellTime === dwellTime);
-                        
+
                         if (isSelectedCell) {
                             cell.style.cssText = 'border: 3px solid var(--primary); background: var(--primary); color: white; font-weight: 700; position: relative;';
-                        } else if (power <= 22 && !isCustomTime) {
+                        } else if (power < DC_MIN_KW && !isCustomTime) {
                             cell.className = 'voqa-highlight';
                         }
-                        
-                        const dwellHours = dwellTime / 60;
-                        const maxEnergyFromTime = dwellHours * power;
-                        const energyDelivered = Math.min(maxEnergyFromTime, availableCapacity);
-                        const range = energyDelivered * efficiency;
-                        const timeToFull = availableCapacity / power;
-                        const batteryFull = timeToFull < dwellHours;
-                        
-                        if (batteryFull) {
-                            if (isSelectedCell) {
-                                cell.innerHTML = `<strong style="color: white;">${formatNumber(range, 1)} mi</strong><br><small style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh (Full)</small><br><small style="font-size: 10px; color: rgba(255, 255, 255, 0.8); font-weight: 700;">📍 Your Selection</small>`;
-                            } else {
-                                cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small style="color: #28a745;">${formatNumber(energyDelivered, 1)} kWh (Full)</small>`;
-                            }
+
+                        const r = simulateSession(v, power, dwellTime, startSoC);
+                        const range = r.energy * v.eff;
+                        let suffix = '';
+                                                else if (r.reachedTarget) suffix = r.isDC ? ' (80%)' : ' (Full)';
+
+                        const mainText = r.alreadyAtTarget ? '–' : `${formatNumber(range, 1)} mi`;
+                        const subText = r.alreadyAtTarget ? 'Already at or above 80%' : `${formatNumber(r.energy, 1)} kWh${suffix}`;
+
+                        if (isSelectedCell) {
+                            cell.innerHTML = `<strong style="color: white;">${mainText}</strong><br><small style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">${subText}</small><br><small style="font-size: 10px; color: rgba(255, 255, 255, 0.8); font-weight: 700;">📍 Your Selection</small>`;
+                        } else if (r.reachedTarget) {
+                            cell.innerHTML = `<strong>${mainText}</strong><br><small style="color: #28a745;">${subText}</small>`;
                         } else {
-                            if (isSelectedCell) {
-                                cell.innerHTML = `<strong style="color: white;">${formatNumber(range, 1)} mi</strong><br><small style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">${formatNumber(energyDelivered, 1)} kWh</small><br><small style="font-size: 10px; color: rgba(255, 255, 255, 0.8); font-weight: 700;">📍 Your Selection</small>`;
-                            } else {
-                                cell.innerHTML = `<strong>${formatNumber(range, 1)} mi</strong><br><small>${formatNumber(energyDelivered, 1)} kWh</small>`;
-                            }
+                            cell.innerHTML = `<strong>${mainText}</strong><br><small>${subText}</small>`;
                         }
-                        
+
                         row.appendChild(cell);
                     });
 
@@ -1670,38 +1732,28 @@
         }
 
         /**
-         * Animate a numeric value with easing
+         * Animate a numeric value with easing. `note` (optional) is shown under the number.
          */
-        function animateValue(elementId, finalValue, decimals, batteryFull = false) {
+        function animateValue(elementId, finalValue, decimals, note = null) {
             try {
                 const element = document.getElementById(elementId);
                 if (!element) return;
 
-                const startValue = 0;
                 const duration = 1000;
                 const startTime = performance.now();
 
                 function updateValue(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
+                    const progress = Math.min((currentTime - startTime) / duration, 1);
                     const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                    const currentValue = startValue + (finalValue - startValue) * easeOutQuart;
+                    const currentValue = finalValue * easeOutQuart;
 
-                    if (elementId === 'vehicleEfficiency') {
-                        element.textContent = `${formatNumber(currentValue, decimals)} mi/kWh`;
-                    } else if (batteryFull && (elementId === 'rangeAdded' || elementId === 'energyDelivered')) {
-                        if (elementId === 'rangeAdded') {
-                            element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">Battery Full</small>`;
-                        } else {
-                            element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">Capped at 100%</small>`;
-                        }
+                    if (note) {
+                        element.innerHTML = `${formatNumber(currentValue, decimals)}<br><small style="font-size: 12px; color: var(--accent-light);">${note}</small>`;
                     } else {
                         element.textContent = formatNumber(currentValue, decimals);
                     }
 
-                    if (progress < 1) {
-                        requestAnimationFrame(updateValue);
-                    }
+                    if (progress < 1) requestAnimationFrame(updateValue);
                 }
 
                 requestAnimationFrame(updateValue);
