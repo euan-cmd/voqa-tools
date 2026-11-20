@@ -82,9 +82,11 @@
         .intro {
             margin-top: 200px;
             background: var(--light-blue);
-            padding: 64px 40px 56px;
+            padding: 64px 0 56px;
         }
-        .intro-inner { max-width: 1200px; margin: 0 auto; }
+        /* Text lines up with the text inside the panels below: container padding + panel border + panel padding */
+        .intro-inner { max-width: 1200px; margin: 0 auto; padding: 0 73px; }
+        .intro .bracket { margin-left: -28px; }
         .bracket {
             position: relative;
             display: inline-block;
@@ -320,7 +322,8 @@
 
         @media (max-width: 900px) {
             .container { grid-template-columns: minmax(0, 1fr); padding: 40px 24px 64px; }
-            .intro { padding: 48px 24px 40px; }
+            .intro { padding: 48px 0 40px; }
+            .intro-inner { padding: 0 57px; }
             .intro h1 { font-size: 36px; }
             .intro .lead { font-size: 18px; line-height: 26px; }
             .guidance-grid { grid-template-columns: 1fr; }
@@ -331,6 +334,7 @@
         }
         @media (max-width: 520px) {
             .intro { margin-top: 90px; }
+            .intro-inner { padding: 0 45px; }
             .card { padding: 24px 20px; }
             .results-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 24px; }
@@ -430,7 +434,8 @@
             .header { position: relative; min-height: 110px; padding: 12px 24px; }
             .voqa-logo { height: 70px; }
             .kel-logo { height: 36px; }
-            .intro { margin-top: 0; padding: 14px 24px 12px; }
+            .intro { margin-top: 0; padding: 14px 0 12px; }
+            .intro-inner { padding: 0 19px; }
             .intro h1 { font-size: 26px; }
             .intro .lead, .draft-label, .intro br + .bracket + .lead { display: none; }
             .intro h1 br { display: none; }
