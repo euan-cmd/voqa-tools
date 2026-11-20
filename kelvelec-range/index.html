@@ -985,7 +985,7 @@
         function sessionLabels(r) {
             if (r.alreadyAtTarget) return ['Already at or above 80%', 'Nothing to add on DC'];
             if (!r.reachedTarget) return [null, null];
-            return r.isDC ? ['Reached 80%', 'Stopped at 80%'] : ['Battery full', 'Capped at 100%'];
+            return r.isDC ? [null, null] : ['Battery full', 'Capped at 100%'];
         }
 
         /**
