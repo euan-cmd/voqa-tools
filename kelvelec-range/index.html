@@ -752,9 +752,6 @@
                 <div class="guidance-text alert-note">
                     <strong>AC Charging Limitation:</strong> Most EVs have onboard chargers that limit AC charging to 11kW, regardless of the charger's capacity. Always verify your vehicle's AC charging specifications before expecting 22kW charging speeds.
                 </div>
-                <div class="guidance-text info-panel">
-                    <strong>How these figures are worked out:</strong> On AC, each car charges at the lower of the charger's rating and its own on-board charger limit, up to 100%. On DC, charging stops at 80% and each car starts at its published peak DC rate up to 15%, then charging slows steadily as the battery fills. The rate it slows at is set for each car so its 10-80% time matches the published figure from <a href="https://ev-database.org/uk/" target="_blank" rel="noopener">EV Database UK</a> (November 2026). Real charging curves differ by model, and speeds drop in cold weather, with a cold battery or when a charger shares power between cars. Figures show energy into the battery and exclude charging losses, so treat them as estimates.
-                </div>
             </div>
         </div>
     </div>
@@ -979,7 +976,7 @@
             if (!el) return;
             const notes = [];
             if (power >= DC_MIN_KW) {
-                notes.push('DC sessions are calculated to 80%, where most drivers unplug. Charging speed follows a standard curve for each car (see the note under the comparison table).');
+                notes.push('DC sessions are calculated to 80%, where most drivers unplug. Charging speed follows a typical curve for each car.');
                 if (v) {
                     // Highest power the car draws on its standard curve
                     const carPeak = v.dc;
@@ -1346,7 +1343,7 @@
                 var d = new Date();
                 var pad = function (n) { return (n < 10 ? '0' : '') + n; };
                 document.getElementById('pMeta').textContent = 'Generated ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear() +
-                    ' from the Voqa x Kelvelec EV charging range calculator. Figures are estimates; see how they are worked out below.';
+                    ' from the Voqa x Kelvelec EV charging range calculator. Figures are estimates.';
             }
             window.addEventListener('beforeprint', fillSummary);
             btn.addEventListener('click', function () {
