@@ -534,26 +534,31 @@
                 <label for="vehicleSelect">Vehicle</label>
                 <select id="vehicleSelect">
                     <option value="">Choose a vehicle…</option>
-                    <option value="custom">Custom Vehicle</option>
+                    <option value="custom">Custom vehicle (enter its details)</option>
                 </select>
                 <div class="custom-dwell-note">
                     Range is the official WLTP figure (the best case where versions differ). Battery is usable capacity. AC is the car's on-board charger limit; DC is its peak rapid-charging rate. Figures are from <a href="https://ev-database.org/uk/" target="_blank" rel="noopener">EV Database UK</a> (November 2026). Real-world figures vary with weather, driving style and vehicle version.
                 </div>
             </div>
 
-            <div class="form-group" id="customEfficiencyGroup" style="display: none;">
-                <label for="customEfficiency">Efficiency (mi/kWh)</label>
-                <input type="number" id="customEfficiency" min="1" max="6" step="0.1" placeholder="e.g. 3.5">
+            <div class="form-group custom-vehicle-group" id="customNameGroup" style="display: none;">
+                <label for="customName">Car name</label>
+                <input type="text" id="customName" maxlength="60" placeholder="e.g. Polestar 4 Long Range">
+            </div>
+
+            <div class="form-group custom-vehicle-group" id="customRangeGroup" style="display: none;">
+                <label for="customRange">Range (WLTP, miles)</label>
+                <input type="number" id="customRange" min="50" max="600" step="1" placeholder="e.g. 300">
                 <div class="custom-dwell-note">
-                    Enter the efficiency rating for your specific vehicle model
+                    The official figure from the manufacturer or EV Database. The calculator turns it into a real-world efficiency using the typical gap between WLTP and real-world range for the cars listed.
                 </div>
             </div>
 
-            <div class="form-group" id="customBatteryGroup" style="display: none;">
+            <div class="form-group custom-vehicle-group" id="customBatteryGroup" style="display: none;">
                 <label for="customBattery">Usable battery (kWh)</label>
-                <input type="number" id="customBattery" min="40" max="200" step="1" placeholder="e.g. 75">
+                <input type="number" id="customBattery" min="10" max="200" step="0.1" placeholder="e.g. 75">
                 <div class="custom-dwell-note">
-                    Enter the usable battery capacity of your vehicle (typically 10-15% less than total capacity)
+                    Usable capacity, typically 5–10% below the gross figure manufacturers often quote.
                 </div>
             </div>
 
@@ -561,7 +566,7 @@
                 <label for="customAc">Max AC charging speed (kW)</label>
                 <input type="number" id="customAc" min="1" max="22" step="0.1" placeholder="e.g. 11">
                 <div class="custom-dwell-note">
-                    The car's on-board charger limit. Most EVs take 11 kW; some take 7 kW or 22 kW.
+                    The car's on-board charger limit. Most EVs take 11 kW; some take 7 kW or 22 kW. Left blank, 11 kW is used.
                 </div>
             </div>
 
@@ -569,7 +574,15 @@
                 <label for="customDc">Max DC charging speed (kW)</label>
                 <input type="number" id="customDc" min="10" max="400" step="1" placeholder="e.g. 150">
                 <div class="custom-dwell-note">
-                    The car's peak rapid-charging rate. Charging starts at this peak and tapers as the battery fills, at a typical rate for the cars listed.
+                    The car's peak rapid-charging rate. Charging starts at this peak and tapers as the battery fills, at a typical rate for the cars listed. Left blank, 150 kW is used.
+                </div>
+            </div>
+
+            <div class="form-group custom-vehicle-group" id="customEfficiencyGroup" style="display: none;">
+                <label for="customEfficiency">Real-world efficiency (mi/kWh, optional)</label>
+                <input type="number" id="customEfficiency" min="1" max="6" step="0.1" placeholder="Worked out from range and battery">
+                <div class="custom-dwell-note" id="customEffNote">
+                    Only needed if you know the car's real-world figure. It overrides the estimate from range and battery.
                 </div>
             </div>
 
@@ -797,6 +810,11 @@
 
         // Assumptions for a custom vehicle (no published charging figures)
         const CUSTOM_DEFAULTS = { ac: 11, dc: 150 };
+        // Real-world range as a share of WLTP across the listed cars (median), used to estimate a custom car's efficiency
+        const REAL_TO_WLTP = (function () {
+            const r = Object.values(VEHICLES).filter((v) => v.wltp).map((v) => v.eff * v.kwh / v.wltp).sort((x, y) => x - y);
+            return r.length ? r[Math.floor(r.length / 2)] : 0.8;
+        })();
 
         // Chargers at or above this rating are DC
         const DC_MIN_KW = 50;
@@ -891,12 +909,20 @@
             const select = document.getElementById('vehicleSelect');
             if (!select || !select.value) return null;
             if (select.value === 'custom') {
-                const eff = parseFloat(document.getElementById('customEfficiency')?.value || 0);
-                const kwh = parseFloat(document.getElementById('customBattery')?.value || 0) || 80;
-                const ac = parseFloat(document.getElementById('customAc')?.value || 0) || CUSTOM_DEFAULTS.ac;
-                const dc = parseFloat(document.getElementById('customDc')?.value || 0) || CUSTOM_DEFAULTS.dc;
-                if (!(eff > 0)) return null;
-                return { name: 'custom vehicle', kwh, eff, ac, dc, custom: true };
+                const num = (id) => parseFloat(document.getElementById(id)?.value || 0) || 0;
+                const name = (document.getElementById('customName')?.value || '').replace(/[<>&"]/g, '').trim() || 'custom vehicle';
+                const wltp = num('customRange');
+                const kwh = num('customBattery');
+                const ac = num('customAc') || CUSTOM_DEFAULTS.ac;
+                const dc = num('customDc') || CUSTOM_DEFAULTS.dc;
+                const estEff = (wltp > 0 && kwh > 0) ? Math.round(10 * REAL_TO_WLTP * wltp / kwh) / 10 : 0;
+                const effNote = document.getElementById('customEffNote');
+                if (effNote) effNote.textContent = estEff
+                    ? `Estimated from range and battery: ${estEff.toFixed(1)} mi/kWh. Enter the car's real-world figure here to override it.`
+                    : 'Only needed if you know the car\'s real-world figure. It overrides the estimate from range and battery.';
+                const eff = num('customEfficiency') || estEff;
+                if (!(eff > 0) || !(kwh > 0)) return null;
+                return { name, wltp, kwh, eff, ac, dc, custom: true };
             }
             return VEHICLES[select.value] || null;
         }
@@ -991,7 +1017,7 @@
             try {
                 // Show the custom vehicle fields only when "Custom Vehicle" is picked
                 const isCustom = document.getElementById('vehicleSelect')?.value === 'custom';
-                ['customEfficiencyGroup', 'customBatteryGroup', 'customAcGroup', 'customDcGroup'].forEach((id) => {
+                ['customNameGroup', 'customRangeGroup', 'customBatteryGroup', 'customAcGroup', 'customDcGroup', 'customEfficiencyGroup'].forEach((id) => {
                     const group = document.getElementById(id);
                     if (group) group.style.display = isCustom ? 'block' : 'none';
                 });
@@ -1153,13 +1179,6 @@
                 const vehicleSelect = document.getElementById('vehicleSelect');
                 if (vehicleSelect) {
                     vehicleSelect.addEventListener('change', function() {
-                        const customEfficiencyGroup = document.getElementById('customEfficiencyGroup');
-                        const customBatteryGroup = document.getElementById('customBatteryGroup');
-                        if (customEfficiencyGroup && customBatteryGroup) {
-                            const isCustom = this.value === 'custom';
-                            customEfficiencyGroup.style.display = isCustom ? 'block' : 'none';
-                            customBatteryGroup.style.display = isCustom ? 'block' : 'none';
-                        }
                         calculateRange();
                     });
                 }
@@ -1171,7 +1190,7 @@
                 }
 
                 // Custom battery capacity and charging speed inputs
-                ['customBattery', 'customAc', 'customDc'].forEach((id) => {
+                ['customName', 'customRange', 'customBattery', 'customAc', 'customDc'].forEach((id) => {
                     const input = document.getElementById(id);
                     if (input) input.addEventListener('input', calculateRange);
                 });
@@ -1257,7 +1276,7 @@
         // Input persistence via localStorage
         (function(){
             var KEY = 'voqa-kelvelec-range';
-            var ids = ['vehicleSelect','customEfficiency','customBattery','customAc','customDc','arrivalSoC','powerRating',
+            var ids = ['vehicleSelect','customName','customRange','customEfficiency','customBattery','customAc','customDc','arrivalSoC','powerRating',
                        'dwellTime','customDwellTime'];
             function save(){
                 var d={};
@@ -1306,7 +1325,7 @@
                 btn.disabled = !ready;
                 hint.textContent = ready ? 'Choose “Save as PDF” as the printer.' : 'Pick a vehicle to see your results first.';
             }
-            ['vehicleSelect','customEfficiency','customBattery','customAc','customDc','arrivalSoC','powerRating','dwellTime','customDwellTime']
+            ['vehicleSelect','customName','customRange','customEfficiency','customBattery','customAc','customDc','arrivalSoC','powerRating','dwellTime','customDwellTime']
                 .forEach(function (id) {
                     var el = document.getElementById(id);
                     if (el) { el.addEventListener('change', function(){ setTimeout(refresh, 50); }); el.addEventListener('input', function(){ setTimeout(refresh, 50); }); }
@@ -1314,7 +1333,7 @@
             setTimeout(refresh, 300);
             function fillSummary() {
                 var vSel = document.getElementById('vehicleSelect');
-                var vName = vSel.value === 'custom' ? 'Custom vehicle' : selText('vehicleSelect').replace(/\s*\(.*$/, '');
+                var vName = vSel.value === 'custom' ? ((document.getElementById('customName').value || '').trim() || 'Custom vehicle') : selText('vehicleSelect').split(' · ')[0];
                 document.getElementById('pVehicle').textContent = vName;
                 document.getElementById('pSoC').textContent = selText('arrivalSoC');
                 document.getElementById('pPower').textContent = selText('powerRating');
