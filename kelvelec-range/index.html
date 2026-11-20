@@ -537,7 +537,7 @@
                     <option value="custom">Custom Vehicle</option>
                 </select>
                 <div class="custom-dwell-note">
-                    Max AC is the car's on-board charger limit; max DC is its peak rapid-charging rate. Battery, efficiency and charging figures are from <a href="https://ev-database.org/uk/" target="_blank" rel="noopener">EV Database UK</a> (November 2026). Real-world figures vary with weather, driving style and vehicle version.
+                    Range is the official WLTP figure (the best case where versions differ). Battery is usable capacity. AC is the car's on-board charger limit; DC is its peak rapid-charging rate. Figures are from <a href="https://ev-database.org/uk/" target="_blank" rel="noopener">EV Database UK</a> (November 2026). Real-world figures vary with weather, driving style and vehicle version.
                 </div>
             </div>
 
@@ -758,39 +758,39 @@
          * @version 1.2.0
          */
 
-        // Vehicle data: EV Database UK (ev-database.org/uk), pulled 18/11/2026.
-        // kwh = usable battery (kWh); eff = real-world efficiency (mi/kWh, battery side);
+        // Vehicle data: EV Database UK (ev-database.org/uk), pulled 18/11/2026; WLTP added and figures rechecked 20/11/2026.
+        // wltp = official WLTP range (mi, best case where EVDB lists a range); kwh = usable battery (kWh); eff = real-world efficiency (mi/kWh, battery side);
         // ac = max AC charge rate (on-board charger, kW); dc = max DC charge rate (kW);
         // t1080 = DC 10-80% time (minutes) on a charger that can deliver the car's full rate.
         // avgDc = published average DC power across 10-80% (kW).
         const VEHICLES = {
-            'tesla-model-3':        { name: 'Tesla Model 3 RWD', kwh: 60.0, eff: 4.6, ac: 11, dc: 175, t1080: 24, avgDc: 110 },
-            'mercedes-cla':         { name: 'Mercedes-Benz CLA 250+', kwh: 85.0, eff: 4.2, ac: 11, dc: 353, t1080: 18, avgDc: 208 },
-            'bmw-i4':               { name: 'BMW i4 eDrive40', kwh: 81.3, eff: 4.0, ac: 11, dc: 205, t1080: 28, avgDc: 130 },
-            'ford-puma':            { name: 'Ford Puma Gen-E', kwh: 46.8, eff: 4.0, ac: 11, dc: 100, t1080: 24, avgDc: 85 },
-            'vw-id3':               { name: 'Volkswagen ID.3 (58 kWh)', kwh: 58.0, eff: 3.9, ac: 11, dc: 165, t1080: 24, avgDc: 110 },
-            'tesla-model-y':        { name: 'Tesla Model Y Premium RWD', kwh: 74.0, eff: 3.8, ac: 11, dc: 250, t1080: 36, avgDc: 90 },
-            'bmw-ix3':              { name: 'BMW iX3 40', kwh: 82.6, eff: 3.8, ac: 11, dc: 300, t1080: 21, avgDc: 170 },
-            'mini-countryman':      { name: 'Mini Countryman E', kwh: 65.2, eff: 3.8, ac: 11, dc: 128, t1080: 31, avgDc: 94 },
-            'nissan-leaf-75':       { name: 'Nissan Leaf (2025, 75 kWh)', kwh: 75.1, eff: 3.7, ac: 11, dc: 150, t1080: 32, avgDc: 103 },
-            'nissan-leaf-40':       { name: 'Nissan Leaf 40 kWh (2018–24)', kwh: 39.0, eff: 3.7, ac: 7, dc: 46, t1080: 43, avgDc: 40, chademo: true },
-            'skoda-enyaq':          { name: 'Škoda Enyaq 85', kwh: 79.0, eff: 3.7, ac: 11, dc: 165, t1080: 30, avgDc: 115 },
-            'skoda-elroq':          { name: 'Škoda Elroq 85', kwh: 79.0, eff: 3.6, ac: 11, dc: 165, t1080: 30, avgDc: 115 },
-            'kia-ev3':              { name: 'Kia EV3 Long Range', kwh: 78.0, eff: 3.6, ac: 11, dc: 135, t1080: 33, avgDc: 105 },
-            'byd-seal':             { name: 'BYD Seal RWD (82.5 kWh)', kwh: 82.5, eff: 3.6, ac: 11, dc: 150, t1080: 36, avgDc: 100 },
-            'mg4':                  { name: 'MG4 Long Range', kwh: 61.7, eff: 3.6, ac: 7, dc: 154, t1080: 25, avgDc: 110 },
-            'kia-ev6':              { name: 'Kia EV6 RWD', kwh: 80.0, eff: 3.5, ac: 11, dc: 263, t1080: 17, avgDc: 205 },
-            'ford-explorer':        { name: 'Ford Explorer Extended Range RWD', kwh: 79.0, eff: 3.5, ac: 11, dc: 183, t1080: 30, avgDc: 115 },
-            'volvo-ex30':           { name: 'Volvo EX30 Long Range', kwh: 65.0, eff: 3.5, ac: 11, dc: 158, t1080: 28, avgDc: 101 },
-            'hyundai-ioniq5':       { name: 'Hyundai Ioniq 5 84 kWh RWD', kwh: 80.0, eff: 3.4, ac: 11, dc: 263, t1080: 18, avgDc: 196 },
-            'leapmotor-b10':        { name: 'Leapmotor B10', kwh: 65.0, eff: 3.4, ac: 11, dc: 168, t1080: 26, avgDc: 110 },
-            'jaecoo-e5':            { name: 'Jaecoo E5', kwh: 58.9, eff: 3.4, ac: 11, dc: 130, t1080: 33, avgDc: 80 },
-            'audi-q4':              { name: 'Audi Q4 e-tron (77 kWh)', kwh: 77.0, eff: 3.4, ac: 11, dc: 175, t1080: 28, avgDc: 120 },
-            'vauxhall-frontera':    { name: 'Vauxhall Frontera Electric (54 kWh)', kwh: 52.8, eff: 3.3, ac: 11, dc: 100, t1080: 33, avgDc: 70 },
-            'byd-sealion7':         { name: 'BYD Sealion 7 RWD', kwh: 82.5, eff: 3.2, ac: 11, dc: 150, t1080: 32, avgDc: 115 },
-            'audi-q6':              { name: 'Audi Q6 e-tron quattro', kwh: 94.9, eff: 3.1, ac: 11, dc: 269, t1080: 23, avgDc: 186 },
-            'renault-5':            { name: 'Renault 5 E-Tech (52 kWh)', kwh: 52.0, eff: 3.8, ac: 11, dc: 100, t1080: 33, avgDc: 70 },
-            'renault-4':            { name: 'Renault 4 E-Tech (52 kWh)', kwh: 52.0, eff: 3.7, ac: 11, dc: 101, t1080: 31, avgDc: 75 }
+            'tesla-model-3':        { name: 'Tesla Model 3 RWD', wltp: 332, kwh: 60.0, eff: 4.6, ac: 11, dc: 175, t1080: 24, avgDc: 110 },
+            'mercedes-cla':         { name: 'Mercedes-Benz CLA 250+', wltp: 492, kwh: 85.0, eff: 4.2, ac: 11, dc: 353, t1080: 18, avgDc: 208 },
+            'bmw-i4':               { name: 'BMW i4 eDrive40', wltp: 381, kwh: 81.3, eff: 4.0, ac: 11, dc: 205, t1080: 28, avgDc: 130 },
+            'ford-puma':            { name: 'Ford Puma Gen-E', wltp: 259, kwh: 46.8, eff: 4.0, ac: 11, dc: 100, t1080: 24, avgDc: 85 },
+            'vw-id3':               { name: 'Volkswagen ID.3 Pro', wltp: 270, kwh: 59.0, eff: 3.9, ac: 11, dc: 165, t1080: 25, avgDc: 110 },
+            'tesla-model-y':        { name: 'Tesla Model Y Premium RWD', wltp: 375, kwh: 74.0, eff: 3.8, ac: 11, dc: 250, t1080: 36, avgDc: 90 },
+            'bmw-ix3':              { name: 'BMW iX3 40', wltp: 401, kwh: 82.6, eff: 3.8, ac: 11, dc: 300, t1080: 21, avgDc: 170 },
+            'mini-countryman':      { name: 'Mini Countryman E', wltp: 310, kwh: 65.2, eff: 3.8, ac: 11, dc: 128, t1080: 34, avgDc: 94 },
+            'nissan-leaf-75':       { name: 'Nissan Leaf (2025)', wltp: 387, kwh: 75.1, eff: 3.7, ac: 11, dc: 150, t1080: 32, avgDc: 103 },
+            'nissan-leaf-40':       { name: 'Nissan Leaf (2018–24)', wltp: 177, kwh: 39.0, eff: 3.7, ac: 6.6, dc: 46, t1080: 43, avgDc: 40, chademo: true },
+            'skoda-enyaq':          { name: 'Škoda Enyaq 85', wltp: 359, kwh: 77.0, eff: 3.7, ac: 11, dc: 165, t1080: 30, avgDc: 115 },
+            'skoda-elroq':          { name: 'Škoda Elroq 85', wltp: 372, kwh: 79.0, eff: 3.6, ac: 11, dc: 165, t1080: 30, avgDc: 115 },
+            'kia-ev3':              { name: 'Kia EV3 Long Range', wltp: 376, kwh: 78.0, eff: 3.6, ac: 11, dc: 135, t1080: 33, avgDc: 105 },
+            'byd-seal':             { name: 'BYD Seal RWD', wltp: 354, kwh: 82.5, eff: 3.6, ac: 11, dc: 150, t1080: 36, avgDc: 100 },
+            'mg4':                  { name: 'MG4 Long Range', wltp: 281, kwh: 61.7, eff: 3.6, ac: 6.6, dc: 154, t1080: 25, avgDc: 110 },
+            'kia-ev6':              { name: 'Kia EV6 RWD', wltp: 361, kwh: 80.0, eff: 3.5, ac: 11, dc: 263, t1080: 17, avgDc: 205 },
+            'ford-explorer':        { name: 'Ford Explorer Extended Range RWD', wltp: 374, kwh: 79.0, eff: 3.5, ac: 11, dc: 183, t1080: 30, avgDc: 115 },
+            'volvo-ex30':           { name: 'Volvo EX30 Long Range', wltp: 296, kwh: 65.0, eff: 3.5, ac: 11, dc: 158, t1080: 28, avgDc: 101 },
+            'hyundai-ioniq5':       { name: 'Hyundai Ioniq 5 RWD', wltp: 354, kwh: 80.0, eff: 3.4, ac: 11, dc: 263, t1080: 18, avgDc: 196 },
+            'leapmotor-b10':        { name: 'Leapmotor B10', wltp: 270, kwh: 65.0, eff: 3.4, ac: 11, dc: 168, t1080: 26, avgDc: 110 },
+            'jaecoo-e5':            { name: 'Jaecoo E5', wltp: 248, kwh: 58.9, eff: 3.4, ac: 11, dc: 130, t1080: 33, avgDc: 80 },
+            'audi-q4':              { name: 'Audi Q4 e-tron 45', wltp: 350, kwh: 77.0, eff: 3.4, ac: 11, dc: 175, t1080: 28, avgDc: 120 },
+            'vauxhall-frontera':    { name: 'Vauxhall Frontera Electric', wltp: 249, kwh: 52.8, eff: 3.3, ac: 11, dc: 100, t1080: 33, avgDc: 70 },
+            'byd-sealion7':         { name: 'BYD Sealion 7 RWD', wltp: 300, kwh: 82.5, eff: 3.2, ac: 11, dc: 150, t1080: 32, avgDc: 115 },
+            'audi-q6':              { name: 'Audi Q6 e-tron quattro', wltp: 387, kwh: 94.9, eff: 3.1, ac: 11, dc: 269, t1080: 23, avgDc: 186 },
+            'renault-5':            { name: 'Renault 5 E-Tech', wltp: 258, kwh: 52.0, eff: 3.8, ac: 11, dc: 101, t1080: 31, avgDc: 70 },
+            'renault-4':            { name: 'Renault 4 E-Tech', wltp: 254, kwh: 52.0, eff: 3.7, ac: 11, dc: 101, t1080: 31, avgDc: 75 }
         };
 
         // Assumptions for a custom vehicle (no published charging figures)
@@ -863,7 +863,7 @@
                 const v = VEHICLES[id];
                 const opt = document.createElement('option');
                 opt.value = id;
-                opt.textContent = `${v.name} (${v.eff.toFixed(1)} mi/kWh · max AC ${v.ac} kW · max DC ${v.dc} kW${v.chademo ? ' CHAdeMO' : ''})`;
+                opt.textContent = `${v.name} · ${v.wltp} mi range · ${v.kwh % 1 ? v.kwh.toFixed(1) : v.kwh} kWh · AC ${v.ac} kW · DC ${v.dc} kW${v.chademo ? ' (CHAdeMO)' : ''}`;
                 select.insertBefore(opt, customOption);
             });
         })();
