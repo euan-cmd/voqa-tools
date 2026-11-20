@@ -581,13 +581,6 @@
                 </div>
             </div>
 
-            <div class="form-group custom-vehicle-group" id="customEfficiencyGroup" style="display: none;">
-                <label for="customEfficiency">Real-world efficiency (mi/kWh, optional)</label>
-                <input type="number" id="customEfficiency" min="1" max="6" step="0.1" placeholder="Worked out from range and battery">
-                <div class="custom-dwell-note" id="customEffNote">
-                    Only needed if you know the car's real-world figure. It overrides the estimate from range and battery.
-                </div>
-            </div>
 
             <div class="form-group">
                 <label for="arrivalSoC">Battery level on arrival</label>
@@ -905,11 +898,7 @@
                 const ac = num('customAc') || CUSTOM_DEFAULTS.ac;
                 const dc = num('customDc') || CUSTOM_DEFAULTS.dc;
                 const estEff = (wltp > 0 && kwh > 0) ? Math.round(10 * REAL_TO_WLTP * wltp / kwh) / 10 : 0;
-                const effNote = document.getElementById('customEffNote');
-                if (effNote) effNote.textContent = estEff
-                    ? `Estimated from range and battery: ${estEff.toFixed(1)} mi/kWh. Enter the car's real-world figure here to override it.`
-                    : 'Only needed if you know the car\'s real-world figure. It overrides the estimate from range and battery.';
-                const eff = num('customEfficiency') || estEff;
+                const eff = estEff;
                 if (!(eff > 0) || !(kwh > 0)) return null;
                 return { name, wltp, kwh, eff, ac, dc, custom: true };
             }
@@ -1006,7 +995,7 @@
             try {
                 // Show the custom vehicle fields only when "Custom Vehicle" is picked
                 const isCustom = document.getElementById('vehicleSelect')?.value === 'custom';
-                ['customNameGroup', 'customRangeGroup', 'customBatteryGroup', 'customAcGroup', 'customDcGroup', 'customEfficiencyGroup'].forEach((id) => {
+                ['customNameGroup', 'customRangeGroup', 'customBatteryGroup', 'customAcGroup', 'customDcGroup'].forEach((id) => {
                     const group = document.getElementById(id);
                     if (group) group.style.display = isCustom ? 'block' : 'none';
                 });
@@ -1172,11 +1161,6 @@
                     });
                 }
 
-                // Custom efficiency input
-                const customEfficiency = document.getElementById('customEfficiency');
-                if (customEfficiency) {
-                    customEfficiency.addEventListener('input', calculateRange);
-                }
 
                 // Custom battery capacity and charging speed inputs
                 ['customName', 'customRange', 'customBattery', 'customAc', 'customDc'].forEach((id) => {
@@ -1265,7 +1249,7 @@
         // Input persistence via localStorage
         (function(){
             var KEY = 'voqa-kelvelec-range';
-            var ids = ['vehicleSelect','customName','customRange','customEfficiency','customBattery','customAc','customDc','arrivalSoC','powerRating',
+            var ids = ['vehicleSelect','customName','customRange','customBattery','customAc','customDc','arrivalSoC','powerRating',
                        'dwellTime','customDwellTime'];
             function save(){
                 var d={};
@@ -1314,7 +1298,7 @@
                 btn.disabled = !ready;
                 hint.textContent = ready ? 'Choose “Save as PDF” as the printer.' : 'Pick a vehicle to see your results first.';
             }
-            ['vehicleSelect','customName','customRange','customEfficiency','customBattery','customAc','customDc','arrivalSoC','powerRating','dwellTime','customDwellTime']
+            ['vehicleSelect','customName','customRange','customBattery','customAc','customDc','arrivalSoC','powerRating','dwellTime','customDwellTime']
                 .forEach(function (id) {
                     var el = document.getElementById(id);
                     if (el) { el.addEventListener('change', function(){ setTimeout(refresh, 50); }); el.addEventListener('input', function(){ setTimeout(refresh, 50); }); }
