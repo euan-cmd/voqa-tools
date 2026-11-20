@@ -790,6 +790,8 @@
             'byd-sealion7':         { name: 'BYD Sealion 7 RWD', wltp: 300, kwh: 82.5, eff: 3.2, ac: 11, dc: 150, t1080: 32, avgDc: 115 },
             'audi-q6':              { name: 'Audi Q6 e-tron quattro', wltp: 387, kwh: 94.9, eff: 3.1, ac: 11, dc: 269, t1080: 23, avgDc: 186 },
             'renault-5':            { name: 'Renault 5 E-Tech', wltp: 258, kwh: 52.0, eff: 3.8, ac: 11, dc: 101, t1080: 31, avgDc: 70 },
+            'renault-zoe':          { name: 'Renault Zoe R135 (2020–24)', wltp: 239, kwh: 52.0, eff: 3.6, ac: 22, dc: 46, t1080: 56, avgDc: 41, ccsOptional: true },
+            'smart-1':              { name: 'Smart #1 Premium', wltp: 273, kwh: 62.0, eff: 3.3, ac: 22, dc: 150, t1080: 27, avgDc: 100 },
             'renault-4':            { name: 'Renault 4 E-Tech', wltp: 254, kwh: 52.0, eff: 3.7, ac: 11, dc: 101, t1080: 31, avgDc: 75 }
         };
 
@@ -966,6 +968,7 @@
                     }
                 }
                 if (v && v.chademo) notes.push(`The ${v.name} uses a CHAdeMO connector. Many newer rapid chargers only have CCS cables.`);
+                if (v && v.ccsOptional) notes.push(`Rapid (CCS) charging was an optional extra on the ${v.name}, so not every one can use a DC charger.`);
             } else if (v && power > v.ac) {
                 notes.push(`The ${v.name} takes up to ${v.ac} kW on AC, so it charges at ${v.ac} kW on this charger.`);
             } else if (!v && power === 22) {
